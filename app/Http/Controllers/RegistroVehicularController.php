@@ -21,17 +21,22 @@ class RegistroVehicularController extends Controller
 
     public function store(Request $request) //validaciones
     {
-        $request->validate ([
-            //aqui colocamos solo valores necesarios para validar no poner letras donde van numeros y asi
-            'equipo'=>'required',
-            'marca' =>'required',
-            'placa'=>'required',
-            'motor'=>'required',
-            'modelo'=>'required',
-            'serie'=>'required',
-            'asignado'=>'required',
-
+        $request->validate([
+            'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
+            'marca'     => ['required', 'string', 'max:25', 'regex:/^[a-zA-Z\s]+$/'],
+            'placa'     => ['required', 'string', 'regex:/^[A-Z]{3} \d{4}$/', 'max:8', 'unique:registro_vehiculars,placa'],
+            'motor'     => 'required|string|max:35',
+            'modelo'    => 'required|string|max:30',
+            'serie'     => 'required|string|max:25',
+            'asignado'  => 'required|string|max:30',
+            'observacion' => 'nullable|string|max:40',
+        ], [
+            'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
+            'placa.unique' => 'La placa ya está registrada.',
+            'required' => 'El campo :attribute es obligatorio.',
+            'max' => 'El campo :attribute no puede superar los :max caracteres.',
         ]);
+    
 
         $registrovehicular = new RegistroVehicular();
         $registrovehicular->equipo= $request->input('equipo');
@@ -45,7 +50,9 @@ class RegistroVehicularController extends Controller
 
 
         $registrovehicular->save();
-        return redirect()->route('registrovehicular.index');
+        return redirect()->route('registrovehicular.index')->with('success', 'Registro guardado exitosamente');
+    
+
     }
 
     public function show(string $id)
