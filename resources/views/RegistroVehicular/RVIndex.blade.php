@@ -17,7 +17,7 @@
                     <th>Serie</th>
                     <th>Asignado</th>
                     <th>Observación</th>
-                    <th>Acciones</th>
+                    
                 </tr>
             </thead>
             <tbody>

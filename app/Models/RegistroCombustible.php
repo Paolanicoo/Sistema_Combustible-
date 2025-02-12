@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class RegistroCombustible extends Model
 {
     use HasFactory;
+
+
 }

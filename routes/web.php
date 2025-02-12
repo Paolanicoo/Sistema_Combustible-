@@ -39,4 +39,6 @@ Route::get('/importe',[ResumenImporteController::class,'index'])->name('registro
 
 //Create
 Route::get('/importe_create',[ResumenImporteController::class,'create'])->name('registroimporte.create');
+//store
+Route::post('/importe_store',[ResumenImporteController::class,'store'])->name('registroimporte.store');
 

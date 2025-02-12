@@ -11,6 +11,13 @@ return new class extends Migration
     {
         Schema::create('resumen_importes', function (Blueprint $table) {
             $table->id();
+            $table->string('mes')->after('id'); // Agrega la columna
+            $table->decimal('precio', '10.2');
+            $table->decimal('total', '10.2');
+            $table->string('empresa');
+            $table->string('costo');
+            $table->string('gasto');
+
             $table->timestamps();
         });
     }
