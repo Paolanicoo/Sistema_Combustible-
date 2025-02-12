@@ -20,7 +20,7 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header bg-primary text-white">
-            <h2>Registro de Vehículo</h2>
+            <h2>Registro de combustible</h2>
         </div>
         <div class="card-body">
             <form method="post" action="{{route('registrocombustible.store')}}">
