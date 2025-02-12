@@ -39,13 +39,13 @@
 
                 @empty
                 <tr>
-                    <td colspan="9">No ahi Vehiculos</td>
+                    <td colspan="9">No hay Vehiculos</td>
                 </tr>
                 @endforelse
 
             </tbody>
         </table>
-        <a href="#" class="btn btn-success">Agregar Nuevo</a>
+        <a href="{{route('registrovehicular.create')}}" class="btn btn-success">Agregar Nuevo</a>
     </div>
 
 
