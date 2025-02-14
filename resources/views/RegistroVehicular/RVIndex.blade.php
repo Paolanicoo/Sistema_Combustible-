@@ -65,7 +65,7 @@
     <!-- Creacion de tabla -->
     <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Registro vehicular</h2>
+        <h2><b>Registro vehicular</b></h2>
         <!-- Botón para nuevo registro alineado a la derecha -->
         <a href="{{route('registrovehicular.create')}}" class="btn btn-success">Agregar nuevo</a>
     </div>

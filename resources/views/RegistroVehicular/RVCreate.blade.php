@@ -15,143 +15,188 @@
         </ul>
     </div>
 @endif
-    <style>
-        
-        .header {
-            background-color: #333; 
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
+
+    <style>  
+        /* Estilos generales */
         body {
-            background-color: #f4f6f9;
+            background-color: #f9f9f9;
             font-family: 'Arial', sans-serif;
         }
+
         .card {
             border-radius: 10px;
             max-width: 700px;
-            margin-top: 30px; /* Subir el formulario un poco */
+            margin-top: 30px;
             margin-left: auto;
             margin-right: auto;
+            background-color: #f9f9f9;
+            padding: 20px; /* Espacio interior */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
         }
+
         .card-header {
-            background-color:rgba(253, 254, 255, 0.98); 
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            color: black; /* Letras en negro */
+            background-color: #333; /* Fondo oscuro para la cabecera */
+            color: white;
             text-align: center;
             padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra en la cabecera */
         }
+
         .form-label {
             font-weight: bold;
         }
+
         .form-control, .btn {
             border-radius: 8px;
+            border: 1px solid #ccc; /* Borde sutil */
+            padding: 10px;
+            width: 100%;
         }
+
+        .form-control:focus {
+            background-color: #fff; /* Fondo blanco al hacer foco */
+            border-color: #66afe9; /* Borde azul claro al hacer foco */
+            outline: none; /* Eliminar el borde del foco por defecto */
+        }
+
         .btn-custom {
-            background-color:rgb(53, 192, 88);
+            background-color: rgb(53, 192, 88); /* Verde para el botón */
             color: white;
             padding: 10px 20px;
             border-radius: 10px;
             width: 100%;
-        } 
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
+            transition: 0.3s ease-in-out;
+        }
+
+        .centered-title {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .text-danger {
+            color: red;
+            font-size: 14px;
+        }
+
+        /* Estilo de los campos de formulario */
+        .form-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .col-md-6 {
+            flex: 1 1 48%;
+        }
+
+        .mb-3 {
+            margin-bottom: 1rem;
+        }
+
+        textarea.form-control {
+            resize: vertical; /* Permite redimensionar el área de texto solo verticalmente */
+}
+   
     </style>
 
-    <div class="container">
-        <div class="card">
-            <div class="card-<body>header">
-                <h4>Registro de vehículo</h4>
+<div class="card">
+        <h4 class="centered-title">Registro de vehículo</h4>
+        <form method="post" action="{{ route('registrovehicular.store') }}">
+            @csrf 
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="equipo">Equipo:</label>
+                    <input type="text" id="equipo" name="equipo" class="form-control" value="{{ old('equipo') }}" maxlength="20" required>
+                    @error('equipo')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="placa">Placa:</label>
+                    <input type="text" id="placa" name="placa" class="form-control" value="{{ old('placa') }}" required oninput="formatPlaca(this)" placeholder="Ej: ABC 1234">
+                    @error('placa')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>    
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="motor">Motor:</label>
+                    <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor') }}" maxlength="35" required>
+                    @error('motor')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="marca">Marca:</label>
+                    <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca') }}" maxlength="25" required>
+                    @error('marca')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-            <div class="card-body">
-                <form method="post" action="{{ route('registrovehicular.store') }}">
-                    @csrf  {{-- Muy importante para los formularios de creación y edición --}}
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="equipo">Equipo:</label>
-                            <input type="text" id="equipo" name="equipo" class="form-control" value="{{ old('equipo') }}" maxlength="20" required>
-                            @error('equipo')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="placa">Placa:</label>
-                            <input 
-                                type="text" 
-                                id="placa" 
-                                name="placa" 
-                                class="form-control" 
-                                value="{{ old('placa') }}" 
-                                required
-                                oninput="formatPlaca(this)" 
-                                placeholder="Ej: ABC 1234">
-                            @error('placa')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>    
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="modelo">Modelo:</label>
+                    <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo') }}" maxlength="30" required>
+                    @error('modelo')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="motor">Motor:</label>
-                            <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor') }}" maxlength="35" required>
-                            @error('motor')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="marca">Marca:</label>
-                            <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca') }}" maxlength="25" required>
-                            @error('marca')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="modelo">Modelo:</label>
-                            <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo') }}" maxlength="30" required>
-                            @error('modelo')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="serie">Serie:</label>
-                            <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie') }}" maxlength="25" required>
-                            @error('serie')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="asignado">Asignado:</label>
-                            <input type="text" id="asignado" name="asignado" class="form-control" value="{{ old('asignado') }}" maxlength="30" required>
-                            @error('asignado')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="observacion">Observación:</label>
-                            <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="40">{{ old('observacion') }}</textarea>
-                            @error('observacion')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-custom">Guardar Registro</button>
-                </form>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="serie">Serie:</label>
+                    <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie') }}" maxlength="25" required>
+                    @error('serie')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="asignado">Asignado:</label>
+                    <input type="text" id="asignado" name="asignado" class="form-control" value="{{ old('asignado') }}" maxlength="30" required>
+                    @error('asignado')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label" for="observacion">Observación:</label>
+                    <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="40">{{ old('observacion') }}</textarea>
+                    @error('observacion')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-custom">Guardar registro</button>
+        </form>
     </div>
 
     <!-- Formateo de la placa -->

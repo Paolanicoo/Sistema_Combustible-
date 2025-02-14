@@ -16,7 +16,7 @@
     }
 
     .fixed-table th:nth-child(9), .fixed-table td:nth-child(9) {
-        width: 160px;
+        width: 100px; /* Cambié el ancho de la columna 'Acciones' */
     }
 
     .action-buttons {
@@ -38,22 +38,63 @@
 
     .fixed-table {
         width: 100%;
-        table-layout: fixed;
+        table-layout: auto; /* Usamos auto para que el contenido ajuste el tamaño de la columna */
     }
 
     .fixed-table th, .fixed-table td {
-        word-wrap: break-word;
-        overflow: hidden;
+        word-wrap: break-word; /* Permite que el texto se divida en varias líneas si es largo */
+        overflow: hidden;      /* Oculta cualquier contenido que se desborde */
+        white-space: nowrap;   /* Evita que el texto se divida y fuerza que todo esté en una línea */
+        text-overflow: ellipsis; /* Muestra "..." si el contenido es demasiado largo */
     }
 
     td {
         vertical-align: middle;
     }
+
+    /* Anchos específicos para las columnas */
+    .fixed-table th:nth-child(1), .fixed-table td:nth-child(1) {
+        width: 120px;
+    }
+
+    .fixed-table th:nth-child(2), .fixed-table td:nth-child(2) {
+        width: 150px;
+    }
+
+    .fixed-table th:nth-child(3), .fixed-table td:nth-child(3) {
+        width: 150px;
+    }
+
+    .fixed-table th:nth-child(4), .fixed-table td:nth-child(4) {
+        width: 120px;
+    }
+
+    .fixed-table th:nth-child(5), .fixed-table td:nth-child(5) {
+        width: 120px;
+    }
+
+    .fixed-table th:nth-child(6), .fixed-table td:nth-child(6) {
+        width: 130px;
+    }
+
+    .fixed-table th:nth-child(7), .fixed-table td:nth-child(7) {
+        width: 150px;
+    }
+
+    .fixed-table th:nth-child(8), .fixed-table td:nth-child(8) {
+        width: 150px;
+    }
+
+    .fixed-table th:nth-child(5), .fixed-table td:nth-child(5),
+    .fixed-table th:nth-child(6), .fixed-table td:nth-child(6) {
+        width: 140px; /* Puedes ajustar el ancho de las columnas que tienen valores más largos como 'Factura' */
+    }
 </style>
+
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><b>Registro Combustible</b></h2>
+        <h2><b>Registro combustible</b></h2>
         <a href="{{ route('registrocombustible.create') }}" class="btn btn-success">Agregar nuevo</a>
     </div>
     <div class="table-container">
@@ -65,9 +106,9 @@
                     <th>Marca</th>
                     <th>Placa</th>
                     <th>Asignado</th>
-                    <th>N° de Factura</th>
-                    <th>Entrada Galones</th>
-                    <th>Salidas Galones</th>
+                    <th>N° de factura</th>
+                    <th>Entrada galones</th>
+                    <th>Salidas galones</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

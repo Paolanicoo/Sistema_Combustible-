@@ -16,118 +16,185 @@
     </div>
 @endif
 
+    
 <style>
-        
-        .header {
-            background-color: #333; 
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        body {
-            background-color: #f4f6f9;
-            font-family: 'Arial', sans-serif;
-        }
-        .card {
-            border-radius: 10px;
-            max-width: 700px;
-            margin-top: 30px; /* Subir el formulario un poco */
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .card-header {
-            background-color:rgba(253, 254, 255, 0.98); 
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            color: black; /* Letras en negro */
-            text-align: center;
-            padding: 15px;
-        }
-        .form-label {
-            font-weight: bold;
-        }
-        .form-control, .btn {
-            border-radius: 8px;
-        }
-        .btn-custom {
-            background-color:rgb(53, 192, 88);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            width: 100%;
-        } 
-    </style>
+    .form-container {
+        max-width: 800px; /* Ancho moderado para el formulario */
+        margin: 30px auto; /* Subido 15px para que quede más cerca de la barra superior */
+        padding: 30px; /* Espacio dentro del formulario */
+        background-color: #f9f9f9; /* Fondo suave para el formulario */
+        border-radius: 8px; /* Bordes redondeados */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    }
 
-<form method="post" action="{{ route('registrocombustible.store') }}">
-    @csrf  {{-- Muy importante para los formularios de creación y edición --}}
+    .form-title {
+        text-align: center; /* Centra el título */
+        font-size: 24px; /* Tamaño del título */
+        margin-bottom: 20px; /* Espacio debajo del título */
+        color: #333; /* Color oscuro para el título */
+    }
 
-    <div class="mb-3">
-                    <label class="form-label">Fecha:</label>
-                    <input type="date" name="fecha" class="form-control"  required>
-                </div>
+    .row {
+        display: flex; /* Usamos flexbox para el layout de las columnas */
+        flex-wrap: wrap; /* Para que los campos se acomoden si el tamaño es pequeño */
+        gap: 20px; /* Espacio entre las columnas */
+    }
 
-<div class="mb-3">
-    <label>Seleccionar Vehículo:</label>
+    .col-md-6 {
+        flex: 1 1 48%; /* Cada columna ocupa el 48% del contenedor */
+    }
 
-    <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
-        <option value="">Seleccione un vehículo</option>
-        @foreach($vehiculos as $vehiculo)
-            <option value="{{ $vehiculo->id }}" 
-                data-equipo="{{ $vehiculo->equipo }}" 
-                data-placa="{{ $vehiculo->placa }}"
-                data-marca="{{ $vehiculo->marca }}"
-                data-asignado="{{ $vehiculo->asignado }}">
-                {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
-            </option>
-        @endforeach
-    </select>
+    .form-group {
+        margin-bottom: 15px; /* Espacio entre los campos */
+    }
+
+    .form-label {
+        font-size: 16px; /* Tamaño de la etiqueta */
+        margin-bottom: 10px; /* Espacio debajo de la etiqueta */
+        display: block; /* Para que la etiqueta ocupe toda la línea */
+        font-weight: bold; /* Negrita */
+        color: black; /* Color gris suave */
+    }
+
+    .form-control {
+        padding: 8px; 
+        margin-bottom: 10px; /* Espacio entre los campos */
+        border-radius: 4px; /* Bordes redondeados */
+        border: 1px solid #ccc; /* Borde gris suave */
+        width: 100%; /* Asegura que los campos ocupen todo el espacio disponible */
+    }
+
+    .btn-submit {
+        background-color: rgb(53, 192, 88);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 14px;
+    }
+
+    .centered-title {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .header {
+        background-color: #333;
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
+
+<div class="form-container">
+    <h4 class="centered-title">Registro de combustible</h4>
+
+    <form method="post" action="{{ route('registrocombustible.store') }}">
+        @csrf
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="fecha" class="form-label">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" required>
+                @error('fecha')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="vehiculo" class="form-label">Seleccionar vehículo:</label>
+                <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
+                    <option value="">Seleccione un vehículo</option>
+                    @foreach($vehiculos as $vehiculo)
+                        <option value="{{ $vehiculo->id }}"
+                            data-equipo="{{ $vehiculo->equipo }}"
+                            data-placa="{{ $vehiculo->placa }}"
+                            data-marca="{{ $vehiculo->marca }}"
+                            data-asignado="{{ $vehiculo->asignado }}">
+                            {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_registro_vehicular')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="equipo" class="form-label">Equipo:</label>
+                <input type="text" id="equipo" name="equipo" class="form-control" readonly>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="placa" class="form-label">Placa:</label>
+                <input type="text" id="placa" name="placa" class="form-control" readonly>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="marca" class="form-label">Marca:</label>
+                <input type="text" id="marca" name="marca" class="form-control" readonly>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="asignado" class="form-label">Asignado:</label>
+                <input type="text" id="asignado" name="asignado" class="form-control" readonly>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="num_factura" class="form-label">Número de factura:</label>
+                <input type="number" id="num_factura" name="num_factura" class="form-control" required>
+                @error('num_factura')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="entradas" class="form-label">Entrada (galones):</label>
+                <input type="text" id="entradas" name="entradas" class="form-control" required>
+                @error('entradas')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="salidas" class="form-label">Salida (galones):</label>
+                <input type="text" id="salidas" name="salidas" class="form-control" required>
+                @error('salidas')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label for="precio" class="form-label">Precio por galón:</label>
+                <input type="number" id="precio" name="precio" class="form-control" required>
+                @error('precio')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Guardar registro</button>
+    </form>
 </div>
 
-<div class="mb-3">
-    <label>Equipo:</label>
-    <input type="text" id="equipo" name="equipo" class="form-control" readonly>
-</div>
 
-<div class="mb-3">
-    <label>Placa:</label>
-    <input type="text" id="placa" name="placa" class="form-control" readonly>
-</div>
-
-<div class="mb-3">
-    <label>Marca:</label>
-    <input type="text" id="marca" name="marca" class="form-control" readonly>
-</div>
-
-<div class="mb-3">
-    <label>Asignado:</label>
-    <input type="text" id="asignado" name="asignado" class="form-control" readonly>
-</div>
-
-<div class="mb-3">
-    <label>Numero de Factura:</label>
-    <input type="number" id="num_factura" name="num_factura" class="form-control">
-</div>
-
-<div class="mb-3">
-    <label>Entrada:</label>
-    <input type="text" id="entradas" name="entradas" class="form-control" >
-</div>
-
-<div class="mb-3">
-    <label>Salida:</label>
-    <input type="text" id="salidas" name="salidas" class="form-control" >
-</div>
-
-<div class="mb-3">
-    <label>Precio:</label>
-    <input type="number" id="precio" name="precio" class="form-control" >
-</div>
-
-<button type="submit" class="btn btn-custom">Guardar Registro</button>
-
-</form>
 
 <script>
 document.getElementById('vehiculoSelect').addEventListener('change', function() {
