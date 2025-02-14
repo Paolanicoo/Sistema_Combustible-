@@ -58,10 +58,10 @@
             width: 100%;
         } 
     </style>
-<body>
+
     <div class="container">
         <div class="card">
-            <div class="card-header">
+            <div class="card-<body>header">
                 <h4>Registro de vehículo</h4>
             </div>
             <div class="card-body">

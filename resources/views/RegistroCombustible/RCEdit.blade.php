@@ -39,12 +39,12 @@
                 </div>
             
                 <div class="mb-3">
-                    <label class="form-label">Entrada Galones:</label>
+                    <label class="form-label">Entrada :</label>
                     <input type="number" id="engalones" name="engalones" class="form-control" step="0.01" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Salida Galones:</label>
+                    <label class="form-label">Salida :</label>
                     <input type="number" id="sagalones" name="sagalones" class="form-control" step="0.01"  required >
                 </div>
                 

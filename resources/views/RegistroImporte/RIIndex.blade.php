@@ -9,8 +9,7 @@
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
-                    
-                    <th>Mes</th>
+                <th>Mes</th>
                     <th>Fecha</th>
                     <th>Equipo</th>
                     <th>Marca</th>
@@ -23,12 +22,13 @@
                     <th>Empresa</th>
                     <th>Costo</th>
                     <th>Gasto</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($resumenimportes as $registroimporte)
                 <tr>
-                <td>{{$registroimporte->mes}}</td>
+                <td>{{ \Carbon\Carbon::parse($registroimporte->fecha)->translatedFormat('F') }}</td>
                 <td>{{$registroimporte->fecha}}</td>
                 <td>{{$registroimporte->equipo}}</td>
                 <td>{{$registroimporte->marca}}</td>
@@ -48,6 +48,9 @@
                 </tr>
 
                 @empty
+                <tr>
+                    <td colspan="13">No hay importes</td>
+                </tr>
                 
                 @endforelse
 

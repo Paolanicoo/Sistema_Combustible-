@@ -10,6 +10,7 @@ class ResumenImporteController extends Controller
     
     public function index()
     {
+       
         $registroimporte = ResumenImporte::paginate(10); // este es el numero de datos que va a reflejar
         return view('RegistroImporte.RIIndex')->with('resumenimportes',$registroimporte);
     }
@@ -25,7 +26,7 @@ class ResumenImporteController extends Controller
     {
         $request->validate ([
             //aqui colocamos solo valores necesarios para validar no poner letras donde van numeros y asi
-            'mes'=>'required',
+            //'mes'=>'required',
             'fecha' =>'required',
             'equipo' =>'required',
             'marca'=>'required',
@@ -35,15 +36,12 @@ class ResumenImporteController extends Controller
             'consumo'=>'required',
             'precio'=>'required',
             'total'=>'required',
-            'empresa'=>'required',
-            'costo'=>'required',
-            'gasto'=>'required',
-
+            'empresa'=>'required'
         ]);
 
 
         $registroimporte = new ResumenImporte();
-        $registroimporte->mes= $request->input('mes');
+        //$registroimporte->mes= $request->input('mes');
         $registroimporte->fecha= $request->input('fecha');
         $registroimporte->equipo= $request->input('equipo');
         $registroimporte->marca= $request->input('marca');

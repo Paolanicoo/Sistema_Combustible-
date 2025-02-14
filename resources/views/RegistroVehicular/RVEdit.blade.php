@@ -46,7 +46,7 @@
                     <label class="form-label">Observaciones:</label>
                     <input type="text"  id="obs" name="obs" class="form-control" required >
                 </div>
-                
+               
                 <button type="submit" class="btn btn-success w-100">Guardar Registro</button>
             </form>
         </div>

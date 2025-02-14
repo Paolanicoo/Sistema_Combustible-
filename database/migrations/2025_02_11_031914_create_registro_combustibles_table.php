@@ -12,14 +12,12 @@ return new class extends Migration
         Schema::create('registro_combustibles', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
-            $table->integer('factura');
+            $table->integer('num_factura');
             $table->unsignedBigInteger('id_registro_vehicular');
-            $table->integer('e_galones')->nullable();
-            $table->integer('s_galones');
-
+            $table->integer('entradas')->nullable();
+            $table->integer('salidas');
+            $table->integer('precio');
             $table->timestamps();
-
-            $table->foreign('id_registro_vehicular')->references('id')->on('registro_vehicular')->onDelete('cascade');
         });
     }
 

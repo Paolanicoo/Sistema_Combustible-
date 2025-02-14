@@ -26,10 +26,7 @@
             <form method="post" action="{{route('registroimporte.store')}}">
                 @csrf {{--muy importente poner siempre en el formulario de crear y editar--}}
 
-                <div class="mb-3">
-                    <label class="form-label">Mes:</label>
-                    <input type="month" name="mes" class="form-control"  required>
-                </div>
+                
 
                 <div class="mb-3">
                     <label class="form-label">Fecha:</label>
@@ -84,12 +81,12 @@
                 
                 <div class="mb-3">
                 <label>Costo:</label>
-                <input type="text" name="costo" class="form-control"  required>
+                <input type="text" name="costo" class="form-control"  >
                 </div>
 
                 <div class="mb-3">
                 <label>Gasto:</label>
-                <input type="text" name="gasto" class="form-control"  required>
+                <input type="text" name="gasto" class="form-control"  >
                 </div>
                 
                 <button type="submit" class="btn btn-success w-100">Guardar Registro</button>

@@ -16,6 +16,9 @@ Route::get('/vehiculo_create',[RegistroVehicularController::class,'create'])->na
 //Store
 Route::post('/vehiculo_store',[RegistroVehicularController::class,'store'])->name('registrovehicular.store');
 
+// EDIT Y UPDATE 
+Route::get('/vehiculo/{id}/edit',[RegistroVehicularController::class,'edit'])->whereNumber('id')->name('registrovehicular.editar');
+Route::put('/vehiculo/{id}/update',[RegistroVehicularController::class,'update'])->whereNumber('id')->name('registrovehicular.update');
 
 
 // RUTAS DE COMBUSTIBLE

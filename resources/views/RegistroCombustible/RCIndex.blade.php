@@ -4,9 +4,60 @@
 
 @section('contenido')
 
-    <div class="container mt-5">
-        <h2 class="mb-4">Registro Combustible</h2>
-        <table class="table table-striped table-bordered">
+<style>
+    .d-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mb-4 {
+        margin-bottom: 1rem;
+    }
+
+    .fixed-table th:nth-child(9), .fixed-table td:nth-child(9) {
+        width: 160px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1px;
+    }
+
+    button {
+        white-space: nowrap;
+        padding: 8px 10px;
+        font-size: 8px;
+    }
+
+    .table-container {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .fixed-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .fixed-table th, .fixed-table td {
+        word-wrap: break-word;
+        overflow: hidden;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><b>Registro Combustible</b></h2>
+        <a href="{{ route('registrocombustible.create') }}" class="btn btn-success">Agregar nuevo</a>
+    </div>
+    <div class="table-container">
+        <table class="table table-striped table-bordered fixed-table">
             <thead class="table-dark">
                 <tr>
                     <th>Fecha</th>
@@ -14,42 +65,45 @@
                     <th>Marca</th>
                     <th>Placa</th>
                     <th>Asignado</th>
-                    <th>N de factura</th>
-                    <th>Entrada galones</th>
-                    <th>Salidas galones</th>
-                    
+                    <th>N° de Factura</th>
+                    <th>Entrada Galones</th>
+                    <th>Salidas Galones</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($registrocombustibles as $registrocombustible)
+                @forelse($registrocombustible as $registro)
                 <tr>
-                <td>{{$registrocombustible->fecha}}</td>    
-                <td>{{$registrocombustible->equipo}}</td>
-                <td>{{$registrocombustible->marca}}</td>
-                <td>{{$registrocombustible->placa}}</td>
-                <td>{{$registrocombustible->asignado}}</td>
-                <td>{{$registrocombustible->numfac}}</td>
-                <td>{{$registrocombustible->engalones}}</td>
-                <td>{{$registrocombustible->sagalones}}</td>
-                
+                    <td>{{ $registro->fecha }}</td>    
+                    <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
+                    <td>{{ $registro->num_factura }}</td>
+                    <td>{{ $registro->entradas }}</td>
+                    <td>{{ $registro->salidas }}</td>
                     <td>
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-danger btn-sm">Eliminar</button>
+                        <div class="action-buttons">
+                            <a href="" class="btn btn-primary btn-sm">Editar</a>
+                            <form action="" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
-
                 @empty
                 <tr>
-                    <td colspan="9">No hay Consumos</td>
+                    <td colspan="9">No hay registros de combustible</td>
                 </tr>
                 @endforelse
-
             </tbody>
         </table>
-        <a href="{{route('registrocombustible.create')}}" class="btn btn-success">Agregar Nuevo</a>
     </div>
+</div>
 
 
-{{ $registrocombustibles->render('pagination::bootstrap-4') }}
+{{ $registrocombustible->render('pagination::bootstrap-4') }}
 
 @endsection()
