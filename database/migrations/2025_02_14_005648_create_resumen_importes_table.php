@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('resumen_importes', function (Blueprint $table) {
             $table->id();
             $table->decimal('total', 10, 2);
+            $table->string('empresa');
             $table->unsignedBigInteger('id_registro_vehicular');
             $table->unsignedBigInteger('id_registro_combustible');
             $table->string('cog');

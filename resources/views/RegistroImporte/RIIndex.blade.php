@@ -16,33 +16,32 @@
                     <th>Placa</th>
                     <th>Asignado</th>
                     <th>N de factura</th>
-                    <th>Consumo</th>
+                    <th>Consumo</th>  <!-- Cambia 'Salida' por 'Consumo' -->
                     <th>Precio</th>
                     <th>Total</th>
                     <th>Empresa</th>
-                    <th>Costo</th>
-                    <th>Gasto</th>
+                    <th>Tipo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($resumenimportes as $registroimporte)
+                @forelse($registroimporte as $registro)
                 <tr>
-                <td>{{ \Carbon\Carbon::parse($registroimporte->fecha)->translatedFormat('F') }}</td>
-                <td>{{$registroimporte->fecha}}</td>
-                <td>{{$registroimporte->equipo}}</td>
-                <td>{{$registroimporte->marca}}</td>
-                <td>{{$registroimporte->placa}}</td>
-                <td>{{$registroimporte->asignado}}</td>
-                <td>{{$registroimporte->numfac}}</td>
-                <td>{{$registroimporte->consumo}}</td>
-                <td>{{$registroimporte->precio}}</td>
-                <td>{{$registroimporte->total}}</td>
-                <td>{{$registroimporte->empresa}}</td>
-                <td>{{$registroimporte->costo}}</td>
-                <td>{{$registroimporte->gasto}}</td>
+                <td>{{ \Carbon\Carbon::parse($registroimporte->first()->fecha)->translatedFormat('F') }}</td>
+                <td>{{ $registro->combustible->fecha ?? 'N/A' }}</td>
+                <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
+                 <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
+                <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
+                <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
+                <td>{{ $registro->combustible->num_factura }}</td>
+                <td>{{ $registro->combustible->salidas ?? 'N/A' }}</td> <!-- Consumo -->
+                <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
+                <td>{{ $registro->total }}</td>
+                <td>{{$registro->empresa}}</td>
+                <td>{{$registro->cog}}</td>
+                
                     <td>
-                        <button class="btn btn-primary btn-sm">Editar</button>
+                    <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-primary btn-sm">Editar</a>
                         <button class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
                 </tr>
@@ -60,6 +59,6 @@
     </div>
 
 
-{{ $resumenimportes->render('pagination::bootstrap-4') }}
+{{ $registroimporte->render('pagination::bootstrap-4') }}
 
 @endsection()

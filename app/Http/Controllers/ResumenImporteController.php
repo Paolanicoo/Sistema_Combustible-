@@ -4,21 +4,48 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ResumenImporte;
+use App\Models\RegistroCombustible;
+use App\Models\RegistroVehicular;
 
 class ResumenImporteController extends Controller
 {
     
     public function index()
-    {
-       
-        $registroimporte = ResumenImporte::paginate(10); // este es el numero de datos que va a reflejar
-        return view('RegistroImporte.RIIndex')->with('resumenimportes',$registroimporte);
-    }
+{
+    $registroimporte = ResumenImporte::paginate(10);
+    $vehiculos = RegistroVehicular::all();
+    $combustibles = RegistroCombustible::all();
+
+    // Agregar los datos del vehículo a cada registro de combustible
+    $registroimporte->transform(function ($registro) use ($vehiculos, $combustibles) {
+        $vehiculo = $vehiculos->firstWhere('id', $registro->id_registro_vehicular);
+        $combustible = $combustibles->firstWhere('id', $registro->id_registro_combustible);
+
+        // Agregar datos relacionados
+        $registro->vehiculo = $vehiculo;
+        $registro->combustible = $combustible;
+
+        // Calcular el total
+        if ($combustible) {
+            $registro->total = $combustible->salidas * $combustible->precio;
+        } else {
+            $registro->total = 0;
+        }
+
+        return $registro;
+    });
+
+    return view('RegistroImporte.RIIndex', compact('registroimporte', 'combustibles', 'vehiculos'));
+}
+ 
 
 
     public function create()
     {
-        return view('RegistroImporte.RICreate');
+        $vehiculos = RegistroVehicular::all(); // Obtener todos los vehículos
+    $combustibles = RegistroCombustible::all(); // Obtener todos los registros de combustible
+    
+    return view('RegistroImporte.RICreate', compact('vehiculos', 'combustibles'));
     }
 
    
@@ -26,34 +53,22 @@ class ResumenImporteController extends Controller
     {
         $request->validate ([
             //aqui colocamos solo valores necesarios para validar no poner letras donde van numeros y asi
-            //'mes'=>'required',
-            'fecha' =>'required',
-            'equipo' =>'required',
-            'marca'=>'required',
-            'placa'=>'required',
-            'asignado'=>'required',
-            'numfac'=>'required',
-            'consumo'=>'required',
+            
+        
             'precio'=>'required',
             'total'=>'required',
-            'empresa'=>'required'
+            'empresa'=>'required',
+            'cog'=>'required'
         ]);
 
 
         $registroimporte = new ResumenImporte();
-        //$registroimporte->mes= $request->input('mes');
-        $registroimporte->fecha= $request->input('fecha');
-        $registroimporte->equipo= $request->input('equipo');
-        $registroimporte->marca= $request->input('marca');
-        $registroimporte->placa= $request->input('placa');
-        $registroimporte->asignado= $request->input('asignado');
-        $registroimporte->numfac= $request->input('numfac');
-        $registroimporte->consumo= $request->input('consumo');
-        $registroimporte->precio= $request->input('precio');
+        $registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
+        $registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
         $registroimporte->total= $request->input('total');
         $registroimporte->empresa= $request->input('empresa');
-        $registroimporte->costo= $request->input('costo');
-        $registroimporte->gasto= $request->input('gasto');
+        $registroimporte->cog= $request->input('cog');
+        
 
 
         $registroimporte->save();
@@ -76,18 +91,39 @@ class ResumenImporteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit($id)
+{
+    $registro = ResumenImporte::findOrFail($id);
+    $vehiculos = RegistroVehicular::all(); 
+    $combustibles = RegistroCombustible::all(); 
+    
+    return view('registroimporte.edit', compact('registro', 'vehiculos', 'combustibles'));
+}
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'fecha' => 'required|date',
+        'id_registro_vehicular' => 'required',
+        'id_registro_combustible' => 'required',
+        'numfac' => 'nullable|numeric',
+        'salidas' => 'required|numeric',
+        'precio' => 'required|numeric',
+        'total' => 'required|numeric',
+        'empresa' => 'required|string',
+        'cog' => 'required|string'
+    ]);
+
+    $registro = ResumenImporte::findOrFail($id);
+    $registro->update($request->all());
+
+    return redirect()->route('registroimporte.index')->with('success', 'Registro actualizado correctamente');
+}
+
 
     /**
      * Remove the specified resource from storage.

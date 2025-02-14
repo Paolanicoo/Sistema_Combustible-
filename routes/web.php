@@ -45,3 +45,9 @@ Route::get('/importe_create',[ResumenImporteController::class,'create'])->name('
 //store
 Route::post('/importe_store',[ResumenImporteController::class,'store'])->name('registroimporte.store');
 
+use App\Http\Controllers\RegistroImporteController;
+
+Route::get('/registroimporte/{id}/edit', [ResumenImporteController::class, 'edit'])->name('registroimporte.edit');
+Route::put('/importe/{id}/update', [ResumenImporteController::class, 'update'])->name('registroimporte.update');
+
+
