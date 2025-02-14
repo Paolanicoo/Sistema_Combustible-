@@ -57,23 +57,27 @@
                 <!-- Enlaces del menú -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto"> <!-- ms-auto para alinear a la derecha -->
+                        
                         <!-- Registro Vehicular -->
-                        <li class="nav-item mx-2"> <!-- mx-2 para agregar espacio entre los enlaces -->
-                            <a class="nav-link active" href="{{ route('registrovehicular.index') }}">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link {{ request()->routeIs('registrovehicular.index') ? 'text-white fw-bold' : '' }}" 
+                            href="{{ route('registrovehicular.index') }}">
                                 <i class="fa fa-car"></i> Registro vehicular
                             </a>
                         </li>
-                        
+
                         <!-- Registro Combustible -->
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{{ route('registrocombustible.index') }}">
+                            <a class="nav-link {{ request()->routeIs('registrocombustible.index') ? 'text-white fw-bold' : '' }}" 
+                            href="{{ route('registrocombustible.index') }}">
                                 <i class="fa fa-gas-pump"></i> Registro combustible
                             </a>
                         </li>
-                        
+
                         <!-- Importe -->
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="{{ route('registroimporte.index') }}">
+                            <a class="nav-link {{ request()->routeIs('registroimporte.index') ? 'text-white fw-bold' : '' }}" 
+                            href="{{ route('registroimporte.index') }}">
                                 <i class="fa fa-money-bill"></i> Importe
                             </a>
                         </li>
