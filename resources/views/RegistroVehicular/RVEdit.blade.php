@@ -68,6 +68,7 @@
     .btn-custom:hover {
         background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
         transition: 0.3s ease-in-out;
+        color: black; /* Cambia el color del texto a negro */
     }
 
     .text-danger {
