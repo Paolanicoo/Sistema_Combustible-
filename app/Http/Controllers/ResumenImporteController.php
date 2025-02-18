@@ -62,6 +62,7 @@ class ResumenImporteController extends Controller
 
 
         $registroimporte = new ResumenImporte();
+        $registroimporte->fecha= $request->input('fecha');
         $registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
         $registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
         $registroimporte->total= $request->input('total');
@@ -90,53 +91,53 @@ class ResumenImporteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-{
     
-    $registro = ResumenImporte::findOrFail($id);
-    $vehiculos = RegistroVehicular::all(); // Asegúrate de obtener todos los vehículos
-    $combustibles = RegistroCombustible::all(); 
+    public function edit($id)
+    {
+        $registro = ResumenImporte::findOrFail($id);
+        $vehiculos = RegistroVehicular::all();
+        $combustibles = RegistroCombustible::all();
 
-    return view('registroimporte.RIEdit', compact('registro', 'vehiculos','combustibles'));
-
-   
-}
-
-
+        return view('registroimporte.RIEdit', compact('registro', 'vehiculos', 'combustibles'));
+    }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza el registro en la base de datos.
      */
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'fecha' => 'date',
-        'id_registro_vehicular' => 'required',
-        'id_registro_combustible' => 'required',
-        'total' => 'numeric',
-        'empresa' => 'required|string',
-        'cog' => 'required|string',
-        
-    ]);
+    {
+        $request->validate([
+            'fecha' => 'required|date',
+            'id_registro_vehicular' => 'required',
+            'id_registro_combustible' => 'required',
+            'empresa' => 'required|string',
+            'cog' => 'required|string',
+            'precio' => 'nullable|numeric',
+        ]);
 
-    // Verificar qué datos se están enviando
-    
+        // Obtener el registro de combustible asociado
+        $combustible = RegistroCombustible::findOrFail($request->id_registro_combustible);
 
-    $registro = ResumenImporte::findOrFail($id);
-    $registro->update([
-        'fecha' => $request->fecha,
-        'id_registro_vehicular' => $request->id_registro_vehicular,
-        'id_registro_combustible' => $request->id_registro_combustible,
-        'total' => $request->salidas * $request->precio, // Calculamos el total
-        'empresa'=> $request->empresa,
-        'cog' => $request->cog,
-        'precio' => $request->precio,
-        
-    ]);
+        // Determinar el consumo (salidas o entradas)
+        $consumo = $combustible->salidas > 0 ? $combustible->salidas : $combustible->entradas;
 
-    return redirect()->route('registroimporte.index')->with('success', 'Registro actualizado correctamente');
-}
+        // Calcular el total de la compra
+        $total = $consumo * ($request->precio ?? $combustible->precio);
 
+        // Actualizar el registro
+        $registro = ResumenImporte::findOrFail($id);
+        $registro->update([
+            'fecha' => $request->fecha,
+            'id_registro_vehicular' => $request->id_registro_vehicular,
+            'id_registro_combustible' => $request->id_registro_combustible,
+            'total' => $total,
+            'empresa' => $request->empresa,
+            'cog' => $request->cog,
+            'precio' => $request->precio ?? $combustible->precio,
+        ]);
+
+        return redirect()->route('registroimporte.index')->with('success', 'Registro actualizado correctamente');
+    }
 
 
     /**
@@ -144,6 +145,10 @@ class ResumenImporteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //Eliminar registro
+        $registro = ResumenImporte::findOrFail($id);
+    $registro->delete();
+
+    return redirect()->route('registroimporte.index')->with('success', 'Registro eliminado correctamente');
     }
 }

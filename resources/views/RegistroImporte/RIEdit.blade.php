@@ -127,7 +127,8 @@
                             data-fecha="{{ $combustible->fecha }}" 
                             data-numfac="{{ $combustible->num_factura }}" 
                             data-precio="{{ $combustible->precio }}"
-                            data-consumo="{{ $combustible->salidas }}"
+                            data-entradas="{{ $combustible->entradas ?? 0 }}"
+                            data-salidas="{{ $combustible->salidas ?? 0 }}"
                             {{ $combustible->id == $registro->id_registro_combustible ? 'selected' : '' }}>
                             {{ $combustible->num_factura }}
                         </option>
@@ -142,7 +143,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Consumo:</label>
-                <input type="number" id="salidas" class="form-control" readonly>
+                <input type="number" id="consumo" class="form-control" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -165,6 +166,15 @@
                     <option value="Francisco Gusman" {{ $registro->empresa == 'Francisco Gusman' ? 'selected' : '' }}>Francisco Gusman</option>
                 </select>
             </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="tipo">Tipo:</label>
+                <select id="cog" name="cog" class="form-control">
+                    <option value="Gasto" {{ $registro->tipo == 'Gasto' ? 'selected' : '' }}>Gasto</option>
+                    <option value="Costo" {{ $registro->tipo == 'Costo' ? 'selected' : '' }}>Costo</option>
+                   
+                </select>
+            </div>
         </div>
 
         <button type="submit" class="btn btn-custom">Actualizar Registro</button>
@@ -172,20 +182,58 @@
 </div>
 
 <script>
-    document.getElementById('vehiculoSelect').addEventListener('change', function() {
-        let selectedOption = this.options[this.selectedIndex];
-        document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo') + " - " + selectedOption.getAttribute('data-marca');
-        document.getElementById('placa').value = selectedOption.getAttribute('data-placa');
-        document.getElementById('marca').value = selectedOption.getAttribute('data-marca');
-        document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado');
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        let vehiculoSelect = document.getElementById('vehiculoSelect');
+        let combustibleSelect = document.getElementById('combustibleSelect');
 
-    document.getElementById('combustibleSelect').addEventListener('change', function() {
-        let selectedOption = this.options[this.selectedIndex];
-        document.getElementById('numfac').value = selectedOption.getAttribute('data-numfac');
-        document.getElementById('salidas').value = selectedOption.getAttribute('data-consumo');
-        document.getElementById('precio').value = selectedOption.getAttribute('data-precio');
+        function actualizarDatosVehiculo() {
+            let selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
+            if (selectedOption) {
+                document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo') || '';
+                document.getElementById('placa').value = selectedOption.getAttribute('data-placa') || '';
+                document.getElementById('marca').value = selectedOption.getAttribute('data-marca') || '';
+                document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado') || '';
+            }
+        }
+
+        function actualizarDatosCombustible() {
+            let selectedOption = combustibleSelect.options[combustibleSelect.selectedIndex];
+            if (selectedOption) {
+                let fecha = selectedOption.getAttribute('data-fecha') || '';  
+                let numFac = selectedOption.getAttribute('data-numfac') || '';
+                let precio = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
+
+                // Obtener valores de entradas y salidas
+                let entradas = parseFloat(selectedOption.getAttribute('data-entradas')) || 0;
+                let salidas = parseFloat(selectedOption.getAttribute('data-salidas')) || 0;
+
+                // Determinar el consumo: si hay salidas, usarlas. Si no, usar entradas.
+                let consumo = salidas > 0 ? salidas : entradas;
+
+                let total = consumo * precio;
+
+                document.getElementById('fecha').value = fecha;
+                document.getElementById('numfac').value = numFac;
+                document.getElementById('consumo').value = consumo.toFixed(2);
+                document.getElementById('precio').value = precio.toFixed(2);
+                document.getElementById('total').value = total.toFixed(2);
+            } else {
+                console.log("⚠ No se encontró ninguna opción seleccionada en el select de combustible.");
+            }
+        }
+
+        vehiculoSelect.addEventListener('change', actualizarDatosVehiculo);
+        combustibleSelect.addEventListener('change', actualizarDatosCombustible);
+
+        // Inicializar los datos cuando la página carga
+        if (vehiculoSelect.value) {
+            actualizarDatosVehiculo();
+        }
+        if (combustibleSelect.value) {
+            actualizarDatosCombustible();
+        }
     });
 </script>
+
 
 @endsection

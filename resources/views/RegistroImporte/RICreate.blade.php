@@ -94,8 +94,8 @@
         
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label class="form-label">Fecha:</label>
-                <input type="date" name="fecha" class="form-control" required>
+            <label class="form-label">Fecha del Registro de Combustible:</label>
+            <input type="date" id="fecha" name="fecha" class="form-control" readonly required>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -149,7 +149,7 @@
                         data-fecha="{{ $combustible->fecha }}" 
                         data-numfac="{{ $combustible->num_factura }}" 
                         data-precio="{{ $combustible->precio }}"
-                        data-consumo="{{ $combustible->salidas }}">
+                        data-consumo="{{ $combustible->entradas > 0 ? $combustible->entradas : $combustible->salidas }}">
                         {{ $combustible->num_factura }}
                     </option>
                 @endforeach
@@ -166,7 +166,7 @@
     <div class="row">
         <div class="col-md-6 mb-3">
             <label class="form-label">Consumo:</label>
-            <input type="number" id="salidas" name="salidas" class="form-control" readonly step="0.01">
+            <input type="number" id="consumo" name="consumo" class="form-control" readonly step="0.01">
         </div>
 
         <div class="col-md-6 mb-3">
@@ -223,31 +223,20 @@
     document.getElementById('combustibleSelect').addEventListener('change', function() {
         let selectedOption = this.options[this.selectedIndex];
 
-        document.getElementById('numfac').value = selectedOption.getAttribute('data-numfac') || '';
-        document.getElementById('salidas').value = selectedOption.getAttribute('data-consumo') || '';
-        document.getElementById('precio').value = selectedOption.getAttribute('data-precio') || '';
-    });
+        let fecha = selectedOption.getAttribute('data-fecha') || '';
+    let numFactura = selectedOption.getAttribute('data-numfac') || '';
+    let consumo = parseFloat(selectedOption.getAttribute('data-consumo')) || 0;
+    let precio = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
+    let total = consumo * precio;
 
+    document.getElementById('fecha').value = fecha;
+    document.getElementById('numfac').value = numFactura;
+    document.getElementById('consumo').value = consumo;
+    document.getElementById('precio').value = precio;
+    document.getElementById('total').value = total.toFixed(2);
 
-    if (combustibleSelect) {
-            combustibleSelect.addEventListener('change', function () {
-                let selectedOption = this.options[this.selectedIndex];
-
-        // Obtener valores desde los atributos del option
-        let consumo = parseFloat(selectedOption.getAttribute('data-consumo')) || 0;
-        let precio = parseFloat(selectedOption.getAttribute('data-precio')) || 0;
-        let total = consumo * precio;
-
-                // Rellenamos los campos
-                consumoInput = document.getElementById('salidas');
-                let precioInput = document.getElementById("precio");
-                precioInput.value = precio;
-                let totalInput = document.getElementById("total");
-                totalInput.value = total.toFixed(2); // Redondear a 2 decimales
-
-                console.log(" Datos actualizados → Consumo:", consumo, "Precio:", precio, "Total:", total);
-            });
-    };
+    console.log("Datos actualizados → Consumo:", consumo, "Precio:", precio, "Total:", total);
+});
 </script>
 
         </div>

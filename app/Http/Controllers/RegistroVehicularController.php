@@ -89,6 +89,14 @@ class RegistroVehicularController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        $registro = RegistroVehicular::find($id);
+
+    if (!$registro) {
+        return redirect()->route('registrovehicular.index')->with('error', 'Registro no encontrado');
+    }
+
+    $registro->delete();
+
+    return redirect()->route('registrovehicular.index')->with('success', 'Registro eliminado correctamente');
     }
 }

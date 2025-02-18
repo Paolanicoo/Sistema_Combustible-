@@ -90,7 +90,7 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="salidas" class="form-label">Salida (galones):</label>
-                <input type="text" id="salidas" name="salidas" class="form-control" value="{{ $registro->salidas }}" required>
+                <input type="text" id="salidas" name="salidas" class="form-control" value="{{ $registro->salidas }}" >
             </div>
 
             <div class="col-md-6 form-group">

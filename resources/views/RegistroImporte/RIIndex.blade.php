@@ -16,7 +16,7 @@
                     <th>Placa</th>
                     <th>Asignado</th>
                     <th>N de factura</th>
-                    <th>Consumo</th>  <!-- Cambia 'Salida' por 'Consumo' -->
+                    <th>Consumo</th>  
                     <th>Precio</th>
                     <th>Total</th>
                     <th>Empresa</th>
@@ -34,8 +34,8 @@
                  <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
                 <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
                 <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
-                <td>{{ $registro->combustible->num_factura }}</td>
-                <td>{{ $registro->combustible->salidas ?? 'N/A' }}</td> <!-- Consumo -->
+                <td>{{ $registro->combustible ? $registro->combustible->num_factura: 'N/A'}}</td>
+                <<td>{{ $registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas ?? 'N/A' }}</td>
                 <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
                 <td>{{ $registro->total }}</td>
                 <td>{{$registro->empresa}}</td>
@@ -44,11 +44,11 @@
                         <div class="action-buttons">
                         <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
 
-                            <form action="" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
-                            </form>
+                        <form action="{{ route('registroimporte.destroy', $registro->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
+                    </form>
                         </div>
                     </td>
                     

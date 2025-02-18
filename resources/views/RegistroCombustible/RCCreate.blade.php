@@ -175,7 +175,7 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="salidas" class="form-label">Salida (galones):</label>
-                <input type="text" id="salidas" name="salidas" class="form-control" required>
+                <input type="text" id="salidas" name="salidas" class="form-control" >
                 @error('salidas')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -205,6 +205,24 @@ document.getElementById('vehiculoSelect').addEventListener('change', function() 
     document.getElementById('marca').value = selectedOption.getAttribute('data-marca');
     document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado');
 });
+
+function validarCampos() {
+    let entradas = document.getElementById('entradas').value;
+    let salidas = document.getElementById('salidas').value;
+
+    // Limpiar mensajes de error
+    document.getElementById('errorEntradas').innerText = "";
+    document.getElementById('errorSalidas').innerText = "";
+
+    // Hacer opcional la entrada o salida, pero no ambas vacías
+    if (!entrada && !salida) {
+        document.getElementById('errorEntradas').innerText = "Debe ingresar entrada o salida.";
+        document.getElementById('errorSalidas').innerText = "Debe ingresar entrada o salida.";
+    } else {
+        calcularTotal();
+    }
+}
+
 </script>
 
 @endsection

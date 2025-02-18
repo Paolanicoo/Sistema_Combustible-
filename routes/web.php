@@ -21,6 +21,10 @@ Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 
 
 Route::put('/registrovehicular/{id}', [RegistroVehicularController::class, 'update'])->name('registrovehicular.update');
 
+//ELIMINAR
+Route::delete('/registrovehicular/{id}', [RegistroVehicularController::class, 'destroy'])
+    ->name('registrovehicular.destroy');
+
 
 
 
@@ -38,6 +42,12 @@ Route::post('/combustible_store',[RegistroCombustibleController::class,'store'])
 Route::get('/registrocombustible/{id}/edit', [RegistroCombustibleController::class, 'edit'])->name('registrocombustible.edit');
 Route::put('/registrocombustible/{id}', [RegistroCombustibleController::class, 'update'])->name('registrocombustible.update');
 
+//Eliminar
+Route::delete('/registrocombustible/{id}', [RegistroCombustibleController::class, 'destroy'])->name('registrocombustible.destroy');
+
+
+
+
 
 
 
@@ -54,6 +64,9 @@ Route::post('/importe_store',[ResumenImporteController::class,'store'])->name('r
 
 Route::get('/registroimporte/{id}/edit', [ResumenImporteController::class, 'edit'])->name('registroimporte.edit');
 Route::put('/registroimporte/{id}', [ResumenImporteController::class, 'update'])->name('registroimporte.update');
+
+//eliminar
+Route::delete('/registroimporte/{id}', [ResumenImporteController::class, 'destroy'])->name('registroimporte.destroy');
 
 
 

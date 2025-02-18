@@ -83,6 +83,7 @@
                         <th>Observación</th>
                         <th>Acciones</th>
                     </tr>
+
                 </thead>
                 <tbody>
                 @foreach ($registros as $registro)
@@ -98,12 +99,17 @@
                         <td>
                             <div class="action-buttons">
                             <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning">Editar</a>
-
-                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            <form action="{{ route('registrovehicular.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
                             </div>
                         </td>
+                        
                     </tr>
-                
+                    
+                    
                     @endforeach
                 </tbody>
             </table>

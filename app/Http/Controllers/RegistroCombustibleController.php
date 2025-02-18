@@ -86,7 +86,7 @@ public function update(Request $request, $id)
         'id_registro_vehicular' => 'required',
         'num_factura' => 'required|numeric',
         'entradas' => 'nullable|numeric',
-        'salidas' => 'required|numeric',
+        'salidas' => 'nullable|numeric',
         'precio' => 'required|numeric',
     ]);
 
@@ -101,7 +101,6 @@ public function update(Request $request, $id)
         'entradas' => $request->entradas,
         'salidas' => $request->salidas,
         'precio' => $request->precio,
-        'total' => $request->salidas * $request->precio, // Calculamos el total
     ]);
 
     return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
@@ -111,6 +110,10 @@ public function update(Request $request, $id)
 
     public function destroy(string $id) 
     {
-        //
-    }
+        $registro = RegistroCombustible::findOrFail($id);
+    $registro->delete();
+
+    return redirect()->route('registrocombustible.index')->with('success', 'Registro eliminado correctamente');
+        
+}
 }

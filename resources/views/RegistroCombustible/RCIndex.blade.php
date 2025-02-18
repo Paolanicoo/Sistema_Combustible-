@@ -127,11 +127,13 @@
                         <div class="action-buttons">
                         <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
 
-                            <form action="" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
-                            </form>
+                        <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                            
+                        
                         </div>
                     </td>
                 </tr>
