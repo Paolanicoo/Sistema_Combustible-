@@ -15,8 +15,97 @@
     </div>
 @endif
 
+<style>
+        /* Estilos generales */
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .card {
+        border-radius: 10px;
+        max-width: 700px;
+        margin-top: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f9f9f9;
+        padding: 20px; /* Espacio interior */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    }
+
+    .centered-title {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control, .btn {
+        border-radius: 8px;
+        border: 1px solid #ccc; /* Borde sutil */
+        padding: 10px;
+        width: 100%;
+    }
+
+    .form-control:focus {
+        background-color: #fff; /* Fondo blanco al hacer foco */
+        border-color: #66afe9; /* Borde azul claro al hacer foco */
+        outline: none; /* Eliminar el borde del foco por defecto */
+    }
+
+    .btn-custom {
+        background-color: rgb(53, 192, 88); /* Verde para el botón */
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        width: 100%;
+        border: none;
+    }
+
+    .btn-custom:hover {
+        background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
+        transition: 0.3s ease-in-out;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 14px;
+    }
+
+    /* Contenedor del formulario */
+    .form-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .col-md-6 {
+        flex: 1 1 48%;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    textarea.form-control {
+        resize: vertical; /* Permite redimensionar el área de texto solo verticalmente */
+    }
+</style>
+
 <div class="card">
-    <h4 class="centered-title">Editar Registro de Vehículo</h4>
+    <h4 class="centered-title">Editar registro de vehículo</h4>
     <form method="post" action="{{ route('registrovehicular.update', $registro->id) }}">
         @csrf
         @method('PUT')
@@ -24,8 +113,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="equipo">Equipo:</label>
-                <input type="text" name="equipo" value="{{ $registro->equipo }}"required>
-
+                <input type="text" id="equipo" name="equipo" class="form-control" value="{{ old('equipo', $registro->equipo) }}" maxlength="20" required>
                 @error('equipo')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

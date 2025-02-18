@@ -114,7 +114,7 @@
 
         textarea.form-control {
             resize: vertical; /* Permite redimensionar el área de texto solo verticalmente */
-}
+        }
    
     </style>
 
