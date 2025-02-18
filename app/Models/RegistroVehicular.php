@@ -9,6 +9,18 @@ class RegistroVehicular extends Model
 {
     
     use HasFactory;
+    
+    protected $fillable = [
+        'equipo',
+        'marca',
+        'placa',
+        'modelo',
+        'motor',
+        'serie',
+        'asignado',
+        'observacion',
+    ];
+
     public function combustible() {
         return $this->belongsTo(RegistroCombustible::class);
     }

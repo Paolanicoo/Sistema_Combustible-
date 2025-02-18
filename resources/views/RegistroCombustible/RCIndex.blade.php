@@ -125,7 +125,8 @@
                     <td>{{ $registro->salidas }}</td>
                     <td>
                         <div class="action-buttons">
-                            <a href="" class="btn btn-primary btn-sm">Editar</a>
+                        <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
+
                             <form action="" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')

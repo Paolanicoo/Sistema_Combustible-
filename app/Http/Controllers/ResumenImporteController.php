@@ -93,12 +93,16 @@ class ResumenImporteController extends Controller
      */
     public function edit($id)
 {
-    $registro = ResumenImporte::findOrFail($id);
-    $vehiculos = RegistroVehicular::all(); 
-    $combustibles = RegistroCombustible::all(); 
     
-    return view('registroimporte.edit', compact('registro', 'vehiculos', 'combustibles'));
+    $registroimporte = ResumenImporte::findOrFail($id);
+    $vehiculos = RegistroVehicular::all(); // Asegúrate de obtener todos los vehículos
+    $combustibles = RegistroCombustible::all(); 
+
+    return view('registroimporte.RIEdit', compact('registroimporte', 'vehiculos','combustibles'));
+
+   
 }
+
 
 
     /**
@@ -110,19 +114,30 @@ class ResumenImporteController extends Controller
         'fecha' => 'required|date',
         'id_registro_vehicular' => 'required',
         'id_registro_combustible' => 'required',
-        'numfac' => 'nullable|numeric',
-        'salidas' => 'required|numeric',
-        'precio' => 'required|numeric',
         'total' => 'required|numeric',
         'empresa' => 'required|string',
-        'cog' => 'required|string'
+        'cog' => 'required|string',
+        
     ]);
 
+    // Verificar qué datos se están enviando
+    
+
     $registro = ResumenImporte::findOrFail($id);
-    $registro->update($request->all());
+    $registro->update([
+        'fecha' => $request->fecha,
+        'id_registro_vehicular' => $request->id_registro_vehicular,
+        'id_registro_combustible' => $request->id_registro_combustible,
+        'total' => $request->salidas * $request->precio, // Calculamos el total
+        'empresa'=> $request->empresa,
+        'cog' => $request->cog,
+        'precio' => $request->precio,
+        
+    ]);
 
     return redirect()->route('registroimporte.index')->with('success', 'Registro actualizado correctamente');
 }
+
 
 
     /**

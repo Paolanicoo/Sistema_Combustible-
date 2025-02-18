@@ -165,7 +165,7 @@
 
             <div class="col-md-6 form-group">
                 <label for="entradas" class="form-label">Entrada (galones):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" required>
+                <input type="text" id="entradas" name="entradas" class="form-control" >
                 @error('entradas')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

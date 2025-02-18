@@ -17,8 +17,11 @@ Route::get('/vehiculo_create',[RegistroVehicularController::class,'create'])->na
 Route::post('/vehiculo_store',[RegistroVehicularController::class,'store'])->name('registrovehicular.store');
 
 // EDIT Y UPDATE 
-Route::get('/vehiculo/{id}/edit',[RegistroVehicularController::class,'edit'])->whereNumber('id')->name('registrovehicular.editar');
-Route::put('/vehiculo/{id}/update',[RegistroVehicularController::class,'update'])->whereNumber('id')->name('registrovehicular.update');
+Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 'edit'])->name('registrovehicular.RVEdit');
+
+Route::put('/registrovehicular/{id}', [RegistroVehicularController::class, 'update'])->name('registrovehicular.update');
+
+
 
 
 // RUTAS DE COMBUSTIBLE
@@ -30,6 +33,10 @@ Route::get('/combustible',[RegistroCombustibleController::class,'index'])->name(
 Route::get('/combustible_create',[RegistroCombustibleController::class,'create'])->name('registrocombustible.create');
 //Store
 Route::post('/combustible_store',[RegistroCombustibleController::class,'store'])->name('registrocombustible.store');
+
+//EDIT Y UPDATE
+Route::get('/registrocombustible/{id}/edit', [RegistroCombustibleController::class, 'edit'])->name('registrocombustible.edit');
+Route::put('/registrocombustible/{id}', [RegistroCombustibleController::class, 'update'])->name('registrocombustible.update');
 
 
 
@@ -45,9 +52,10 @@ Route::get('/importe_create',[ResumenImporteController::class,'create'])->name('
 //store
 Route::post('/importe_store',[ResumenImporteController::class,'store'])->name('registroimporte.store');
 
-use App\Http\Controllers\RegistroImporteController;
-
 Route::get('/registroimporte/{id}/edit', [ResumenImporteController::class, 'edit'])->name('registroimporte.edit');
-Route::put('/importe/{id}/update', [ResumenImporteController::class, 'update'])->name('registroimporte.update');
+Route::put('/registroimporte/{id}', [ResumenImporteController::class, 'update'])->name('registroimporte.update');
+
+
+
 
 

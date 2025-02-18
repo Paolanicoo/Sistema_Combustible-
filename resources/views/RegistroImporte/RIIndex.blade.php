@@ -22,6 +22,7 @@
                     <th>Empresa</th>
                     <th>Tipo</th>
                     <th>Acciones</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -39,12 +40,21 @@
                 <td>{{ $registro->total }}</td>
                 <td>{{$registro->empresa}}</td>
                 <td>{{$registro->cog}}</td>
-                
-                    <td>
-                    <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-primary btn-sm">Editar</a>
-                        <button class="btn btn-danger btn-sm">Eliminar</button>
+                <td>
+                        <div class="action-buttons">
+                        <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
+
+                            <form action="" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
+                            </form>
+                        </div>
                     </td>
+                    
                 </tr>
+
+               
 
                 @empty
                 <tr>

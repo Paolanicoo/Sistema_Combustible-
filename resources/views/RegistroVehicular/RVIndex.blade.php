@@ -85,34 +85,32 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($registrovehiculars as $registrovehicular)
+                @foreach ($registros as $registro)
                     <tr>
-                        <td>{{$registrovehicular->equipo}}</td>
-                        <td>{{$registrovehicular->marca}}</td>
-                        <td>{{$registrovehicular->placa}}</td>
-                        <td>{{$registrovehicular->modelo}}</td>
-                        <td>{{$registrovehicular->motor}}</td>
-                        <td>{{$registrovehicular->serie}}</td>
-                        <td>{{$registrovehicular->asignado}}</td>
-                        <td class="observacion-cell">{{$registrovehicular->observacion}}</td>
+                        <td>{{$registro->equipo}}</td>
+                        <td>{{$registro->marca}}</td>
+                        <td>{{$registro->placa}}</td>
+                        <td>{{$registro->modelo}}</td>
+                        <td>{{$registro->motor}}</td>
+                        <td>{{$registro->serie}}</td>
+                        <td>{{$registro->asignado}}</td>
+                        <td class="observacion-cell">{{$registro->observacion}}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-primary btn-sm">Editar</button>
+                            <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning">Editar</a>
+
                                 <button class="btn btn-danger btn-sm">Eliminar</button>
                             </div>
                         </td>
                     </tr>
-                    @empty
-                    <tr>
-                        <td colspan="9">No hay Vehiculos</td>
-                    </tr>
-                    @endforelse
+                
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 
 
-{{ $registrovehiculars->render('pagination::bootstrap-4') }}
+{{ $registros->render('pagination::bootstrap-4') }}
 
 @endsection()

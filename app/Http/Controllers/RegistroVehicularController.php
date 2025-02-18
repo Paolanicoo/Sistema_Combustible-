@@ -9,10 +9,11 @@ class RegistroVehicularController extends Controller
 {
     
     public function index()
-    {
-        $registrovehicular = RegistroVehicular::paginate(10); // este es el numero de datos que va a reflejar
-        return view('RegistroVehicular.RVIndex')->with('registrovehiculars',$registrovehicular);
-    }
+{
+    $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
+    return view('RegistroVehicular.RVIndex', compact('registros'));
+}
+
   
     public function create()
     {
@@ -60,15 +61,31 @@ class RegistroVehicularController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $registro = RegistroVehicular::findOrFail($id);
+        return view('registrovehicular.RVEdit', compact('registro')); // Envía la variable a la vista
     }
-
-    public function update(Request $request, string $id)
+    
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'equipo' => 'required|max:20',
+            'placa' => 'required|max:10',
+            'motor' => 'required|max:35',
+            'marca' => 'required|max:25',
+            'modelo' => 'required|max:30',
+            'serie' => 'required|max:25',
+            'asignado' => 'required|max:30',
+            'observacion' => 'nullable|max:40',
+        ]);
+    
+        $registro = RegistroVehicular::findOrFail($id);
+        $registro->update($request->all());
+    
+        return redirect()->route('registrovehicular.index')->with('success', 'Registro actualizado correctamente');
     }
+    
 
     public function destroy(string $id)
     {
