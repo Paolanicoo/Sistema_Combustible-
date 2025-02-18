@@ -74,6 +74,13 @@ class RegistroCombustibleController extends Controller
 
 public function update(Request $request, $id)
 {
+    $registro = RegistroCombustible::findOrFail($id);
+
+    // Intenta asignar y guardar manualmente
+    $registro->num_factura = $request->num_factura;
+    $registro->save();
+
+    return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
     $request->validate([
         'fecha' => 'required|date',
         'id_registro_vehicular' => 'required',

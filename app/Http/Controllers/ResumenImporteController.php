@@ -52,9 +52,8 @@ class ResumenImporteController extends Controller
     public function store(Request $request)
     {
         $request->validate ([
-            //aqui colocamos solo valores necesarios para validar no poner letras donde van numeros y asi
+            //aqui colocamos solo valores requeridos
             
-        
             'precio'=>'required',
             'total'=>'required',
             'empresa'=>'required',
@@ -94,11 +93,11 @@ class ResumenImporteController extends Controller
     public function edit($id)
 {
     
-    $registroimporte = ResumenImporte::findOrFail($id);
+    $registro = ResumenImporte::findOrFail($id);
     $vehiculos = RegistroVehicular::all(); // Asegúrate de obtener todos los vehículos
     $combustibles = RegistroCombustible::all(); 
 
-    return view('registroimporte.RIEdit', compact('registroimporte', 'vehiculos','combustibles'));
+    return view('registroimporte.RIEdit', compact('registro', 'vehiculos','combustibles'));
 
    
 }
@@ -111,10 +110,10 @@ class ResumenImporteController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'fecha' => 'required|date',
+        'fecha' => 'date',
         'id_registro_vehicular' => 'required',
         'id_registro_combustible' => 'required',
-        'total' => 'required|numeric',
+        'total' => 'numeric',
         'empresa' => 'required|string',
         'cog' => 'required|string',
         
