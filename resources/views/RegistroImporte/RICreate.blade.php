@@ -237,6 +237,12 @@
 
     console.log("Datos actualizados → Consumo:", consumo, "Precio:", precio, "Total:", total);
 });
+
+// Asegurar que el total no se borra antes de enviar el formulario
+document.querySelector("form").addEventListener("submit", function(event) {
+    let total = document.getElementById('total').value;
+
+});
 </script>
 
         </div>

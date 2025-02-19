@@ -19,11 +19,12 @@ class ResumenImporte extends Model
         'cog',
     ];
 
-    public function vehiculos() {
-        return $this->hasmany(RegistroVehicular::class);
+    public function vehiculo() { 
+        return $this->belongsTo(RegistroVehicular::class, 'id_registro_vehicular', 'id');
     }
+    
     public function combustible() {
-        return $this->hasmany(RegistroCombustible::class);
+        return $this->belongsTo(RegistroCombustible::class, 'id_registro_combustible','id');
     }
 }
 

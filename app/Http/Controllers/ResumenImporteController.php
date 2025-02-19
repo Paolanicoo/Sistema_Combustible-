@@ -10,11 +10,42 @@ use App\Models\RegistroVehicular;
 class ResumenImporteController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
 {
     $registroimporte = ResumenImporte::paginate(10);
     $vehiculos = RegistroVehicular::all();
     $combustibles = RegistroCombustible::all();
+
+    $query = ResumenImporte::query();
+
+    // Obtener los filtros de búsqueda
+    $equipo = $request->input('equipo');
+    $asignado = $request->input('asignado');
+    $mes = $request->input('mes');
+
+    // Query base
+    $query = ResumenImporte::with(['vehiculo', 'combustible']);
+
+    // Aplicar filtros si existen
+    if ($equipo) {
+        $query->whereHas('vehiculo', function ($q) use ($equipo) {
+            $q->where('equipo', 'LIKE', "%$equipo%");
+        });
+    }
+
+    if ($asignado) {
+        $query->whereHas('vehiculo', function ($q) use ($asignado) {
+            $q->where('asignado', 'LIKE', "%$asignado%");
+        });
+    }
+
+    if ($mes) {
+        $query->whereMonth('fecha', $mes);
+    }
+    // Obtener resultados paginados
+    $registroimporte = $query->paginate(10);
+
+
 
     // Agregar los datos del vehículo a cada registro de combustible
     $registroimporte->transform(function ($registro) use ($vehiculos, $combustibles) {
@@ -53,7 +84,7 @@ class ResumenImporteController extends Controller
     {
         $request->validate ([
             //aqui colocamos solo valores requeridos
-            
+            'fecha'=>'required',
             'precio'=>'required',
             'total'=>'required',
             'empresa'=>'required',
@@ -61,13 +92,17 @@ class ResumenImporteController extends Controller
         ]);
 
 
-        $registroimporte = new ResumenImporte();
-        $registroimporte->fecha= $request->input('fecha');
-        $registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
-        $registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
-        $registroimporte->total= $request->input('total');
-        $registroimporte->empresa= $request->input('empresa');
-        $registroimporte->cog= $request->input('cog');
+        $consumo = $request->input('entradas') > 0 ? $request->input('entradas') : $request->input('salidas');
+$precio = $request->input('precio');
+$total = $consumo * $precio; //  Calcular correctamente el total
+
+$registroimporte = new ResumenImporte();
+$registroimporte->fecha = $request->input('fecha');
+$registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
+$registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
+$registroimporte->total = $total; //  Guardar el total correctamente
+$registroimporte->empresa = $request->input('empresa');
+$registroimporte->cog = $request->input('cog');
         
 
 

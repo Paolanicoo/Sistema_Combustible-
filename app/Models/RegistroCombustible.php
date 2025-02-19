@@ -11,7 +11,7 @@ class RegistroCombustible extends Model
     
 
     protected $fillable = [
-        'fecha', // Agregar este campo
+        'fecha', 
         'precio',
         'entradas',
         'salidas',

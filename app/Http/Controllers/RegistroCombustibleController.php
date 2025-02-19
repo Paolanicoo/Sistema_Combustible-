@@ -39,7 +39,7 @@ class RegistroCombustibleController extends Controller
             'id_registro_vehicular' => 'required',
             'num_factura' => 'required',
             'entradas' => 'nullable',
-            'salidas' => 'required',
+            'salidas' => 'nullable',
             'precio' => 'required',
         ]);
 
@@ -47,8 +47,8 @@ class RegistroCombustibleController extends Controller
         $registrocombustible->id_registro_vehicular = $request->input('id_registro_vehicular');
         $registrocombustible->fecha = $request->input('fecha');
         $registrocombustible->num_factura = $request->input('num_factura');
-        $registrocombustible->entradas = $request->input('entradas');
-        $registrocombustible->salidas = $request->input('salidas');
+        $registrocombustible->entradas = $request->input('entradas')?: null;
+        $registrocombustible->salidas = $request->input('salidas')?: null;
         $registrocombustible->precio = $request->input('precio');
 
         $registrocombustible->save();

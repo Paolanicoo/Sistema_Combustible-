@@ -9,87 +9,78 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        /* Cambiar el color del texto del título a blanco */
         .navbar-brand {
-            font-size: 24px; /* Tamaño grande */
-            font-weight: bold; /* En negrita */
-            color: #fff !important; /* Color blanco */
-            text-transform: uppercase; /* Mayúsculas */
-            letter-spacing: 2px; /* Espaciado entre letras */
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .title-panel {
-            font-size: 36px; /* Aumentamos el tamaño del título */
-            font-weight: 700; /* Negrita */
-            color: #343a40; /* Color oscuro */
-            text-align: center; /* Centrado */
-            margin-bottom: 20px; /* Margen inferior */
-            text-transform: uppercase; /* Mayúsculas */
-            letter-spacing: 1.5px; /* Espaciado entre letras */
+            font-size: 36px;
+            font-weight: 700;
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .card-body {
-            padding: 30px; /* Padding para mayor espacio */
+            padding: 30px;
         }
 
         .navbar-nav .nav-link {
-            font-size: 18px; /* Tamaño de texto para los enlaces */
+            font-size: 18px;
         }
 
         .nav-item {
-            margin-right: 15px; /* Espacio entre los enlaces */
+            margin-right: 15px;
         }
     </style>
 
 </head>
 <body>
     <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <!-- Título con color negro y estilo personalizado -->
-                <a class="navbar-brand text-dark fs-4 fw-bold" href="#">Gestión de Combustible Grupo Plasencia</a>
-                
-                <!-- Botón para colapsar el menú en dispositivos móviles -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <!-- Enlaces del menú -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto"> <!-- ms-auto para alinear a la derecha -->
-                        
-                        <!-- Registro Vehicular -->
-                        <li class="nav-item mx-2">
-                            <a class="nav-link {{ request()->routeIs('registrovehicular.index') ? 'text-white fw-bold' : '' }}" 
-                            href="{{ route('registrovehicular.index') }}">
-                                <i class="fa fa-car"></i> Registro vehicular
-                            </a>
-                        </li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Gestión de Combustible Grupo Plasencia</a>
 
-                        <!-- Registro Combustible -->
-                        <li class="nav-item mx-2">
-                            <a class="nav-link {{ request()->routeIs('registrocombustible.index') ? 'text-white fw-bold' : '' }}" 
-                            href="{{ route('registrocombustible.index') }}">
-                                <i class="fa fa-gas-pump"></i> Registro combustible
-                            </a>
-                        </li>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                        <!-- Importe -->
-                        <li class="nav-item mx-2">
-                            <a class="nav-link {{ request()->routeIs('registroimporte.index') ? 'text-white fw-bold' : '' }}" 
-                            href="{{ route('registroimporte.index') }}">
-                                <i class="fa fa-money-bill"></i> Importe
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link {{ request()->routeIs('registrovehicular.index') ? 'text-white fw-bold' : '' }}" 
+                        href="{{ route('registrovehicular.index') }}">
+                            <i class="fa fa-car"></i> Registro vehicular
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-2">
+                        <a class="nav-link {{ request()->routeIs('registrocombustible.index') ? 'text-white fw-bold' : '' }}" 
+                        href="{{ route('registrocombustible.index') }}">
+                            <i class="fa fa-gas-pump"></i> Registro combustible
+                        </a>
+                    </li>
+
+                    <li class="nav-item mx-2">
+                        <a class="nav-link {{ request()->routeIs('registroimporte.index') ? 'text-white fw-bold' : '' }}" 
+                        href="{{ route('registroimporte.index') }}">
+                            <i class="fa fa-money-bill"></i> Importe
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-
+        </div>
+    </nav>
 
     <!-- Contenido principal -->
-    <div>
-         @yield('contenido')
+    <div class="container mt-4">
+        @yield('contenido')
     </div>
 
 </body>

@@ -22,10 +22,11 @@ class RegistroVehicular extends Model
     ];
 
     public function combustible() {
-        return $this->belongsTo(RegistroCombustible::class);
+        return $this->hasMany(RegistroCombustible::class,'id_registro_combustible', 'id');
     }
 
-    public function importe () {
-        return $this->belongsTo(ResumenImporte::class);
+    public function importes() {
+        return $this->hasMany(ResumenImporte::class, 'id_registro_vehicular', 'id');
     }
+    
 }

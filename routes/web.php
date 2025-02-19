@@ -6,10 +6,12 @@ use App\Http\Controllers\RegistroVehicularController;
 use App\Http\Controllers\ResumenImporteController;
 
 
+
+
 // RUTAS DE VEHICULO
 
 // INDEX
-Route::get('/vehiculo',[RegistroVehicularController::class,'index'])->name('registrovehicular.index');
+Route::get('/',[RegistroVehicularController::class,'index'])->name('registrovehicular.index');
 
 //Create
 Route::get('/vehiculo_create',[RegistroVehicularController::class,'create'])->name('registrovehicular.create');
@@ -69,6 +71,6 @@ Route::put('/registroimporte/{id}', [ResumenImporteController::class, 'update'])
 Route::delete('/registroimporte/{id}', [ResumenImporteController::class, 'destroy'])->name('registroimporte.destroy');
 
 
-
+//Rutas usuario
 
 
