@@ -6,6 +6,7 @@
 
     <div class="container mt-5">
         <h2 class="mb-4">Resumen Importe</h2>
+        <a href="{{route('registroimporte.create')}}" class="btn btn-success">Agregar Nuevo</a>
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
@@ -98,7 +99,7 @@
 
             </tbody>
         </table>
-        <a href="{{route('registroimporte.create')}}" class="btn btn-success">Agregar Nuevo</a>
+        
     </div>
 
 

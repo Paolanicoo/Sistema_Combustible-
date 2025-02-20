@@ -12,6 +12,8 @@ class RegistroVehicularController extends Controller
 {
     $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
     return view('RegistroVehicular.RVIndex', compact('registros'));
+
+    dd(Auth::check()); 
 }
 
   

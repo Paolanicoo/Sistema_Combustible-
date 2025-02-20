@@ -9,79 +9,101 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff !important;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        /* Imagen de fondo */
+        body {
+            background: url("{{ asset('img/fondo_inicio.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
+        /* Título principal */
         .title-panel {
             font-size: 36px;
             font-weight: 700;
-            color: #343a40;
+            color: #000;
             text-align: center;
-            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
         }
 
-        .card-body {
+        /* Contenedor del login */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
             padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .navbar-nav .nav-link {
-            font-size: 18px;
-        }
-
-        .nav-item {
-            margin-right: 15px;
+        /* Imagen dentro del login */
+        .login-container img {
+            width: 80px;
+            display: block;
+            margin: 0 auto 15px;
         }
     </style>
 
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-        <img src="{{ asset('img/plasencia.jpg') }}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top me-3">
-            <a class="navbar-brand" href="#">Gestión de Combustible Grupo Plasencia</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <!-- Título Principal -->
+    <div class="title-panel">
+        Gestión de Combustible Grupo Plasencia
+    </div>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-2">
-                        <a class="nav-link {{ request()->routeIs('registrovehicular.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registrovehicular.index') }}">
-                            <i class="fa fa-car"></i> Registro vehicular
-                        </a>
-                    </li>
+    <!-- Contenedor del Login -->
+    <div class="login-container">
+        <div class="text-center">
+            <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
+            <h3 class="fw-bold">Iniciar Sesión</h3>
+        </div>
 
-                    <li class="nav-item mx-2">
-                        <a class="nav-link {{ request()->routeIs('registrocombustible.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registrocombustible.index') }}">
-                            <i class="fa fa-gas-pump"></i> Registro combustible
-                        </a>
-                    </li>
+        @if (session('success'))
+            <div class="alert alert-success text-center">
+                {{ session('success') }}
+            </div>
+        @endif
 
-                    <li class="nav-item mx-2">
-                        <a class="nav-link {{ request()->routeIs('registroimporte.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registroimporte.index') }}">
-                            <i class="fa fa-money-bill"></i> Importe
-                        </a>
-                    </li>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
                 </ul>
             </div>
-        </div>
-    </nav>
+        @endif
 
-    <!-- Contenido principal -->
-    <div class="container mt-4">
-        @yield('contenido')
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Correo Electrónico</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+        </form>
+
+        
+        <div class="text-center mt-3">
+            <a href="{{ route('register') }}" class="text-decoration-none">¿No tienes cuenta? Regístrate</a>
+        </div>
+        
+
     </div>
 
 </body>
