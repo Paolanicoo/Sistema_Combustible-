@@ -85,21 +85,28 @@
             font-weight: bold;
             margin-top: 20px;
         }
+    .read-only {
+        background-color: #f0f0f0 !important; /* Color gris claro */
+        color: #6c757d !important; /* Texto en gris oscuro */
+        cursor: not-allowed; /* Cursor de no permitido */
+        border: 1px solid #dcdcdc; /* Borde más suave */
+    }
+
 </style>
 
-<div class="card">
-    <h4 class="centered-title">Resumen Importe</h4>
-    <form method="post" action="{{route('registroimporte.store')}}">
+<div class="card p-4">
+    <h4 class="text-center fw-bold">Resumen Importe</h4>
+    <form method="post" action="{{ route('registroimporte.store') }}">
         @csrf
         
         <div class="row">
             <div class="col-md-6 mb-3">
-            <label class="form-label">Fecha del Registro de Combustible:</label>
-            <input type="date" id="fecha" name="fecha" class="form-control" readonly required>
+                <label class="form-label">Fecha del registro de combustible:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control read-only" readonly required>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label">Seleccionar Vehículo:</label>
+                <label class="form-label">Seleccionar vehículo:</label>
                 <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
                     <option value="">Seleccione un vehículo</option>
                     @foreach($vehiculos as $vehiculo)
@@ -118,92 +125,93 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Equipo:</label>
-                <input type="text" id="equipo" name="equipo" class="form-control" readonly>
+                <input type="text" id="equipo" name="equipo" class="form-control read-only" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" readonly>
+                <input type="text" id="placa" name="placa" class="form-control read-only" readonly>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" readonly>
+                <input type="text" id="marca" name="marca" class="form-control read-only" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Asignado:</label>
-                <input type="text" id="asignado" name="asignado" class="form-control" readonly>
+                <input type="text" id="asignado" name="asignado" class="form-control read-only" readonly>
             </div>
         </div>
+
         <div class="row">
-    <div class="col-md-6 mb-3">
-        <label class="form-label">Seleccionar registro de combustible:</label>
-        <select id="combustibleSelect" name="id_registro_combustible" class="form-control" required>
-            <option value="">Seleccione un registro de combustible</option>
-            @if(isset($combustibles) && $combustibles->count() > 0)
-                @foreach($combustibles as $combustible)
-                    <option value="{{ $combustible->id }}" 
-                        data-fecha="{{ $combustible->fecha }}" 
-                        data-numfac="{{ $combustible->num_factura }}" 
-                        data-precio="{{ $combustible->precio }}"
-                        data-consumo="{{ $combustible->entradas > 0 ? $combustible->entradas : $combustible->salidas }}">
-                        {{ $combustible->num_factura }}
-                    </option>
-                @endforeach
-            @endif
-        </select>
-    </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Seleccionar registro de combustible:</label>
+                <select id="combustibleSelect" name="id_registro_combustible" class="form-control" required>
+                    <option value="">Seleccione un registro de combustible</option>
+                    @if(isset($combustibles) && $combustibles->count() > 0)
+                        @foreach($combustibles as $combustible)
+                            <option value="{{ $combustible->id }}" 
+                                data-fecha="{{ $combustible->fecha }}" 
+                                data-numfac="{{ $combustible->num_factura }}" 
+                                data-precio="{{ $combustible->precio }}"
+                                data-consumo="{{ $combustible->entradas > 0 ? $combustible->entradas : $combustible->salidas }}">
+                                {{ $combustible->num_factura }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
 
-    <div class="col-md-6 mb-3">
-            <label class="form-label">N° de Factura:</label>
-            <input type="number" id="numfac" name="numfac" class="form-control" readonly>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Consumo:</label>
-            <input type="number" id="consumo" name="consumo" class="form-control" readonly step="0.01">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">N° de Factura:</label>
+                <input type="number" id="numfac" name="numfac" class="form-control read-only" readonly>
+            </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Precio:</label>
-            <input type="number" id="precio" name="precio" class="form-control" step="0.01" readonly>
-        </div>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Consumo:</label>
+                <input type="number" id="consumo" name="consumo" class="form-control read-only" readonly step="0.01">
+            </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label class="form-label">Total:</label>
-            <input type="number" id="total" name="total" class="form-control" step="0.01" required>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Precio:</label>
+                <input type="number" id="precio" name="precio" class="form-control read-only" readonly step="0.01">
+            </div>
         </div>
 
-        <div class="col-md-6 mb-3">
-            <label for="empresa">Empresa:</label>
-            <select id="empresa" name="empresa" class="form-control">
-                <option value="">Seleccione una opción</option>
-                <option value="Taosa">TAOSA</option>
-                <option value="Clasificadora">Clasificadora</option>
-                <option value="Francisco Gusman">Francisco Gusman</option>
-            </select>
-        </div>
-    </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Total:</label>
+                <input type="number" id="total" name="total" class="form-control read-only" readonly step="0.01">
+            </div>
 
-    <div class="row">
-        <div class="col-md-6 mb-3">
-            <label for="cog">Tipo:</label>
-            <select id="cog" name="cog" class="form-control">
-                <option value="">Seleccione una opción</option>
-                <option value="costo">Costo</option>
-                <option value="gasto">Gasto</option>
-            </select>
+            <div class="col-md-6 mb-3">
+                <label for="empresa">Empresa:</label>
+                <select id="empresa" name="empresa" class="form-control">
+                    <option value="">Seleccione una opción</option>
+                    <option value="Taosa">TAOSA</option>
+                    <option value="Clasificadora">Clasificadora</option>
+                    <option value="Francisco Gusman">Francisco Gusman</option>
+                </select>
+            </div>
         </div>
-    </div>
 
-            <button type="submit" class="btn btn-custom">Guardar registro</button>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="cog">Tipo:</label>
+                <select id="cog" name="cog" class="form-control">
+                    <option value="">Seleccione una opción</option>
+                    <option value="costo">Costo</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-custom w-100">Guardar registro</button>
     </form>
 </div>
 
