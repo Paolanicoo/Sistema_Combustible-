@@ -1,4 +1,4 @@
-@extends('Layouts.LayoutPrincipal')
+@extends('Layouts.app')
 
 @section('titulo','Editar Importe')
 

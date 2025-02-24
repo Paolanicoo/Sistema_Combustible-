@@ -6,12 +6,18 @@ use Illuminate\Http\Request;
 use App\Models\ResumenImporte;
 use App\Models\RegistroCombustible;
 use App\Models\RegistroVehicular;
+use Illuminate\Support\Facades\Auth;
 
 class ResumenImporteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
+    }
     
     public function index(Request $request)
 {
+    
     $registroimporte = ResumenImporte::paginate(10);
     $vehiculos = RegistroVehicular::all();
     $combustibles = RegistroCombustible::all();

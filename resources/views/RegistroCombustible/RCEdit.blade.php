@@ -1,5 +1,5 @@
 
-@extends('Layouts.LayoutPrincipal')
+@extends('Layouts.app')
 
 @section('titulo','Editar Registro de Combustible')
 
