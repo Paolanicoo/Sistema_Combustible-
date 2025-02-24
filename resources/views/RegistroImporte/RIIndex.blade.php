@@ -5,7 +5,7 @@
 @section('contenido')
 
 <div class="container mt-5">
-    <h2 class="mb-4">Resumen Importe</h2>
+    <h2 class="mb-4">Resumen importe</h2>
 
     <!-- Botón Agregar Nuevo -->
     <div class="d-flex justify-content-end mt-3">
