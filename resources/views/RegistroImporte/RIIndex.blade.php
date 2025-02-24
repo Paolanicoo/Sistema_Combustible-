@@ -6,11 +6,55 @@
 
     <div class="container mt-5">
         <h2 class="mb-4">Resumen Importe</h2>
-        <a href="{{route('registroimporte.create')}}" class="btn btn-success">Agregar Nuevo</a>
+
+        <!-- Botón Agregar Nuevo -->
+        <div class="mb-3">
+            <a href="{{route('registroimporte.create')}}" class="btn btn-success btn-lg">
+                <i class="fas fa-plus"></i> Agregar Nuevo
+            </a>
+        </div>
+
+        <!-- Formulario de filtros -->
+        <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label for="equipo">Equipo:</label>
+                    <input type="text" name="equipo" id="equipo" class="form-control" value="{{ request('equipo') }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="asignado">Asignado:</label>
+                    <input type="text" name="asignado" id="asignado" class="form-control" value="{{ request('asignado') }}">
+                </div>
+
+                <div class="col-md-3">
+                    <label for="mes">Mes:</label>
+                    <select name="mes" id="mes" class="form-control">
+                        <option value="">Todos</option>
+                        @foreach(['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $key => $value)
+                            <option value="{{ $key + 1 }}" {{ request('mes') == $key + 1 ? 'selected' : '' }}>
+                                {{ ucfirst($value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary w-50">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                    <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary w-50">
+                        <i class="fas fa-eraser"></i> Limpiar
+                    </a>
+                </div>
+            </div>
+        </form>
+
+        <!-- Tabla -->
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
                 <tr>
-                <th>Mes</th>
+                    <th>Mes</th>
                     <th>Fecha</th>
                     <th>Equipo</th>
                     <th>Marca</th>
@@ -23,86 +67,51 @@
                     <th>Empresa</th>
                     <th>Tipo</th>
                     <th>Acciones</th>
-                    
                 </tr>
             </thead>
-            <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
-    <div class="row">
-        <!-- Filtro por equipo -->
-        <div class="col-md-3">
-            <label for="equipo">Equipo:</label>
-            <input type="text" name="equipo" id="equipo" class="form-control" value="{{ request('equipo') }}">
-        </div>
-
-        <!-- Filtro por asignado -->
-        <div class="col-md-3">
-            <label for="asignado">Asignado:</label>
-            <input type="text" name="asignado" id="asignado" class="form-control" value="{{ request('asignado') }}">
-        </div>
-
-        <!-- Filtro por mes -->
-        <div class="col-md-3">
-            <label for="mes">Mes:</label>
-            <select name="mes" id="mes" class="form-control">
-                <option value="">Todos</option>
-                @foreach(['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $key => $value)
-                    <option value="{{ $key + 1 }}" {{ request('mes') == $key + 1 ? 'selected' : '' }}>{{ ucfirst($value) }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <!-- Botón de búsqueda -->
-        <div class="col-md-3 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary">Buscar</button>
-            <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary ms-2">Limpiar</a>
-        </div>
-    </div>
-</form>
-
             <tbody>
                 @forelse($registroimporte as $registro)
                 <tr>
-                <td>{{ \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F') }}</td>
-                <td>{{ $registro->combustible->fecha ?? 'N/A' }}</td>
-                <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
-                 <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
-                <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
-                <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
-                <td>{{ $registro->combustible ? $registro->combustible->num_factura: 'N/A'}}</td>
-                <td>{{ $registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas ?? 'N/A' }}</td>
-                <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
-                <td>{{ ($registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas) * $registro->combustible->precio ?? 'N/A' }}</td>
-                <td>{{$registro->empresa}}</td>
-                <td>{{$registro->cog}}</td>
-                <td>
-                        <div class="action-buttons">
-                        <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
-
-                        <form action="{{ route('registroimporte.destroy', $registro->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este registro?')">Eliminar</button>
-                    </form>
+                    <td>{{ \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F') }}</td>
+                    <td>{{ $registro->combustible->fecha ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
+                    <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
+                    <td>{{ $registro->combustible ? $registro->combustible->num_factura: 'N/A'}}</td>
+                    <td>{{ $registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas ?? 'N/A' }}</td>
+                    <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
+                    <td>{{ ($registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas) * $registro->combustible->precio ?? 'N/A' }}</td>
+                    <td>{{$registro->empresa}}</td>
+                    <td>{{$registro->cog}}</td>
+                    <td>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('registroimporte.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </form>
                         </div>
                     </td>
-                    
                 </tr>
-
-               
-
                 @empty
                 <tr>
-                    <td colspan="13">No hay importes</td>
+                    <td colspan="13" class="text-center">No hay importes</td>
                 </tr>
-                
                 @endforelse
-
             </tbody>
         </table>
         
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center">
+            {{ $registroimporte->render('pagination::bootstrap-4') }}
+        </div>
     </div>
 
-
-{{ $registroimporte->render('pagination::bootstrap-4') }}
-
-@endsection()
+@endsection

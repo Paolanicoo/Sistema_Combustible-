@@ -250,4 +250,11 @@
 
 </script>
 
+<div class="mb-3 d-flex justify-content-end">
+    <a href="javascript:window.history.back();" class="btn btn-secondary px-4 w-25 d-flex align-items-center justify-content-center">
+        <img src="{{ asset('atras.png') }}" alt="" width="30" height="30" class="me-2">
+        <i class="fas fa-arrow-left me-2"></i> Regresar
+    </a>
+</div>
+
 @endsection
