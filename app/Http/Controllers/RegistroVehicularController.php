@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RegistroVehicular; 
+use Illuminate\Support\Facades\Auth;
 
 class RegistroVehicularController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
+    }
     
     public function index()
 {
+    
     $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
     return view('RegistroVehicular.RVIndex', compact('registros'));
 
-    dd(Auth::check()); 
+
 }
 
   

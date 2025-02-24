@@ -8,11 +8,13 @@
     <!-- Agregar Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    @vite(['resources/css/app.css'])
+   
 </head>
 <body>
 
     <!-- Navbar -->
+    @unless (request()->routeIs('register'))
+    @unless (request()->routeIs('login'))
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <img src="{{ asset('img/plasencia.jpg') }}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top me-3">
@@ -24,7 +26,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
+                    <li class="nav-item"> 
                         <a class="nav-link" href="{{ route('registrovehicular.index') }}">Registro Vehicular</a>
                     </li>
                     <li class="nav-item">
@@ -36,7 +38,11 @@
                 </ul>
             </div>
         </div>
+                     
+
     </nav>
+    @endunless
+    @endunless
 
     <!-- Contenido dinámico -->
     <div class="container mt-4">
@@ -44,7 +50,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    @vite(['resources/js/app.js'])
+    
 </body>
 </html>
 

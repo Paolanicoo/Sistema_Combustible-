@@ -10,7 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+   
+
+
     use HasFactory;
+    protected $table = 'users';
 
     protected $fillable = ['name', 'email', 'password'];
 
@@ -19,4 +23,5 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+    
 }
