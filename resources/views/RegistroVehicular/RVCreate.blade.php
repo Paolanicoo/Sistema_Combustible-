@@ -200,21 +200,37 @@
     </div>
 
     <!-- Formateo de la placa -->
-    <script>
-        function formatPlaca(input) {
-            let value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); // Solo letras y números
+<script>
+    function formatPlaca(input) {
+    let value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); // Solo letras y números
 
-            if (value.length > 3) {
-                value = value.substring(0, 3) + " " + value.substring(3);
-            }
+    // Evitar que inicie con números
+    if (value.length > 0 && !isNaN(value[0])) {
+        value = value.substring(1);  // Elimina el primer número si empieza con uno
+    }
 
-            if (value.length > 8) {
-                value = value.substring(0, 8);
-            }
+    // Limita las letras a solo las primeras 3
+    if (value.length > 3) {
+        value = value.slice(0, 3) + " " + value.slice(3); // Añade espacio después de las primeras 3 letras
+    }
 
-            input.value = value;
-        }
-    </script>
+    // Asegurarse que después del espacio solo haya números
+    if (value.indexOf(" ") !== -1) {
+        let parts = value.split(" "); // Separa la parte antes y después del espacio
+        parts[0] = parts[0].slice(0, 3).replace(/[^A-Z]/g, ""); // Limita la parte antes del espacio a solo 3 letras
+        parts[1] = parts[1].replace(/[^0-9]/g, ""); // La parte después del espacio solo números
+        value = parts.join(" "); // Vuelve a juntar las partes
+    }
+
+    // Limita la longitud total a 8 caracteres
+    if (value.length > 8) {
+        value = value.slice(0, 8);
+    }
+
+    input.value = value.trim(); // Elimina espacios extra al final
+}
+
+</script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

@@ -74,6 +74,12 @@
         cursor: pointer;
     }
 
+    .btn-submit:hover {
+        background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
+        transition: 0.3s ease-in-out;
+        color: black; /* Cambia el color del texto a negro */
+    }
+
     .text-danger {
         color: red;
         font-size: 14px;
@@ -93,6 +99,13 @@
         font-size: 24px;
         font-weight: bold;
     }
+
+    input[readonly], select[disabled] {
+        background-color: #f0f0f0; /* Fondo gris claro */
+        cursor: not-allowed; /* Cursor de no permitido */
+        border: 1px solid #dcdcdc; /* Borde más suave */
+        color: #000; /* Color de texto normal */
+    }
 </style>
 
 <div class="form-container">
@@ -104,7 +117,7 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="fecha" class="form-label">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" required>
+                <input type="date" id="fecha" name="fecha" class="form-control" required readonly>
                 @error('fecha')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -197,31 +210,43 @@
 
 
 <script>
-document.getElementById('vehiculoSelect').addEventListener('change', function() {
-    let selectedOption = this.options[this.selectedIndex];
-    
-    document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo');
-    document.getElementById('placa').value = selectedOption.getAttribute('data-placa');
-    document.getElementById('marca').value = selectedOption.getAttribute('data-marca');
-    document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado');
-});
 
-function validarCampos() {
-    let entradas = document.getElementById('entradas').value;
-    let salidas = document.getElementById('salidas').value;
+    window.onload = function() {
+        var today = new Date(); // Obtiene la fecha actual
+        var dd = String(today.getDate()).padStart(2, '0'); // Día
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // Mes (enero es 0)
+        var yyyy = today.getFullYear(); // Año
 
-    // Limpiar mensajes de error
-    document.getElementById('errorEntradas').innerText = "";
-    document.getElementById('errorSalidas').innerText = "";
+        today = yyyy + '-' + mm + '-' + dd; // Formato yyyy-mm-dd
 
-    // Hacer opcional la entrada o salida, pero no ambas vacías
-    if (!entrada && !salida) {
-        document.getElementById('errorEntradas').innerText = "Debe ingresar entrada o salida.";
-        document.getElementById('errorSalidas').innerText = "Debe ingresar entrada o salida.";
-    } else {
-        calcularTotal();
+        document.getElementById('fecha').value = today; // Asigna la fecha actual al campo
     }
-}
+
+    document.getElementById('vehiculoSelect').addEventListener('change', function() {
+        let selectedOption = this.options[this.selectedIndex];
+        
+        document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo');
+        document.getElementById('placa').value = selectedOption.getAttribute('data-placa');
+        document.getElementById('marca').value = selectedOption.getAttribute('data-marca');
+        document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado');
+    });
+
+    function validarCampos() {
+        let entradas = document.getElementById('entradas').value;
+        let salidas = document.getElementById('salidas').value;
+
+        // Limpiar mensajes de error
+        document.getElementById('errorEntradas').innerText = "";
+        document.getElementById('errorSalidas').innerText = "";
+
+        // Hacer opcional la entrada o salida, pero no ambas vacías
+        if (!entrada && !salida) {
+            document.getElementById('errorEntradas').innerText = "Debe ingresar entrada o salida.";
+            document.getElementById('errorSalidas').innerText = "Debe ingresar entrada o salida.";
+        } else {
+            calcularTotal();
+        }
+    }
 
 </script>
 

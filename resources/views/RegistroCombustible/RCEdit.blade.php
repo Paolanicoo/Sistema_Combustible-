@@ -99,6 +99,13 @@
         font-size: 24px;
         font-weight: bold;
     }
+
+    input[readonly], select[disabled] {
+    background-color: #f0f0f0; /* Fondo gris claro */
+    cursor: not-allowed; /* Cursor de no permitido */
+    border: 1px solid #dcdcdc; /* Borde más suave */
+    color: #000; /* Color de texto normal */
+    }
     
 
 </style>
@@ -116,6 +123,7 @@
                 <label for="fecha" class="form-label">Fecha:</label>
                 <input type="date" id="fecha" name="fecha" class="form-control" value="{{ old('fecha', $registro->fecha) }}" required>
             </div>
+            
 
             <div class="col-md-6 form-group">
                 <label for="vehiculo" class="form-label">Seleccionar vehículo:</label>
