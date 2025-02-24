@@ -7,12 +7,14 @@
     <div class="container mt-5">
         <h2 class="mb-4">Resumen Importe</h2>
 
-        <!-- Botón Agregar Nuevo -->
-        <div class="mb-3">
-            <a href="{{route('registroimporte.create')}}" class="btn btn-success btn-lg">
-                <i class="fas fa-plus"></i> Agregar Nuevo
-            </a>
-        </div>
+       <!-- Botón Agregar Nuevo alineado a la derecha y más pequeño -->
+       <div class=" d-flex align-items-end justify-content-end gap-2 text-end">
+    <a href="{{ route('registroimporte.create') }}" class="btn btn-success btn-sm w-25">
+        <i class="fas fa-plus"></i> Agregar Nuevo
+    </a>
+</div>
+
+
 
         <!-- Formulario de filtros -->
         <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
