@@ -4,53 +4,50 @@
 
 @section('contenido')
 
-    <div class="container mt-5">
-        <h2 class="mb-4">Resumen Importe</h2>
+<div class="container mt-5">
+    <h2 class="mb-4">Resumen Importe</h2>
 
-       <!-- Botón Agregar Nuevo alineado a la derecha y más pequeño -->
-       <div class=" d-flex align-items-end justify-content-end gap-2 text-end">
-    <a href="{{ route('registroimporte.create') }}" class="btn btn-success btn-sm w-25">
-        <i class="fas fa-plus"></i> Agregar Nuevo
-    </a>
-</div>
+    <!-- Botón Agregar Nuevo -->
+    <div class="d-flex justify-content-end mt-3">
+        <a href="{{ route('registroimporte.create') }}" class="btn btn-success">Agregar nuevo</a>
+    </div>
 
-
-
-        <!-- Formulario de filtros -->
-        <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label for="equipo">Equipo:</label>
-                    <input type="text" name="equipo" id="equipo" class="form-control" value="{{ request('equipo') }}">
-                </div>
-
-                <div class="col-md-3">
-                    <label for="asignado">Asignado:</label>
-                    <input type="text" name="asignado" id="asignado" class="form-control" value="{{ request('asignado') }}">
-                </div>
-
-                <div class="col-md-3">
-                    <label for="mes">Mes:</label>
-                    <select name="mes" id="mes" class="form-control">
-                        <option value="">Todos</option>
-                        @foreach(['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $key => $value)
-                            <option value="{{ $key + 1 }}" {{ request('mes') == $key + 1 ? 'selected' : '' }}>
-                                {{ ucfirst($value) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-3 d-flex align-items-end gap-2">
-                    <button type="submit" class="btn btn-primary w-50">
-                        <i class="fas fa-search"></i> Buscar
-                    </button>
-                    <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary w-50">
-                        <i class="fas fa-eraser"></i> Limpiar
-                    </a>
-                </div>
+    <!-- Formulario de filtros -->
+    <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label for="equipo">Equipo:</label>
+                <input type="text" name="equipo" id="equipo" class="form-control" value="{{ request('equipo') }}">
             </div>
-        </form>
+
+            <div class="col-md-3">
+                <label for="asignado">Asignado:</label>
+                <input type="text" name="asignado" id="asignado" class="form-control" value="{{ request('asignado') }}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="mes">Mes:</label>
+                <select name="mes" id="mes" class="form-control">
+                    <option value="">Todos</option>
+                    @foreach(['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $key => $value)
+                        <option value="{{ $key + 1 }}" {{ request('mes') == $key + 1 ? 'selected' : '' }}>
+                            {{ ucfirst($value) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary w-50">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+                <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary w-50">
+                    <i class="fas fa-eraser"></i> Limpiar
+                </a>
+            </div>
+        </div>
+    </form>
+</div> <!-- Cierre del contenedor -->
 
         <!-- Tabla -->
         <table class="table table-striped table-bordered">
@@ -62,7 +59,7 @@
                     <th>Marca</th>
                     <th>Placa</th>
                     <th>Asignado</th>
-                    <th>N de factura</th>
+                    <th>N° de factura</th>
                     <th>Consumo</th>  
                     <th>Precio</th>
                     <th>Total</th>
