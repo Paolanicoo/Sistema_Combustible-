@@ -32,12 +32,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/registroimporte/{id}', [ResumenImporteController::class, 'destroy'])->name('registroimporte.destroy');
 
 
-    
-
-        Route::get('/vehiculo', [RegistroVehicularController::class, 'index'])->name('registrovehicular.index');
-        Route::get('/combustible', [RegistroCombustibleController::class, 'index'])->name('registrocombustible.index');
-        Route::get('/importe', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
+    Route::get('/vehiculo', [RegistroVehicularController::class, 'index'])->name('registrovehicular.index');
+    Route::get('/combustible', [RegistroCombustibleController::class, 'index'])->name('registrocombustible.index');
+    Route::get('/importe', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
        
+    // RUTAS DE ROL
+    Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
+
 
     // MENÚ
     Route::get('/menu', function () {
