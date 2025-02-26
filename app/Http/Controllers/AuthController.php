@@ -46,11 +46,13 @@ class AuthController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'password' => 'required|confirmed|min:8',
+            'role' => 'required|in:admin,usuario,visualizador',
         ]);
 
         User::create([
             'nombre' => $request->nombre,
             'password' => bcrypt($request->password),
+            'role' => $request->role,
         ]);
 
         return redirect()->route('login')->with('success', 'Registro exitoso. Inicia sesión.');

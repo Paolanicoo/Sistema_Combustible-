@@ -67,7 +67,10 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><b>Registro vehicular</b></h2>
         <!-- Botón para nuevo registro alineado a la derecha -->
+         <!-- Solo mostrar el botón si el usuario NO es visualizador -->
+        @if(Auth::user()->role !== 'visualizador')
         <a href="{{route('registrovehicular.create')}}" class="btn btn-success">Agregar nuevo</a>
+        @endif
     </div>
         <div class="table-container">
             <table class="table table-striped table-bordered fixed-table">
@@ -97,14 +100,20 @@
                         <td>{{$registro->asignado}}</td>
                         <td class="observacion-cell">{{$registro->observacion}}</td>
                         <td>
-                            <div class="action-buttons">
-                            <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning">Editar</a>
-                            <form action="{{ route('registrovehicular.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
+                        @if(Auth::user()->role !== 'visualizador')
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('registrovehicular.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                         </form>
                             </div>
+                            @endif
                         </td>
                         
                     </tr>

@@ -95,7 +95,10 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2><b>Registro combustible</b></h2>
+        <!-- Solo mostrar el botón si el usuario NO es visualizador -->
+        @if(Auth::user()->role !== 'visualizador')
         <a href="{{ route('registrocombustible.create') }}" class="btn btn-success">Agregar nuevo</a>
+        @endif
     </div>
     <div class="table-container">
         <table class="table table-striped table-bordered fixed-table">
@@ -124,17 +127,22 @@
                     <td>{{ $registro->entradas }}</td>
                     <td>{{ $registro->salidas }}</td>
                     <td>
-                        <div class="action-buttons">
-                        <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning">Editar</a>
-
-                        <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
+                    @if(Auth::user()->role !== 'visualizador')
+                    <div class="d-flex gap-2">
+                            <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                             </form>
                             
                         
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @empty

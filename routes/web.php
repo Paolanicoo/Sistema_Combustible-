@@ -62,3 +62,8 @@ Route::get('/reportes', function () {
 })->name('RIndex');
 
 Route::get('/reportes/consumo', [ReporteConsumoController::class, 'reportesConsumo'])->name('reportes.consumo');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
