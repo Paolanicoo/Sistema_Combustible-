@@ -4,85 +4,210 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Combustible</title>
-    
-    <!-- Agregar Bootstrap -->
+
+    <!-- Bootstrap y FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+
+body {
+         background: url("{{ asset('img/s.a.jpeg') }}") no-repeat center center fixed;
+            background-size: contain;
+        }
+
+        /* Oculta el fondo permanentemente */
+.no-background {
+    background: none !important;
+}
+        /* Estilo del sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(52, 58, 64, 0.9);
+            padding: 15px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            display: block;
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link:hover {
+            background: #28a745;
+            color: white;
+        }
+
+        .sidebar .nav-link.active {
+            background: #1c7430;
+            font-weight: 900;
+        }
+
+        /* Contenido principal */
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.7) !important;
+        }
+
+        .navbar .navbar-brand {
+            color: white !important;
+        }
+
+        /* Botón de ocultar */
+        #toggleSidebar {
+            position: fixed;
+            top: 15px;
+            left: 260px;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            border: none;
+            padding: 10px 15px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: left 0.3s;
+        }
+
+        /* Estilos cuando el menú está oculto */
+        .sidebar.hidden {
+            left: -250px;
+        }
+
+        .content.full-width {
+            margin-left: 0;
+        }
+
+        #toggleSidebar.hidden {
+            left: 10px;
+        }
+
+        /* Ajuste para móviles */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -250px;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            #toggleSidebar {
+                left: 10px;
+            }
+        }
+    </style>
 </head>
-<style>
-    .title-custom {
-        font-family: 'Times New Roman', sans-serif;
-        font-size: 26px !important; /* Aumenté el tamaño */
-        font-weight: bold !important;
-        color: white !important;
-    }
-
-    .navbar-nav .nav-link {
-        font-size: 17px !important; /* Aumenté el tamaño de los botones */
-        font-weight: bold !important;
-    }
-
-    .navbar-nav .nav-link.active {
-        font-weight: 900 !important;
-        color: white !important;
-        background-color: #0056b3 !important;
-        border-radius: 5px !important;
-        padding: 12px 20px !important;
-    }
-</style>
 <body>
 
-    <!-- Navbar -->
-    @unless (request()->routeIs('register'))
-    @unless (request()->routeIs('login'))
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <img src="{{ asset('img/plasencia.jpg') }}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top me-3">
-        
-        <a class="navbar-brand title-custom" href="#">Gestión de combustible grupo Plasencia</a>
+    <!-- Botón para mostrar/ocultar el menú -->
+    <button id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+    </button>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4 class="text-center">Gestión de Combustible</h4>
+        <hr>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item mx-2">
-                    <a class="nav-link {{ request()->routeIs('registrovehicular.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registrovehicular.index') }}">
-                        <i class="fa fa-money-bill"></i> Registro vehicular
-                    </a>
-                </li>
-                
-                <li class="nav-item mx-2">
-                    <a class="nav-link {{ request()->routeIs('registrocombustible.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registrocombustible.index') }}">
-                        <i class="fa fa-money-bill"></i> Registro combustible
-                    </a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link {{ request()->routeIs('registroimporte.index') ? 'text-white fw-bold' : '' }}" 
-                        href="{{ route('registroimporte.index') }}">
-                        <i class="fa fa-money-bill"></i> Importe
-                    </a>
-                </li>
-            </ul>
+        <a href="{{ route('registrovehicular.index') }}" class="nav-link">
+            <i class="fas fa-car"></i> Registro Vehicular
+        </a>
+        <a href="{{ route('registrocombustible.index') }}" class="nav-link">
+            <i class="fas fa-gas-pump"></i> Registro Combustible
+        </a>
+        <a href="{{ route('registroimporte.index') }}" class="nav-link">
+            <i class="fas fa-dollar-sign"></i> Importe
+        </a>
+        <a href="{{ route('RIndex') }}" class="nav-link">
+            <i class="fas fa-chart-bar"></i> Reportes
+        </a>
+
+        @auth
+        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+            @csrf
+            <button type="submit" class="btn btn-danger w-100">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </form>
+        @endauth
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="container mt-4">
+            @yield('contenido')
         </div>
     </div>
-                     
 
-    </nav>
-    @endunless
-    @endunless
-
-    <!-- Contenido dinámico -->
-    <div class="container mt-4">
-        @yield('contenido')
-    </div>
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const content = document.querySelector('.content');
+            const links = document.querySelectorAll('.nav-link');
+
+
+            // Verificar si el fondo debe estar oculto
+        if (localStorage.getItem("hideBackground") === "true") {
+            document.body.classList.add("no-background");
+        }
+
+        // Función para ocultar el fondo y guardar estado en localStorage
+        function removeBackground() {
+            document.body.classList.add("no-background");
+            localStorage.setItem("hideBackground", "true");
+        }
+
+        // Agregar evento a los enlaces del menú
+        links.forEach(link => {
+            link.addEventListener("click", removeBackground);
+        });
+
+            // Mostrar u ocultar el menú lateral
+            toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('hidden');
+                content.classList.toggle('full-width');
+                toggleBtn.classList.toggle('hidden');
+            });
+
+            // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
+            links.forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.add('hidden');
+                        content.classList.add('full-width');
+                        toggleBtn.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Mostrar el botón cuando el menú esté oculto en pantallas pequeñas
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 768) {
+                    sidebar.classList.remove('hidden');
+                    content.classList.remove('full-width');
+                    toggleBtn.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
-

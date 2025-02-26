@@ -84,22 +84,21 @@
         @endif
 
         <form method="POST" action="{{ route('login') }}">
-            @csrf
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Correo Electrónico</label>
-                <input type="email" name="email" class="form-control" required>
-            </div>
+    @csrf
 
-            <div class="mb-3">
-                <label class="form-label fw-semibold">Contraseña</label>
-                <input type="password" name="password" class="form-control" required>
-            </div>
+    <div class="mb-3">
+        <label for="nombre" class="form-label fw-semibold">Nombre de Usuario</label>
+        <input type="text" id="nombre" name="nombre" class="form-control" required>
+    </div>
 
-            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
-        </form>
+    <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Contraseña</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+    </div>
 
-    
-        
+    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+</form>
+
 
     </div>
 

@@ -218,5 +218,11 @@
         input.value = value.trim(); // Elimina espacios extra al final
     }
 </script>
+<div class="mb-3 d-flex justify-content-end">
+    <a href="javascript:window.history.back();" class="btn btn-secondary px-4 w-25 d-flex align-items-center justify-content-center">
+
+        <i class="fas fa-arrow-left me-2"></i> Regresar
+    </a>
+</div>
 
 @endsection

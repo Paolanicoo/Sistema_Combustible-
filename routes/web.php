@@ -5,6 +5,7 @@ use App\Http\Controllers\RegistroCombustibleController;
 use App\Http\Controllers\RegistroVehicularController;
 use App\Http\Controllers\ResumenImporteController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReporteConsumoController;
 
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
@@ -56,3 +57,8 @@ Route::post('/register', [AuthController::class, 'register']);
 // Cerrar sesión
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/reportes', function () {
+    return view('reportes.RIndex');
+})->name('RIndex');
+
+Route::get('/reportes/consumo', [ReporteConsumoController::class, 'reportesConsumo'])->name('reportes.consumo');

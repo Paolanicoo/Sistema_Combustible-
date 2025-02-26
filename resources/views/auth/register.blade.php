@@ -67,8 +67,8 @@
             @csrf
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Correo Electrónico</label>
-                <input type="email" name="email" class="form-control" required>
+                <label class="form-label fw-semibold">Nombre de Usuario</label>
+                <input type="nombre" name="nombre" class="form-control" required>
             </div>
 
             <div class="mb-3">
