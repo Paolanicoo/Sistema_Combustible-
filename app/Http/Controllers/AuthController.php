@@ -14,13 +14,15 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
+
 {
-    $credentials = $request->validate([
-        'email' => 'required|email',
+
+     $request->validate([
+        'nombre' => 'required|string',
         'password' => 'required'
     ]);
 
-    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+    if (Auth::attempt(['nombre' => $request->nombre, 'password' => $request->password])) {
 
         $request->session()->regenerate();
  
@@ -29,7 +31,7 @@ class AuthController extends Controller
     }
 
     return back()->withErrors([
-        'email' => 'Las credenciales no coinciden con nuestros registros.',
+        'nombre' => 'Las credenciales no coinciden con nuestros registros.',
     ]);
 }
 
@@ -42,13 +44,15 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|unique:users',
+            'nombre' => 'required|string|max:255',
             'password' => 'required|confirmed|min:8',
+            'role' => 'required|in:admin,usuario,visualizador',
         ]);
 
         User::create([
-            'email' => $request->email,
+            'nombre' => $request->nombre,
             'password' => bcrypt($request->password),
+            'role' => $request->role,
         ]);
 
         return redirect()->route('login')->with('success', 'Registro exitoso. Inicia sesión.');

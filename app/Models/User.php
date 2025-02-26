@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasFactory;
     protected $table = 'users';
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['nombre', 'password'];
 
     protected $hidden = ['password'];
 
@@ -24,4 +24,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     
+
+
+    public function isAdmin()
+{
+    return $this->role === 'admin';
+}
+
+public function isUsuario()
+{
+    return $this->role === 'usuario';
+}
+
+public function isVisualizador()
+{
+    return $this->role === 'visualizador';
+}
+
 }

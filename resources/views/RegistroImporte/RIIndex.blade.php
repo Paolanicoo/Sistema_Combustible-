@@ -6,10 +6,12 @@
 
 <div class="container mt-5">
     <h2 class="mb-4">Resumen importe</h2>
+    @if(Auth::user()->role !== 'visualizador')
 
     <!-- Botón Agregar Nuevo -->
     <div class="d-flex justify-content-end mt-3">
         <a href="{{ route('registroimporte.create') }}" class="btn btn-success">Agregar nuevo</a>
+        @endif
     </div>
 
     <!-- Formulario de filtros -->
@@ -84,6 +86,7 @@
                     <td>{{$registro->empresa}}</td>
                     <td>{{$registro->cog}}</td>
                     <td>
+                    @if(Auth::user()->role !== 'visualizador')
                         <div class="d-flex gap-2">
                             <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm">
                                 <i class="fas fa-edit"></i> Editar
@@ -96,6 +99,7 @@
                                 </button>
                             </form>
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @empty
