@@ -17,8 +17,8 @@ class RegistroRolController extends Controller
     {    
         if ($request->ajax()) {
             // Aquí puedes recuperar los roles desde la base de datos
-            $rols = RegistroRol::select('id', 'rol')->get();
-            return datatables()->of($rols)->toJson();
+            $roles = RegistroRol::select('id', 'tipo_rol')->get();
+            return datatables()->of($roles)->toJson();
          }
 
             return view('RegistroRol.RRCreate'); // En caso de no ser una solicitud AJAX
