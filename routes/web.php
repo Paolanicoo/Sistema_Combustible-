@@ -6,6 +6,7 @@ use App\Http\Controllers\RegistroVehicularController;
 use App\Http\Controllers\ResumenImporteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteConsumoController;
+use App\Http\Controllers\RegistroRolController;
 
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
@@ -41,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
 
 
+
+   
+
+    
     // MENÚ
     Route::get('/menu', function () {
         return view('menu');
