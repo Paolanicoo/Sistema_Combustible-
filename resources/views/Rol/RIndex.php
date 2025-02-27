@@ -33,7 +33,7 @@
             $('#roles-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('registrorol.table') }}',
+                ajax: '{{ route('rol.table') }}',
 
                 columns: [
                     {data: 'id', name: 'id'},

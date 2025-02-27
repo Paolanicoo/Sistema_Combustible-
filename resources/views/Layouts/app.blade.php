@@ -137,6 +137,11 @@ body {
             <i class="fas fa-chart-bar"></i> Reportes
         </a>
 
+        </a>
+        <a href="{{ route('registrorol.table') }}" class="nav-link">
+            <i class="fas fa-users"></i> Gestor de roles
+        </a>
+
         @auth
         <form method="POST" action="{{ route('logout') }}" class="mt-3">
             @csrf
