@@ -9,32 +9,31 @@
         <label for="tipoReporte">Seleccionar Reporte:</label>
         <select id="tipoReporte" class="form-control">
             <option value="">-- Selecciona --</option>
+            <option value="anio">Comparativo Anual</option>
             <option value="mes">Consumo por Mes</option>
-            <option value="anio">Consumo por Año</option>
             <option value="equipo">Consumo por Equipo</option>
             <option value="asignado">Consumo por Asignado</option>
         </select>
     </div>
 
-    <!-- Contenedores para los gráficos -->
-    <canvas id="graficaConsumoMes" class="d-none"></canvas>
+    <!-- Contenedor para la gráfica comparativa anual -->
     <canvas id="graficaConsumoAnio" class="d-none"></canvas>
-    <canvas id="graficaConsumoEquipo" class="d-none"></canvas>
-    <canvas id="graficaConsumoAsignado" class="d-none"></canvas>
+
+    <!-- Contenedores para las tablas -->
+    <div id="tablaConsumoMes" class="d-none"></div>
+    <div id="tablaConsumoEquipo" class="d-none"></div>
+    <div id="tablaConsumoAsignado" class="d-none"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let chart = null; // Variable para guardar el gráfico actual
-        
+        let urlReporte = "{{ route('reportes.consumo') }}";
+        let chart = null;
+
         function crearGrafico(id, tipo, etiquetas, datos, titulo) {
             var ctx = document.getElementById(id).getContext('2d');
-
-            if (chart) {
-                chart.destroy(); // Eliminar gráfico anterior
-            }
-
+            if (chart) chart.destroy();
             chart = new Chart(ctx, {
                 type: tipo,
                 data: {
@@ -46,60 +45,66 @@
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
                     }]
+                    
                 }
             });
         }
 
+            function crearTabla(id, data, columnas) {
+                let tabla = `<table class='table table-bordered'><thead><tr>`;
+                columnas.forEach(col => {
+                    let titulo = col.charAt(0).toUpperCase() + col.slice(1); // Convertir primera letra a mayúscula
+                    tabla += `<th>${titulo}</th>`;
+                });
+                tabla += `</tr></thead><tbody>`;
+                data.forEach(row => {
+                    tabla += `<tr>`;
+                    columnas.forEach(col => tabla += `<td>${row[col]}</td>`);
+                    tabla += `</tr>`;
+                });
+                tabla += `</tbody></table>`;
+                document.getElementById(id).innerHTML = tabla;
+            }
+
         document.getElementById('tipoReporte').addEventListener('change', function () {
             const tipo = this.value;
 
-            // Ocultar todos los gráficos
-            document.querySelectorAll('canvas').forEach(canvas => {
-                canvas.classList.add('d-none');
-            });
+            document.querySelectorAll('canvas, div[id^=tabla]').forEach(el => el.classList.add('d-none'));
 
-            if (tipo === '') return;
+            if (!tipo) return;
 
-            // Realizar la petición AJAX
-            fetch(`/reportes/consumo?tipo=${tipo}`)
+            fetch(`${urlReporte}?tipo=${tipo}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); // Verifica los datos en la consola
-
-                    let etiquetas = [];
-                    let valores = [];
-
-                    if (tipo === 'mes' && data.consumoPorMes.length > 0) {
-                        etiquetas = data.consumoPorMes.map(m => `Mes ${m.mes}`);
-                        valores = data.consumoPorMes.map(m => m.total);
-                        document.getElementById('graficaConsumoMes').classList.remove('d-none');
-                        crearGrafico('graficaConsumoMes', 'bar', etiquetas, valores, 'Consumo por Mes');
-                    }
-
                     if (tipo === 'anio' && data.consumoPorAnio.length > 0) {
-                        etiquetas = data.consumoPorAnio.map(a => a.anio);
-                        valores = data.consumoPorAnio.map(a => a.total);
+                        const etiquetas = data.consumoPorAnio.map(a => a.anio);
+                        const valores = data.consumoPorAnio.map(a => a.total);
                         document.getElementById('graficaConsumoAnio').classList.remove('d-none');
-                        crearGrafico('graficaConsumoAnio', 'line', etiquetas, valores, 'Consumo por Año');
-                    }
+                        crearGrafico('graficaConsumoAnio', 'line', etiquetas, valores, 'Comparativo Anual');
 
-                    if (tipo === 'equipo' && data.consumoPorEquipo.length > 0) {
-                        etiquetas = data.consumoPorEquipo.map(e => e.equipo);
-                        valores = data.consumoPorEquipo.map(e => e.total);
-                        document.getElementById('graficaConsumoEquipo').classList.remove('d-none');
-                        crearGrafico('graficaConsumoEquipo', 'doughnut', etiquetas, valores, 'Consumo por Equipo');
-                    }
+                    } else if (tipo === 'mes' && data.consumoPorMes.length > 0) {
+                const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                
+                // Convertimos el número del mes a nombre antes de crear la tabla
+                let consumoMes = data.consumoPorMes.map(item => ({
+                    mes: meses[item.mes - 1], // Restamos 1 porque los arrays en JS comienzan desde 0
+                    total: item.total
+                }));
 
-                    if (tipo === 'asignado' && data.consumoPorAsignado.length > 0) {
-                        etiquetas = data.consumoPorAsignado.map(a => a.asignado);
-                        valores = data.consumoPorAsignado.map(a => a.total);
-                        document.getElementById('graficaConsumoAsignado').classList.remove('d-none');
-                        crearGrafico('graficaConsumoAsignado', 'pie', etiquetas, valores, 'Consumo por Asignado');
+                document.getElementById('tablaConsumoMes').classList.remove('d-none');
+                crearTabla('tablaConsumoMes', consumoMes, ['mes', 'total']);
+            
+                    } else if (tipo === 'equipo' && data.consumoPorEquipo.length > 0) {
+                        document.getElementById('tablaConsumoEquipo').classList.remove('d-none');
+                        crearTabla('tablaConsumoEquipo', data.consumoPorEquipo, ['equipo', 'total']);
+
+                    } else if (tipo === 'asignado' && data.consumoPorAsignado.length > 0) {
+                        document.getElementById('tablaConsumoAsignado').classList.remove('d-none');
+                        crearTabla('tablaConsumoAsignado', data.consumoPorAsignado, ['asignado', 'total']);
                     }
                 })
                 .catch(error => console.error('Error al cargar los datos:', error));
         });
     });
 </script>
-
 @endsection

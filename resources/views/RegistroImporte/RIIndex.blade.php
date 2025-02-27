@@ -41,10 +41,10 @@
 
             <div class="col-md-3 d-flex align-items-end gap-2">
                 <button type="submit" class="btn btn-primary w-50">
-                    <i class="fas fa-search"></i> Buscar
+                    <i class="fas fa-search"></i> 
                 </button>
                 <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary w-50">
-                    <i class="fas fa-eraser"></i> Limpiar
+                    <i class="fas fa-eraser"></i> 
                 </a>
             </div>
         </div>
@@ -89,13 +89,13 @@
                     @if(Auth::user()->role !== 'visualizador')
                         <div class="d-flex gap-2">
                             <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Editar
+                                <i class="fas fa-edit"></i> 
                             </a>
                             <form action="{{ route('registroimporte.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Eliminar
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </form>
                         </div>
