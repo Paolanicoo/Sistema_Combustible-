@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/importe', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
        
     // RUTAS DE ROL
-    Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('rol.table');
+    Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
 
     // Ruta para editar un rol
     Route::get('/roles/editar/{id}', [RegistroRolController::class, 'editarRol']);
