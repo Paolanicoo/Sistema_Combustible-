@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class RegistroRol extends Model
 {
     use HasFactory;
-    
+    protected $fillable = ['id', 'tipo_rol']; 
 }

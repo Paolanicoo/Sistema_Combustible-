@@ -41,11 +41,13 @@ Route::middleware(['auth'])->group(function () {
     // RUTAS DE ROL
     Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('rol.table');
 
+    // Ruta para editar un rol
+    Route::get('/roles/editar/{id}', [RegistroRolController::class, 'editarRol']);
+
+    // Ruta para desactivar un rol
+    Route::post('/roles/desactivar/{id}', [RegistroRolController::class, 'desactivarRol']);
 
 
-   
-
-    
     // MENÚ
     Route::get('/menu', function () {
         return view('menu');
