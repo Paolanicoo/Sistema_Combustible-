@@ -17,9 +17,9 @@ class RegistroCombustible extends Model
         'salidas',
     ];
 
-
     public function vehiculos() {
-        return $this->belongsTo(RegistroVehicular::class);
+        return $this->belongsTo(RegistroVehicular::class, 'id_registro_vehicular'); // Reemplaza 'vehiculo_id' por el nombre real de la clave foránea
     }
+
     
 }

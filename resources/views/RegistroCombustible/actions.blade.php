@@ -1,0 +1,12 @@
+<div class="d-flex gap-2">
+    <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm">
+        <i class="fas fa-edit"></i>
+    </a>
+    <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger btn-sm">
+            <i class="fas fa-trash"></i>
+        </button>
+    </form>
+</div>

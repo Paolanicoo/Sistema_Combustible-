@@ -14,15 +14,25 @@ class RegistroVehicularController extends Controller
     }
     
     public function index()
-{
-    
-    $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
-    return view('RegistroVehicular.RVIndex', compact('registros'));
+    {
+        
+        $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
+        return view('RegistroVehicular.RVIndex', compact('registros'));
 
 
-}
+    }
 
-  
+    // Método para obtener los registros en formato JSON
+    public function getTableData()
+    {
+        $registros = RegistroVehicular::all(); // o usa paginación si lo prefieres
+        return datatables()->of($registros)
+            ->addColumn('acciones', function ($registro) {
+                return view('RegistroVehicular.actions', compact('registro')); // Esta línea devuelve la vista de las acciones
+            })
+            ->make(true);
+    }
+
     public function create()
     {
         return view('RegistroVehicular.RVCreate');

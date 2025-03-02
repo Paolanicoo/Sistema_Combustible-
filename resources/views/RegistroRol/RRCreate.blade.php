@@ -15,28 +15,29 @@
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     </head>
     <body>
-    <div class="container mt-5">
-    <div class="card p-3"> <!-- Agregamos un padding al card -->
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Gestión de Roles</b></h3>
-            <button class="btn btn-info btn-sm">
-                <i class="fas fa-plus"></i> Nuevo Registro
-            </button>
+        <div class="container mt-5">
+            <div class="card p-3">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
+                    <button class="btn btn-info btn-sm">
+                        <i class="fas fa-plus"></i> Nuevo registro
+                    </button>
+                </div>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped w-100" id="roles-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Rol</th>  
+                                <th>Acciones</th>             
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="table-responsive mt-3"> <!-- Agregar margen arriba -->
-            <table class="table table-bordered table-striped w-100" id="roles-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Rol</th>  
-                    <th>Acciones</th>             
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    </div>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#roles-table').DataTable({
@@ -46,7 +47,7 @@
                     columns: [
                         {data: 'id', name: 'id'},
                         {data: 'tipo_rol', name: 'tipo_rol'},   
-                        {data: 'acciones', name: 'acciones', orderable: false, searchable: false} // Nueva columna
+                        {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
                     ],
                     language: {
                         "processing": "Procesando...",
@@ -108,8 +109,8 @@
                 });
             }
 
-
         </script>
+
         <!-- Modal Editar -->
         <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

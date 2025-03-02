@@ -13,6 +13,7 @@ class RegistroCombustibleController extends Controller
     {
         $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
     }
+    
     public function index()
     {
         
@@ -28,6 +29,32 @@ class RegistroCombustibleController extends Controller
     
         return view('RegistroCombustible.RCIndex', compact('registrocombustible'));
     }
+
+    public function getTableData(Request $request)
+    {
+        $combustibles = RegistroCombustible::with('vehiculos')->paginate(10); // Cargar la relación 'vehiculo'
+
+        return response()->json([
+            "draw" => $request->input('draw'),
+            "recordsTotal" => $combustibles->total(),
+            "recordsFiltered" => $combustibles->total(),
+            "data" => $combustibles->map(function ($registro) {
+                return [
+                    'id' => $registro->id,
+                    'fecha' => $registro->fecha,
+                    'vehiculo_equipo' => $registro->vehiculos->equipo ?? 'N/A',
+                    'vehiculo_marca' => $registro->vehiculos->marca ?? 'N/A',
+                    'vehiculo_placa' => $registro->vehiculos->placa ?? 'N/A',
+                    'vehiculo_asignado' => $registro->vehiculos->asignado ?? 'N/A',
+                    'num_factura' => $registro->num_factura,
+                    'entradas' => $registro->entradas,
+                    'salidas' => $registro->salidas,
+                    'acciones' => 'acciones' // Esto lo manejas en el frontend
+                ];
+            })
+        ]);
+    }
+
     
 
     public function create() 
@@ -120,5 +147,5 @@ public function update(Request $request, $id)
 
     return redirect()->route('registrocombustible.index')->with('success', 'Registro eliminado correctamente');
         
-}
+    }
 }

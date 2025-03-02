@@ -1,161 +1,85 @@
 @extends('Layouts.app')
 
-@section('titulo','index')
+@section('titulo','Registro Combustible')
 
 @section('contenido')
 
-<style>
-    .d-flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .mb-4 {
-        margin-bottom: 1rem;
-    }
-
-    .fixed-table th:nth-child(9), .fixed-table td:nth-child(9) {
-        width: 100px; /* Cambié el ancho de la columna 'Acciones' */
-    }
-
-    .action-buttons {
-        display: flex;
-        justify-content: space-between;
-        gap: 1px;
-    }
-
-    button {
-        white-space: nowrap;
-        padding: 8px 10px;
-        font-size: 8px;
-    }
-
-    .table-container {
-        max-height: 400px;
-        overflow-y: auto;
-    }
-
-    .fixed-table {
-        width: 100%;
-        table-layout: auto; /* Usamos auto para que el contenido ajuste el tamaño de la columna */
-    }
-
-    .fixed-table th, .fixed-table td {
-        word-wrap: break-word; /* Permite que el texto se divida en varias líneas si es largo */
-        overflow: hidden;      /* Oculta cualquier contenido que se desborde */
-        white-space: nowrap;   /* Evita que el texto se divida y fuerza que todo esté en una línea */
-        text-overflow: ellipsis; /* Muestra "..." si el contenido es demasiado largo */
-    }
-
-    td {
-        vertical-align: middle;
-    }
-
-    /* Anchos específicos para las columnas */
-    .fixed-table th:nth-child(1), .fixed-table td:nth-child(1) {
-        width: 120px;
-    }
-
-    .fixed-table th:nth-child(2), .fixed-table td:nth-child(2) {
-        width: 150px;
-    }
-
-    .fixed-table th:nth-child(3), .fixed-table td:nth-child(3) {
-        width: 150px;
-    }
-
-    .fixed-table th:nth-child(4), .fixed-table td:nth-child(4) {
-        width: 120px;
-    }
-
-    .fixed-table th:nth-child(5), .fixed-table td:nth-child(5) {
-        width: 120px;
-    }
-
-    .fixed-table th:nth-child(6), .fixed-table td:nth-child(6) {
-        width: 130px;
-    }
-
-    .fixed-table th:nth-child(7), .fixed-table td:nth-child(7) {
-        width: 150px;
-    }
-
-    .fixed-table th:nth-child(8), .fixed-table td:nth-child(8) {
-        width: 150px;
-    }
-
-    .fixed-table th:nth-child(5), .fixed-table td:nth-child(5),
-    .fixed-table th:nth-child(6), .fixed-table td:nth-child(6) {
-        width: 140px; /* Puedes ajustar el ancho de las columnas que tienen valores más largos como 'Factura' */
-    }
-</style>
-
-
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><b>Registro combustible</b></h2>
-        <!-- Solo mostrar el botón si el usuario NO es visualizador -->
-        @if(Auth::user()->role !== 'visualizador')
-        <a href="{{ route('registrocombustible.create') }}" class="btn btn-success">Agregar nuevo</a>
-        @endif
-    </div>
-    <div class="table-container">
-        <table class="table table-striped table-bordered fixed-table">
-            <thead class="table-dark">
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registro de Combustible - Datatables</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}"> 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> 
+        <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    </head>
+    <body>
+    <div class="container mt-5">
+    <div class="card p-3"> 
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0"><b>Registro de Combustible</b></h3>
+            @if(Auth::user()->role !== 'visualizador')
+                <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-plus"></i> Nuevo registro
+                </a>
+            @endif
+        </div>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-striped w-100" id="combustible-table">
+            <thead>
                 <tr>
+                    <th>#</th>
                     <th>Fecha</th>
                     <th>Equipo</th>
                     <th>Marca</th>
                     <th>Placa</th>
                     <th>Asignado</th>
-                    <th>N° de factura</th>
-                    <th>Entrada galones</th>
-                    <th>Salidas galones</th>
+                    <th>N° de Factura</th>
+                    <th>Entrada Galones</th>
+                    <th>Salida Galones</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($registrocombustible as $registro)
-                <tr>
-                    <td>{{ $registro->fecha }}</td>    
-                    <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
-                    <td>{{ $registro->num_factura }}</td>
-                    <td>{{ $registro->entradas }}</td>
-                    <td>{{ $registro->salidas }}</td>
-                    <td>
-                    @if(Auth::user()->role !== 'visualizador')
-                    <div class="d-flex gap-2">
-                            <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> Editar
-                            </a>
-                            <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> Eliminar
-                                </button>
-                             </form>
-                            
-                        
-                        </div>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="9">No hay registros de combustible</td>
-                </tr>
-                @endforelse
             </tbody>
         </table>
     </div>
-</div>
-
-
-{{ $registrocombustible->render('pagination::bootstrap-4') }}
-
-@endsection()
+    </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#combustible-table').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: '{{ route('registrocombustible.getTableData') }}',
+                    columns: [
+                        {data: 'id', name: 'id'},
+                        {data: 'fecha', name: 'fecha'},
+                        {data: 'vehiculo_equipo', name: 'vehiculo_equipo'},
+                        {data: 'vehiculo_marca', name: 'vehiculo_marca'},
+                        {data: 'vehiculo_placa', name: 'vehiculo_placa'},
+                        {data: 'vehiculo_asignado', name: 'vehiculo_asignado'},
+                        {data: 'num_factura', name: 'num_factura'},
+                        {data: 'entradas', name: 'entradas'},
+                        {data: 'salidas', name: 'salidas'},
+                        {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+                    ],
+                    language: {
+                        "processing": "Procesando...",
+                        "lengthMenu": "Mostrar _MENU_ registros",
+                        "zeroRecords": "No se encontraron resultados",
+                        "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+                        "search": "Buscar:",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
+@endsection

@@ -10,7 +10,7 @@ use App\Http\Controllers\RegistroRolController;
 
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
-   
+    Route::get('registrovehicular/table', [RegistroVehicularController::class, 'getTableData'])->name('registrovehicular.table');
     Route::get('/vehiculo_create', [RegistroVehicularController::class, 'create'])->name('registrovehicular.create');
     Route::post('/vehiculo_store', [RegistroVehicularController::class, 'store'])->name('registrovehicular.store');
     Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 'edit'])->name('registrovehicular.RVEdit');
@@ -18,7 +18,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/registrovehicular/{id}', [RegistroVehicularController::class, 'destroy'])->name('registrovehicular.destroy');
 
     // RUTAS DE COMBUSTIBLE
-    
+    Route::get('registrocombustible/data', [RegistroCombustibleController::class, 'getTableData'])->name('registrocombustible.getTableData');
+
     Route::get('/combustible_create', [RegistroCombustibleController::class, 'create'])->name('registrocombustible.create');
     Route::post('/combustible_store', [RegistroCombustibleController::class, 'store'])->name('registrocombustible.store');
     Route::get('/registrocombustible/{id}/edit', [RegistroCombustibleController::class, 'edit'])->name('registrocombustible.edit');
@@ -26,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/registrocombustible/{id}', [RegistroCombustibleController::class, 'destroy'])->name('registrocombustible.destroy');
 
     // RUTAS DE IMPORTE
-    
+    Route::get('registroimporte/table', [ResumenImporteController::class, 'getTableData'])->name('registroimporte.table');
     Route::get('/importe_create', [ResumenImporteController::class, 'create'])->name('registroimporte.create');
     Route::post('/importe_store', [ResumenImporteController::class, 'store'])->name('registroimporte.store');
     Route::get('/registroimporte/{id}/edit', [ResumenImporteController::class, 'edit'])->name('registroimporte.edit');
