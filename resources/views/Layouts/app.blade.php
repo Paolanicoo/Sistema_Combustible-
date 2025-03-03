@@ -13,7 +13,7 @@
 
 
 body {
-         background: url("{{ asset('img/s.a.jpeg') }}") no-repeat center center fixed;
+         background: url("{{ asset('img/s.a.jpg') }}") no-repeat center center fixed;
             background-size: contain;
         }
 
