@@ -28,5 +28,9 @@ class RegistroVehicular extends Model
     public function importes() {
         return $this->hasMany(ResumenImporte::class, 'id_registro_vehicular', 'id');
     }
-    
+    // Asegúrate de tener las relaciones bien definidas en el modelo RegistroVehicular
+    public function vehiculo() {
+        return $this->belongsTo(ResumenImporte::class, 'id_registro_vehicular', 'id');
+    }
+
 }
