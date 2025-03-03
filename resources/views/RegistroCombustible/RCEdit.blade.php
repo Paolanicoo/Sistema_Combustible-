@@ -146,24 +146,24 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="equipo" class="form-label">Equipo:</label>
-                <input type="text" id="equipo" name="equipo" class="form-control" readonly value="{{ old('equipo', $registro->vehiculo->equipo ?? '') }}">
+                <input type="text" id="equipo" name="equipo" class="form-control" readonly required value="{{ old('equipo', $registro->vehiculo->equipo ?? '') }}">
             </div>
 
             <div class="col-md-6 form-group">
                 <label for="placa" class="form-label">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" readonly value="{{ old('placa', $registro->vehiculo->placa ?? '') }}">
+                <input type="text" id="placa" name="placa" class="form-control" readonly  required value="{{ old('placa', $registro->vehiculo->placa ?? '') }}">
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="marca" class="form-label">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" readonly value="{{ old('marca', $registro->vehiculo->marca ?? '') }}">
+                <input type="text" id="marca" name="marca" class="form-control" readonly required value="{{ old('marca', $registro->vehiculo->marca ?? '') }}">
             </div>
 
             <div class="col-md-6 form-group">
                 <label for="asignado" class="form-label">Asignado:</label>
-                <input type="text" id="asignado" name="asignado" class="form-control" readonly value="{{ old('asignado', $registro->vehiculo->asignado ?? '') }}">
+                <input type="text" id="asignado" name="asignado" class="form-control" readonly required value="{{ old('asignado', $registro->vehiculo->asignado ?? '') }}">
             </div>
         </div>
 

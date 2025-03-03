@@ -42,8 +42,6 @@
                 </tr>
             </thead>
             <tbody>
-<<<<<<< HEAD
-=======
                 @forelse($registrocombustible as $registro)
                 <tr>
                     <td>{{ $registro->fecha }}</td>    
@@ -78,7 +76,6 @@
                     <td colspan="9">No hay registros de combustible</td>
                 </tr>
                 @endforelse
->>>>>>> dc531c7 (cambios)
             </tbody>
         </table>
     </div>
