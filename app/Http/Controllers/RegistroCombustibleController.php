@@ -30,9 +30,10 @@ class RegistroCombustibleController extends Controller
         return view('RegistroCombustible.RCIndex', compact('registrocombustible'));
     }
 
+
     public function getTableData(Request $request)
     {
-        $combustibles = RegistroCombustible::with('vehiculos')->paginate(10); // Cargar la relación 'vehiculo'
+        $combustibles = RegistroCombustible::with('vehiculos')->paginate(10); // Cargar la relación 'vehiculos'
 
         return response()->json([
             "draw" => $request->input('draw'),
@@ -49,13 +50,12 @@ class RegistroCombustibleController extends Controller
                     'num_factura' => $registro->num_factura,
                     'entradas' => $registro->entradas,
                     'salidas' => $registro->salidas,
-                    'acciones' => 'acciones' // Esto lo manejas en el frontend
+                    'acciones' => view('RegistroCombustible.actions', compact('registro'))->render() // Aquí se carga la vista de acciones
                 ];
             })
         ]);
     }
 
-    
 
     public function create() 
     {
@@ -136,16 +136,29 @@ public function update(Request $request, $id)
     ]);
 
     return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
-}
-
-
-
-    public function destroy(string $id) 
-    {
-        $registro = RegistroCombustible::findOrFail($id);
-    $registro->delete();
-
-    return redirect()->route('registrocombustible.index')->with('success', 'Registro eliminado correctamente');
-        
     }
+
+    public function destroy(string $id)
+    {
+        try {
+            // Buscar el registro y eliminarlo
+            $registro = RegistroCombustible::findOrFail($id);
+            $registro->delete();
+
+            // Respuesta de éxito
+            return response()->json([
+                'success' => true,
+                'message' => 'Registro eliminado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            // Respuesta de error
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el registro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
 }

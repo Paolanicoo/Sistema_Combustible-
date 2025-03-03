@@ -80,9 +80,9 @@
                     <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
                     <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
                     <td>{{ $registro->combustible ? $registro->combustible->num_factura: 'N/A'}}</td>
-                    <td>{{ $registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas ?? 'N/A' }}</td>
+                    <td>{{ optional($registro->combustible)->entradas > 0 ? optional($registro->combustible)->entradas : optional($registro->combustible)->salidas ?? 'N/A' }}</td>
                     <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
-                    <td>{{ ($registro->combustible->entradas > 0 ? $registro->combustible->entradas : $registro->combustible->salidas) * $registro->combustible->precio ?? 'N/A' }}</td>
+                    <td>{{ (optional($registro->combustible)->entradas > 0 ? optional($registro->combustible)->entradas : optional($registro->combustible)->salidas) * optional($registro->combustible)->precio ?? 'N/A' }}</td>
                     <td>{{$registro->empresa}}</td>
                     <td>{{$registro->cog}}</td>
                     <td>

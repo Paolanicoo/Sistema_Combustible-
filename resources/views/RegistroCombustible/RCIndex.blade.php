@@ -13,18 +13,56 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> 
         <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+        <style>
+        /* Reducir ancho de la columna "Acciones" */
+        .acciones-columna {
+            width: 40px; /* Aumenté el tamaño para permitir más espacio para los botones */
+            text-align: center;
+        }
+
+        /* Centrar los botones en la columna de acciones */
+        .acciones-columna div {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        </style>
     </head>
     <body>
-    <div class="container mt-5">
-    <div class="card p-3"> 
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Registro de Combustible</b></h3>
-            @if(Auth::user()->role !== 'visualizador')
-                <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm">
-                    <i class="fas fa-plus"></i> Nuevo registro
-                </a>
-            @endif
+        <div class="container mt-5">
+            <div class="card p-4"> <!-- Aumenté el padding aquí para la separación -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0"><b>Registro de Combustible</b></h3>
+                    @if(Auth::user()->role !== 'visualizador')
+                        <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-plus"></i> Nuevo registro
+                        </a>
+                    @endif
+                </div>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered table-striped w-100" id="combustible-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Equipo</th>
+                                <th>Marca</th>
+                                <th>Placa</th>
+                                <th>Asignado</th>
+                                <th>N° de factura</th>
+                                <th>Entrada galones</th>
+                                <th>Salida galones</th>
+                                <th class="acciones-columna text-center">Acciones</th> <!-- Centrado y ancho ajustado -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+<<<<<<< HEAD
         <div class="table-responsive mt-3">
             <table class="table table-bordered table-striped w-100" id="combustible-table">
             <thead>
@@ -80,6 +118,9 @@
         </table>
     </div>
     </div>
+=======
+
+>>>>>> 6be780321297c2a8a1c7c974b0d73610054a7458
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#combustible-table').DataTable({
@@ -96,7 +137,7 @@
                         {data: 'num_factura', name: 'num_factura'},
                         {data: 'entradas', name: 'entradas'},
                         {data: 'salidas', name: 'salidas'},
-                        {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+                        {data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna'}
                     ],
                     language: {
                         "processing": "Procesando...",
