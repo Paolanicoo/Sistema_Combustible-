@@ -62,23 +62,7 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped w-100" id="combustible-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Fecha</th>
-                    <th>Equipo</th>
-                    <th>Marca</th>
-                    <th>Placa</th>
-                    <th>Asignado</th>
-                    <th>N° de Factura</th>
-                    <th>Entrada Galones</th>
-                    <th>Salida Galones</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+        
             <tbody>
                 @forelse($registrocombustible as $registro)
                 <tr>
@@ -118,9 +102,7 @@
         </table>
     </div>
     </div>
-=======
 
->>>>>> 6be780321297c2a8a1c7c974b0d73610054a7458
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#combustible-table').DataTable({
