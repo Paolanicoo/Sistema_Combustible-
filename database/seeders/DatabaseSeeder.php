@@ -2,20 +2,29 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\RegistroRol;
 
 class DatabaseSeeder extends Seeder
 {
-    
     public function run(): void
     {
-        \App\Models\User::factory(10)->create();
+        // Crear un usuario de prueba con factory
+        User::factory(1)->create();
 
-        \App\Models\User::factory()->create([
-           'name' => 'Usuario',
-            'email' => 'test@example.com',
-            'pass' => bcrypt('holamundo1234')
+        // Crear un usuario manualmente con nombre y contraseña específica
+        User::factory()->create([
+            'name' => 'Usuario',
+            'password' => bcrypt('holamundo1234'),
+            'role' => 'Usuario', // Asignamos un rol directamente
+        ]);
+
+        // Insertar roles en la tabla registro_rols
+        RegistroRol::insert([
+            ['rol' => 'Administrador', 'estado' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['rol' => 'Usuario', 'estado' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['rol' => 'Visualizador', 'estado' => true, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

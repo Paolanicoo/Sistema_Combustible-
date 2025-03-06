@@ -15,21 +15,18 @@
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     </head>
     <body>
-        <div class="container mt-5">
-            <div class="card p-3">
+        <div class="container mt-5 pt-3"> <!-- Margen superior más grande -->
+            <div class="card p-3 mt-3"> <!-- Añadido margen superior al card -->
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
-                    <button class="btn btn-info btn-sm">
-                        <i class="fas fa-plus"></i> Nuevo registro
-                    </button>
                 </div>
                 <div class="table-responsive mt-3">
                     <table class="table table-bordered table-striped w-100" id="roles-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Rol</th>  
-                                <th>Acciones</th>             
+                                <th>Estado</th>
+                                <th class="acciones-columna text-center">Acciones</th> <!-- Centrado y ancho ajustado -->           
                             </tr>
                         </thead>
                         <tbody>
@@ -45,8 +42,8 @@
                     serverSide: true,
                     ajax: '{{ route('registrorol.table') }}',
                     columns: [
-                        {data: 'id', name: 'id'},
-                        {data: 'tipo_rol', name: 'tipo_rol'},   
+                        {data: 'rol', name: 'rol'},
+                        { data: 'estado_texto', name: 'estado_texto' },   
                         {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
                     ],
                     language: {
@@ -64,106 +61,9 @@
                     }
                 });
             });
-
-            // Función para editar el rol
-            function editarRol(id) {
-                // Mostrar el modal de edición
-                $('#editarModal').modal('show');
-                
-                // Hacer una solicitud para obtener los detalles del rol
-                $.ajax({
-                    url: '/roles/editar/' + id,
-                    method: 'GET',
-                    success: function(data) {
-                        // Pre-poblar el modal con los datos del rol
-                        $('#editar-id').val(data.id);
-                        $('#editar-tipo_rol').val(data.tipo_rol);
-                    }
-                });
-            }
-
-            function desactivarRol(id) {
-                if (!id) {
-                    alert("ID no válido");
-                    return;
-                }
-
-                // Confirmación con modal (si tienes uno) o alert
-                if (!confirm("¿Estás seguro de que deseas desactivar este rol?")) {
-                    return;
-                }
-
-                $.ajax({
-                    url: '/roles/desactivar/' + id,  // Verifica que esta ruta es la correcta
-                    method: 'POST',
-                    data: {
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        alert('Rol desactivado exitosamente');
-                        $('#roles-table').DataTable().ajax.reload(); // Recargar la tabla
-                    },
-                    error: function(xhr) {
-                        alert('Error al desactivar el rol: ' + xhr.responseText);
-                    }
-                });
-            }
-
         </script>
-
-        <!-- Modal Editar -->
-        <div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editarModalLabel">Editar Rol</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editarRolForm">
-                            <div class="form-group">
-                                <label for="editar-id">ID</label>
-                                <input type="text" id="editar-id" class="form-control" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="editar-tipo_rol">Tipo de Rol</label>
-                                <input type="text" id="editar-tipo_rol" class="form-control">
-                            </div>
-                            <!-- Agrega más campos si es necesario -->
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="guardarCambios">Guardar Cambios</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Confirmación Desactivación -->
-        <div class="modal fade" id="confirmarDesactivacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmarDesactivacionModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmarDesactivacionModalLabel">Confirmar Desactivación</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas desactivar este rol?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="confirmarDesactivar">Desactivar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </body>
 </html>
+
 
     

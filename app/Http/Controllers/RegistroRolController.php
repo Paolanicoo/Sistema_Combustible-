@@ -12,27 +12,36 @@ class RegistroRolController extends Controller
         $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
     }
 
-    public function getData(Request $request){    
+        public function getData(Request $request)
+    {
         if ($request->ajax()) {
-            // Recuperar los roles desde la base de datos
-            $roles = RegistroRol::select('id', 'tipo_rol')->get();
-        
+            // Obtener los registros de la base de datos
+            $roles = RegistroRol::select('id', 'rol', 'estado')
+            ->get()
+            ->map(function($rol) {
+                // Convertir el valor booleano de 'estado' a texto
+                $rol->estado_texto = $rol->estado ? 'Activo' : 'Inactivo';
+                return $rol;
+            });
+    
+            // Retornar los datos para DataTables
             return datatables()->of($roles)
-                ->addColumn('acciones', function ($rol) {
-                    return '
+            ->addColumn('acciones', function ($rol) {
+                return '
+                    <div class="d-flex justify-content-center">
                         <button class="btn btn-warning btn-sm" onclick="editarRol('.$rol->id.')">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm" onclick="desactivarRol('.$rol->id.')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    ';
-                })
-                ->rawColumns(['acciones']) // Permitir HTML en esta columna
-                ->toJson();
+                    </div>
+                ';
+            })
+            ->rawColumns(['acciones']) // Permitir HTML en esta columna
+            ->toJson();
+
         }
-        
-        return view('RegistroRol.RRCreate'); // En caso de no ser una solicitud AJAX
+
+        // Si no es una solicitud AJAX, mostrar la vista
+        return view('RegistroRol.RRCreate');
     }
 
     public function desactivarRol($id)

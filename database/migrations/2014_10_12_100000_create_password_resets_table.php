@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('nombre')->index();
+            $table->string('name')->index();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });

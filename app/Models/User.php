@@ -10,35 +10,41 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-   
+    use HasFactory, Notifiable;
 
-
-    use HasFactory;
+    // Tabla a la que hace referencia
     protected $table = 'users';
 
-    protected $fillable = ['nombre', 'password'];
+    // Campos que se pueden asignar masivamente
+    protected $fillable = ['name', 'password', 'role'];
 
-    protected $hidden = ['password'];
+    // Campos que se deben ocultar (no serán accesibles desde las respuestas)
+    protected $hidden = ['password', 'remember_token'];
 
+    // Para cifrar la contraseña
     protected $casts = [
         'password' => 'hashed',
     ];
-    
 
+    // Si deseas usar el campo 'nombre' para la autenticación
+    public function getAuthIdentifierName()
+    {
+        return 'name'; // Cambiado de 'email' a 'name'
+    }
 
     public function isAdmin()
-{
-    return $this->role === 'admin';
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isUsuario()
+    {
+        return $this->role === 'usuario';
+    }
+
+    public function isVisualizador()
+    {
+        return $this->role === 'visualizador';
+    }
 }
 
-public function isUsuario()
-{
-    return $this->role === 'usuario';
-}
-
-public function isVisualizador()
-{
-    return $this->role === 'visualizador';
-}
-
-}
