@@ -62,46 +62,6 @@
                 </div>
             </div>
         </div>
-        
-            <tbody>
-                @forelse($registrocombustible as $registro)
-                <tr>
-                    <td>{{ $registro->fecha }}</td>    
-                    <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
-                    <td>{{ $registro->num_factura }}</td>
-                    <td>{{ $registro->entradas }}</td>
-                    <td>{{ $registro->salidas }}</td>
-                    <td>
-                    @if(Auth::user()->role !== 'visualizador')
-                    <div class="d-flex gap-2">
-                            <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> 
-                            </a>
-                            <form action="{{ route('registrocombustible.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i> 
-                                </button>
-                             </form>
-                            
-                        
-                        </div>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="9">No hay registros de combustible</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    </div>
 
         <script type="text/javascript">
             $(document).ready(function () {

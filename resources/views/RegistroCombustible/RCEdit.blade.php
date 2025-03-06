@@ -136,7 +136,7 @@
                             data-marca="{{ $vehiculo->marca }}"
                             data-asignado="{{ $vehiculo->asignado }}"
                             {{ $vehiculo->id == old('id_registro_vehicular', $registro->id_registro_vehicular) ? 'selected' : '' }}>
-                            {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
+                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
                         </option>
                     @endforeach
                 </select>
@@ -191,11 +191,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="total" class="form-label">Total:</label>
-                <input type="number" id="total" name="total" class="form-control" value="{{ old('total', $registro->entradas * $registro->precio) }}" readonly>
-            </div>
         </div>
 
         <button type="submit" class="btn-submit">Actualizar registro</button>

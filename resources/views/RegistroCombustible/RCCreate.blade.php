@@ -133,7 +133,7 @@
                             data-placa="{{ $vehiculo->placa }}"
                             data-marca="{{ $vehiculo->marca }}"
                             data-asignado="{{ $vehiculo->asignado }}">
-                            {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
+                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
                         </option>
                     @endforeach
                 </select>
