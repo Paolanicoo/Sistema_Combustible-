@@ -95,8 +95,8 @@
 </style>
 
 <div class="card p-4">
-    <h4 class="text-center fw-bold">Resumen Importe</h4>
-    <form method="post" action="{{ route('registroimporte.store') }}">
+    <h4 class="text-center fw-bold">Resumen importe</h4>
+    <form method="post" action="{{ route('registroimporte.store') }}" id="create-form">
         @csrf
         
         <div class="row">
@@ -215,7 +215,6 @@
     </form>
 </div>
 
-
 <script>
     // Cuando se seleccione un vehículo, llena los campos relacionados
     document.getElementById('vehiculoSelect').addEventListener('change', function() {
@@ -259,12 +258,6 @@ document.querySelector("form").addEventListener("submit", function(event) {
         <i class="fas fa-arrow-left me-2"></i> Regresar
     </a>
 </div>
-
-
-
 </body>
 </html>
 
-
-
-@endsection

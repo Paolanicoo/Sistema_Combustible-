@@ -7,6 +7,8 @@ use App\Models\ResumenImporte;
 use App\Models\RegistroCombustible;
 use App\Models\RegistroVehicular;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ResumenImporteController extends Controller
 {
@@ -115,47 +117,55 @@ class ResumenImporteController extends Controller
     $combustibles = RegistroCombustible::all(); // Obtener todos los registros de combustible
     
     return view('RegistroImporte.RICreate', compact('vehiculos', 'combustibles'));
+    
     }
 
-   
     public function store(Request $request)
     {
-        $request->validate ([
-            //aqui colocamos solo valores requeridos
-            'fecha'=>'required',
-            'precio'=>'required',
-            'total'=>'required',
-            'empresa'=>'required',
-            'cog'=>'required'
+        // Validación de los campos requeridos
+        $request->validate([
+            'fecha' => 'required',
+            'precio' => 'required',
+            'total' => 'required',
+            'empresa' => 'required',
+            'cog' => 'required'
         ]);
 
+        try {
+            // Calcular el consumo y el total
+            $consumo = $request->input('entradas') > 0 ? $request->input('entradas') : $request->input('salidas');
+            $precio = $request->input('precio');
+            $total = $consumo * $precio; // Calcular el total correctamente
 
-        $consumo = $request->input('entradas') > 0 ? $request->input('entradas') : $request->input('salidas');
-        $precio = $request->input('precio');
-        $total = $consumo * $precio; //  Calcular correctamente el total
+            // Crear el nuevo registro
+            $registroimporte = new ResumenImporte();
+            $registroimporte->fecha = $request->input('fecha');
+            $registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
+            $registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
+            $registroimporte->total = $total; // Guardar el total correctamente
+            $registroimporte->empresa = $request->input('empresa');
+            $registroimporte->cog = $request->input('cog');
+            $registroimporte->save();
 
-        $registroimporte = new ResumenImporte();
-        $registroimporte->fecha = $request->input('fecha');
-        $registroimporte->id_registro_vehicular = $request->input('id_registro_vehicular');
-        $registroimporte->id_registro_combustible = $request->input('id_registro_combustible');
-        $registroimporte->total = $total; //  Guardar el total correctamente
-        $registroimporte->empresa = $request->input('empresa');
-        $registroimporte->cog = $request->input('cog');
-        $registroimporte->save();
-        return redirect()->route('registroimporte.index');
+            // Mostrar mensaje de éxito con SweetAlert
+            Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
+
+            // Redirigir a la vista de lista de registros (si todo fue bien)
+            return redirect()->route('registroimporte.index');
+
+        } catch (\Exception $e) {
+            // Si ocurre un error durante la creación del registro
+            Alert::error('Error', 'Hubo un problema al crear el registro. Inténtalo de nuevo.');
+
+            // Volver a la vista del formulario con los errores
+            return back()->withInput(); // 'back()' mantiene al usuario en la misma vista
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     
     public function edit($id)
     {
@@ -166,9 +176,6 @@ class ResumenImporteController extends Controller
         return view('registroimporte.RIEdit', compact('registro', 'vehiculos', 'combustibles'));
     }
 
-    /**
-     * Actualiza el registro en la base de datos.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -179,7 +186,7 @@ class ResumenImporteController extends Controller
             'total' => 'nullable|numeric',
             'empresa' => 'required|string',
             'cog' => 'required|in:Gasto,Costo',
-            
+
         ]);
 
         // Obtener el registro de combustible asociado
@@ -203,8 +210,8 @@ class ResumenImporteController extends Controller
             'cog' => $request->cog,
             
         ]);
-
-        return redirect()->route('registroimporte.index')->with('success', 'Registro actualizado correctamente');
+        Alert::success('Éxito', '¡Registro actualizado correctamente!');
+        return redirect()->route('registroimporte.index', $id);
     }
 
     public function destroy(string $id)
