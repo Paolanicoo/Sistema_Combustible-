@@ -14,6 +14,7 @@
     </div>
 @endif
 
+
 <style>  
     body {
         background-color: #f9f9f9;
@@ -67,9 +68,8 @@
 </style>
 
 <div class="card">
-    <h4 class="text-center font-weight-bold">Editar Importe</h4>
-
-    <form method="post" action="{{ route('registroimporte.update', $registro->id) }}">
+    <h4 class="text-center font-weight-bold">Editar importe</h4>
+    <form method="post" action="{{ route('registroimporte.update', $registro->id) }}" id="update-form">
         @csrf
         @method('PUT')
 
@@ -98,22 +98,22 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Vehículo:</label>
-                <input type="text" id="equipo" class="form-control" value="{{ $registro->equipo }} " readonly>
+                <input type="text" id="equipo" class="form-control" value="{{ old('equipo', $registro->equipo) }}" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Placa:</label>
-                <input type="text" id="placa" class="form-control" value="{{ $registro->placa }}" readonly>
+                <input type="text" id="placa" class="form-control" value="{{ old('placa', $registro->placa) }}" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Marca:</label>
-                <input type="text" id="marca" class="form-control" value="{{ $registro->marca }}" readonly>
+                <input type="text" id="marca" class="form-control" value="{{ old('marca', $registro->marca) }}" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label">Asignado:</label>
-                <input type="text" id="asignado" class="form-control" value="{{ $registro->asignado }}" readonly>
+                <input type="text" id="asignado" class="form-control" value="{{ old('asignado', $registro->asignado) }}" readonly>
             </div>
         </div>
 
@@ -155,31 +155,31 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Total:</label>
-                <input type="number" id="total" class="form-control" value="{{ $registro->total }}" readonly>
+                <input type="number" id="total" class="form-control" value="{{ old('total', $registro->total) }}" readonly>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label for="empresa">Empresa:</label>
                 <select id="empresa" name="empresa" class="form-control">
-                    <option value="Taosa" {{ $registro->empresa == 'Taosa' ? 'selected' : '' }}>TAOSA</option>
-                    <option value="Clasificadora" {{ $registro->empresa == 'Clasificadora' ? 'selected' : '' }}>Clasificadora</option>
-                    <option value="Francisco Gusman" {{ $registro->empresa == 'Francisco Gusman' ? 'selected' : '' }}>Francisco Gusman</option>
+                    <option value="Taosa" {{ old('empresa', $registro->empresa) == 'Taosa' ? 'selected' : '' }}>TAOSA</option>
+                    <option value="Clasificadora" {{ old('empresa', $registro->empresa) == 'Clasificadora' ? 'selected' : '' }}>Clasificadora</option>
+                    <option value="Francisco Gusman" {{ old('empresa', $registro->empresa) == 'Francisco Gusman' ? 'selected' : '' }}>Francisco Gusman</option>
                 </select>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label for="tipo">Tipo:</label>
                 <select id="cog" name="cog" class="form-control">
-                    <option value="Gasto" {{ $registro->tipo == 'Gasto' ? 'selected' : '' }}>Gasto</option>
-                    <option value="Costo" {{ $registro->tipo == 'Costo' ? 'selected' : '' }}>Costo</option>
-                   
+                    <option value="Gasto" {{ old('cog', $registro->tipo) == 'Gasto' ? 'selected' : '' }}>Gasto</option>
+                    <option value="Costo" {{ old('cog', $registro->tipo) == 'Costo' ? 'selected' : '' }}>Costo</option>
                 </select>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-custom">Actualizar Registro</button>
+        <button type="submit" class="btn btn-custom">Actualizar registro</button>
     </form>
 </div>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -240,6 +240,3 @@
         <i class="fas fa-arrow-left me-2"></i> Regresar
     </a>
 </div>
-
-
-@endsection

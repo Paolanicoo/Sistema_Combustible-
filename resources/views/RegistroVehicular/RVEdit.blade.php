@@ -5,16 +5,6 @@
 
 @section('contenido')
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <style>
         /* Estilos generales */
     body {
@@ -107,6 +97,7 @@
 
 <div class="card">
     <h4 class="centered-title">Editar registro de vehículo</h4>
+
     <form method="post" action="{{ route('registrovehicular.update', $registro->id) }}">
         @csrf
         @method('PUT')
