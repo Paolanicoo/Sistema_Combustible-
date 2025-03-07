@@ -39,7 +39,7 @@
             <table class="table table-bordered table-striped w-100" id="vehiculos-table">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        
                         <th>Equipo</th>
                         <th>Marca</th>
                         <th>Placa</th>
@@ -65,7 +65,7 @@
             serverSide: true,
             ajax: '{{ route('registrovehicular.table') }}',
             columns: [
-                {data: 'id', name: 'id'},
+                
                 {data: 'equipo', name: 'equipo'},
                 {data: 'marca', name: 'marca'},
                 {data: 'placa', name: 'placa'},

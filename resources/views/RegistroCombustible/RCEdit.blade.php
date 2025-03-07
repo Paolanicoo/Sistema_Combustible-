@@ -125,18 +125,19 @@
             <div class="col-md-6 form-group">
                 <label for="vehiculo" class="form-label">Seleccionar vehículo:</label>
                 <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
-                    <option value="">Seleccione un vehículo</option>
-                    @foreach($vehiculos as $vehiculo)
-                        <option value="{{ $vehiculo->id }}"
-                            data-equipo="{{ $vehiculo->equipo }}"
-                            data-placa="{{ $vehiculo->placa }}"
-                            data-marca="{{ $vehiculo->marca }}"
-                            data-asignado="{{ $vehiculo->asignado }}"
-                            {{ $vehiculo->id == old('id_registro_vehicular', $registro->id_registro_vehicular) ? 'selected' : '' }}>
-                            {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
-                        </option>
-                    @endforeach
-                </select>
+                <option value="">Seleccione un vehículo</option>
+                @foreach($vehiculos as $vehiculo)
+                    <option value="{{ $vehiculo->id }}"
+                        data-equipo="{{ $vehiculo->equipo }}"
+                        data-placa="{{ $vehiculo->placa }}"
+                        data-marca="{{ $vehiculo->marca }}"
+                        data-asignado="{{ $vehiculo->asignado }}"
+                        {{ $vehiculo->id == old('id_registro_vehicular', $registro->id_registro_vehicular) ? 'selected' : '' }}>
+                        {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
+                    </option>
+                @endforeach
+            </select>
+
             </div>
         </div>
 
@@ -187,7 +188,7 @@
                 <input type="number" id="precio" name="precio" class="form-control" value="{{ old('precio', $registro->precio) }}" required>
             </div>
         </div>
-        </div>
+        
 
         <button type="submit" class="btn-submit">Actualizar registro</button>
     </form>
@@ -222,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let vehiculoSelect = document.getElementById('vehiculoSelect');
 
     function actualizarDatosVehiculo() {
-        let selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
+        var selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
 
         document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo') || '';
         document.getElementById('placa').value = selectedOption.getAttribute('data-placa') || '';

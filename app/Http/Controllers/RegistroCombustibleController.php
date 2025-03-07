@@ -106,33 +106,32 @@ class RegistroCombustibleController extends Controller
 
 public function update(Request $request, $id)
 {
-    // Buscar el registro
+    // Encuentra el registro de combustible por ID
     $registro = RegistroCombustible::findOrFail($id);
 
-    // Validar los datos
-    $request->validate([
+    // Valida los datos
+    $validated = $request->validate([
         'fecha' => 'required|date',
-        'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
-        'num_factura' => 'required|numeric',
+        'id_registro_vehicular' => 'required|exists:registro_vehiculars,id', // Verifica que el vehículo exista
+        'num_factura' => 'required|numeric', // Valida que el número de factura sea un número
         'entradas' => 'nullable|numeric',
         'salidas' => 'nullable|numeric',
         'precio' => 'required|numeric',
     ]);
 
-    // Actualizar el registro
-    $registro->update([
-        'fecha' => $request->fecha,
-        'id_registro_vehicular' => $request->id_registro_vehicular,
-        'num_factura' => $request->num_factura,
-        'entradas' => $request->entradas,
-        'salidas' => $request->salidas,
-        'precio' => $request->precio,
-    ]);
-     // Actualizar el registro
-    $registro->update($request->all());
+    // Actualiza el registro de combustible
+    $registro->fecha = $validated['fecha'];
+    $registro->id_registro_vehicular = $validated['id_registro_vehicular']; // Asigna el ID del vehículo
+    $registro->num_factura = $validated['num_factura']; // Asigna el número de factura
+    $registro->entradas = $validated['entradas'];
+    $registro->salidas = $validated['salidas'];
+    $registro->precio = $validated['precio'];
 
-    // Redirigir con mensaje de éxito
-    return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
+    // Guarda los cambios
+    $registro->save();
+
+    // Redirige con un mensaje de éxito
+    return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente.');
 }
 
 
