@@ -22,7 +22,7 @@ class AuthController extends Controller
         'password' => 'required'
     ]);
 
-    if (Auth::attempt(['nombre' => $request->nombre, 'password' => $request->password])) {
+    if (Auth::attempt(['name' => $request->nombre, 'password' => $request->password])) {
 
         $request->session()->regenerate();
  
@@ -31,7 +31,7 @@ class AuthController extends Controller
     }
 
     return back()->withErrors([
-        'nombre' => 'Las credenciales no coinciden con nuestros registros.',
+        'name' => 'Las credenciales no coinciden con nuestros registros.',
     ]);
 }
 
