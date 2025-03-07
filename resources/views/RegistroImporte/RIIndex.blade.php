@@ -1,120 +1,130 @@
 @extends('Layouts.app')
 
-@section('titulo','index')
+@section('titulo', 'Resumen de Importes')
 
 @section('contenido')
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+<style>
+    /* Ajustar el tamaño del contenedor */
+    .container {
+        width: 100%; /* Ahora el contenedor usa el 100% del ancho */
+        max-width: 100%; /* Se elimina el máximo ancho para que no se limite */
+        margin: 0 auto;
+    }
+
+    /* Ajustar el ancho de la columna "Acciones" */
+    .acciones-columna {
+        width: 120px; /* Ajusta el tamaño según sea necesario */
+        text-align: center;
+    }
+
+    /* Centrar los botones en la columna de acciones */
+    .acciones-columna div {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    /* Evitar el scroll horizontal */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Asegurarse de que la tabla ocupe todo el espacio disponible */
+    .table {
+        width: 100% !important;
+    }
+
+    /* Ajustar las columnas */
+    table.dataTable thead th {
+        white-space: nowrap; /* Evita el ajuste de texto en las cabeceras */
+    }
+</style>
+
 <div class="container mt-5">
-    <h2 class="mb-4">Resumen importe</h2>
-    @if(Auth::user()->role !== 'visualizador')
-
-    <!-- Botón Agregar Nuevo -->
-    <div class="d-flex justify-content-end mt-3">
-        <a href="{{ route('registroimporte.create') }}" class="btn btn-success">Agregar nuevo</a>
-        @endif
-    </div>
-
-    <!-- Formulario de filtros -->
-    <form action="{{ route('registroimporte.index') }}" method="GET" class="mb-4">
-        <div class="row g-3">
-            <div class="col-md-3">
-                <label for="equipo">Equipo:</label>
-                <input type="text" name="equipo" id="equipo" class="form-control" value="{{ request('equipo') }}">
-            </div>
-
-            <div class="col-md-3">
-                <label for="asignado">Asignado:</label>
-                <input type="text" name="asignado" id="asignado" class="form-control" value="{{ request('asignado') }}">
-            </div>
-
-            <div class="col-md-3">
-                <label for="mes">Mes:</label>
-                <select name="mes" id="mes" class="form-control">
-                    <option value="">Todos</option>
-                    @foreach(['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $key => $value)
-                        <option value="{{ $key + 1 }}" {{ request('mes') == $key + 1 ? 'selected' : '' }}>
-                            {{ ucfirst($value) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="col-md-3 d-flex align-items-end gap-2">
-                <button type="submit" class="btn btn-primary w-50">
-                    <i class="fas fa-search"></i> 
-                </button>
-                <a href="{{ route('registroimporte.index') }}" class="btn btn-secondary w-50">
-                    <i class="fas fa-eraser"></i> 
+    <div class="card p-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0"><b>Resumen de Importes</b></h3>
+            @if(Auth::user()->role !== 'visualizador')
+                <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-plus"></i> Agregar nuevo
                 </a>
-            </div>
+            @endif
         </div>
-    </form>
-</div> <!-- Cierre del contenedor -->
-
-        <!-- Tabla -->
-        <table class="table table-striped table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Mes</th>
-                    <th>Fecha</th>
-                    <th>Equipo</th>
-                    <th>Marca</th>
-                    <th>Placa</th>
-                    <th>Asignado</th>
-                    <th>N° de factura</th>
-                    <th>Consumo</th>  
-                    <th>Precio</th>
-                    <th>Total</th>
-                    <th>Empresa</th>
-                    <th>Tipo</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($registroimporte as $registro)
-                <tr>
-                    <td>{{ \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F') }}</td>
-                    <td>{{ $registro->combustible->fecha ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->equipo ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->marca ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->placa ?? 'N/A' }}</td>
-                    <td>{{ $registro->vehiculo->asignado ?? 'N/A' }}</td>
-                    <td>{{ $registro->combustible ? $registro->combustible->num_factura: 'N/A'}}</td>
-                    <td>{{ optional($registro->combustible)->entradas > 0 ? optional($registro->combustible)->entradas : optional($registro->combustible)->salidas ?? 'N/A' }}</td>
-                    <td>{{$registro->combustible->precio  ?? 'N/A'}}</td>
-                    <td>{{ (optional($registro->combustible)->entradas > 0 ? optional($registro->combustible)->entradas : optional($registro->combustible)->salidas) * optional($registro->combustible)->precio ?? 'N/A' }}</td>
-                    <td>{{$registro->empresa}}</td>
-                    <td>{{$registro->cog}}</td>
-                    <td>
-                    @if(Auth::user()->role !== 'visualizador')
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i> 
-                            </a>
-                            <form action="{{ route('registroimporte.destroy', $registro->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este registro?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                        @endif
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="13" class="text-center">No hay importes</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-        
-
-        <!-- Paginación -->
-        <div class="d-flex justify-content-center">
-            {{ $registroimporte->render('pagination::bootstrap-4') }}
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-striped" id="importes-table">
+                <thead>
+                    <tr>
+                        <th>Mes</th>
+                        <th>Fecha</th>
+                        <th>Equipo</th>
+                        <th>Marca</th>
+                        <th>Placa</th>
+                        <th>Asignado</th>
+                        <th>N° de factura</th>
+                        <th>Consumo</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Empresa</th>
+                        <th>Tipo</th>
+                        <th class="acciones-columna text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#importes-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{{ route('registroimporte.table') }}',
+            columns: [
+                {data: 'mes', name: 'mes'},
+                {data: 'fecha', name: 'fecha'},
+                {data: 'equipo', name: 'equipo'},
+                {data: 'marca', name: 'marca'},
+                {data: 'placa', name: 'placa'},
+                {data: 'asignado', name: 'asignado'},
+                {data: 'num_factura', name: 'num_factura'},
+                {data: 'consumo', name: 'consumo'},
+                {data: 'precio', name: 'precio'},
+                {data: 'total', name: 'total'},
+                {data: 'empresa', name: 'empresa'},
+                {data: 'tipo', name: 'tipo'},
+                {data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna'}
+            ],
+            language: {
+                "processing": "Procesando...",
+                "lengthMenu": "Mostrar _MENU_ registros",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": "Activar para ordenar la columna de manera ascendente",
+                    "sortDescending": "Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+    });
+</script>
 
 @endsection
+

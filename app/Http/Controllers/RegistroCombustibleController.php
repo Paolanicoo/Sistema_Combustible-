@@ -96,7 +96,7 @@ class RegistroCombustibleController extends Controller
     }
 
   
-    public function edit($id)
+        public function edit($id)
 {
     $registro = RegistroCombustible::findOrFail($id);
     $vehiculos = RegistroVehicular::all(); // Obtiene todos los vehículos para el select
@@ -106,26 +106,20 @@ class RegistroCombustibleController extends Controller
 
 public function update(Request $request, $id)
 {
+    // Buscar el registro
     $registro = RegistroCombustible::findOrFail($id);
 
-    // Intenta asignar y guardar manualmente
-    $registro->num_factura = $request->num_factura;
-    $registro->save();
-
-    return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
+    // Validar los datos
     $request->validate([
         'fecha' => 'required|date',
-        'id_registro_vehicular' => 'required',
+        'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
         'num_factura' => 'required|numeric',
         'entradas' => 'nullable|numeric',
         'salidas' => 'nullable|numeric',
         'precio' => 'required|numeric',
     ]);
 
-    // Verificar qué datos se están enviando
-    
-
-    $registro = RegistroCombustible::findOrFail($id);
+    // Actualizar el registro
     $registro->update([
         'fecha' => $request->fecha,
         'id_registro_vehicular' => $request->id_registro_vehicular,
@@ -134,9 +128,13 @@ public function update(Request $request, $id)
         'salidas' => $request->salidas,
         'precio' => $request->precio,
     ]);
+     // Actualizar el registro
+    $registro->update($request->all());
 
+    // Redirigir con mensaje de éxito
     return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente');
-    }
+}
+
 
     public function destroy(string $id)
     {

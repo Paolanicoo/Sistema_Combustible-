@@ -44,13 +44,13 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'password' => 'required|confirmed|min:8',
             'role' => 'required|in:admin,usuario,visualizador',
         ]);
 
         User::create([
-            'nombre' => $request->nombre,
+            'name' => $request->nombre,
             'password' => bcrypt($request->password),
             'role' => $request->role,
         ]);

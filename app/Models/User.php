@@ -34,17 +34,17 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role === 'admin';
+        return $this->role === 'Administrador';
     }
 
     public function isUsuario()
     {
-        return $this->role === 'usuario';
+        return $this->role === 'Usuario';
     }
 
     public function isVisualizador()
     {
-        return $this->role === 'visualizador';
+        return $this->role === 'Visualizador';
     }
 }
 

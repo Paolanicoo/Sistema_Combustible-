@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     // RUTAS DE IMPORTE
     Route::get('registroimporte', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
+    Route::get('/registroimporte/table', [ResumenImporteController::class, 'getTableData'])->name('registroimporte.table');
     Route::get('/importe_create', [ResumenImporteController::class, 'create'])->name('registroimporte.create');
     Route::post('/importe_store', [ResumenImporteController::class, 'store'])->name('registroimporte.store');
     Route::get('/registroimporte/{id}/edit', [ResumenImporteController::class, 'edit'])->name('registroimporte.edit');

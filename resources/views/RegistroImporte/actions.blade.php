@@ -1,4 +1,5 @@
 <div class="d-flex gap-2">
+@if(Auth::user()->role !== 'Visualizador')
     <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
         <i class="fas fa-edit"></i>
     </a>
@@ -9,4 +10,5 @@
             <i class="fas fa-trash"></i>
         </button>
     </form>
+@endif
 </div>

@@ -44,7 +44,6 @@
                     <table class="table table-bordered table-striped w-100" id="combustible-table">
                         <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Fecha</th>
                                 <th>Equipo</th>
                                 <th>Marca</th>
@@ -70,7 +69,6 @@
                     serverSide: true,
                     ajax: '{{ route('registrocombustible.getTableData') }}',
                     columns: [
-                        {data: 'id', name: 'id'},
                         {data: 'fecha', name: 'fecha'},
                         {data: 'vehiculo_equipo', name: 'vehiculo_equipo'},
                         {data: 'vehiculo_marca', name: 'vehiculo_marca'},

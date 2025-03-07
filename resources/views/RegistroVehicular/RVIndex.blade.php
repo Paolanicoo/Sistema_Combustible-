@@ -29,7 +29,7 @@
     <div class="card p-4"> <!-- Aumenté el padding aquí para la separación -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0"><b>Registro Vehicular</b></h3>
-            @if(Auth::user()->role !== 'visualizador')
+            @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registrovehicular.create') }}" class="btn btn-info btn-sm">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>

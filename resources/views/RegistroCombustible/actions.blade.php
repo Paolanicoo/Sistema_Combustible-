@@ -1,10 +1,12 @@
 <div class="d-flex gap-2">
+@if(Auth::user()->role !== 'Visualizador')
     <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
         <i class="fas fa-edit"></i>
     </a>
     <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $registro->id }}" title="Eliminar">
         <i class="fas fa-trash"></i>
     </button>
+    @endif
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -1,4 +1,3 @@
-
 @extends('Layouts.app')
 
 @section('titulo','Editar Registro de Combustible')
@@ -114,7 +113,7 @@
 <div class="form-container">
     <h4 class="centered-title">Editar registro de combustible</h4>
 
-    <form method="post" action="{{ route('registrocombustible.update', $registro->id) }}">
+    <form method="post" action="{{ route('registrocombustible.update', $registro->id) }}" id="update-form">
         @csrf
         @method('PUT')
 
@@ -123,8 +122,6 @@
                 <label for="fecha" class="form-label">Fecha:</label>
                 <input type="date" id="fecha" name="fecha" class="form-control" value="{{ old('fecha', $registro->fecha) }}" required>
             </div>
-            
-
             <div class="col-md-6 form-group">
                 <label for="vehiculo" class="form-label">Seleccionar vehículo:</label>
                 <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
@@ -136,7 +133,7 @@
                             data-marca="{{ $vehiculo->marca }}"
                             data-asignado="{{ $vehiculo->asignado }}"
                             {{ $vehiculo->id == old('id_registro_vehicular', $registro->id_registro_vehicular) ? 'selected' : '' }}>
-                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
+                            {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
                         </option>
                     @endforeach
                 </select>
@@ -146,24 +143,24 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="equipo" class="form-label">Equipo:</label>
-                <input type="text" id="equipo" name="equipo" class="form-control" readonly required value="{{ old('equipo', $registro->vehiculo->equipo ?? '') }}">
+                <input type="text" id="equipo" name="equipo" class="form-control" readonly value="{{ old('equipo', $registro->vehiculo->equipo ?? '') }}">
             </div>
 
             <div class="col-md-6 form-group">
                 <label for="placa" class="form-label">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" readonly  required value="{{ old('placa', $registro->vehiculo->placa ?? '') }}">
+                <input type="text" id="placa" name="placa" class="form-control" readonly value="{{ old('placa', $registro->vehiculo->placa ?? '') }}">
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="marca" class="form-label">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" readonly required value="{{ old('marca', $registro->vehiculo->marca ?? '') }}">
+                <input type="text" id="marca" name="marca" class="form-control" readonly value="{{ old('marca', $registro->vehiculo->marca ?? '') }}">
             </div>
 
             <div class="col-md-6 form-group">
                 <label for="asignado" class="form-label">Asignado:</label>
-                <input type="text" id="asignado" name="asignado" class="form-control" readonly required value="{{ old('asignado', $registro->vehiculo->asignado ?? '') }}">
+                <input type="text" id="asignado" name="asignado" class="form-control" readonly value="{{ old('asignado', $registro->vehiculo->asignado ?? '') }}">
             </div>
         </div>
 
@@ -190,12 +187,35 @@
                 <input type="number" id="precio" name="precio" class="form-control" value="{{ old('precio', $registro->precio) }}" required>
             </div>
         </div>
-
         </div>
 
         <button type="submit" class="btn-submit">Actualizar registro</button>
     </form>
 </div>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="text/javascript">
+    // Capturamos el evento de envío del formulario
+    document.getElementById('update-form').addEventListener('submit', function (e) {
+        // Evitamos que el formulario se envíe inmediatamente
+        e.preventDefault();
+
+        // Mostramos el SweetAlert de éxito
+        Swal.fire({
+            title: 'Registro actualizado',
+            text: 'El registro se ha actualizado correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        }).then((result) => {
+            // Si el usuario acepta, enviamos el formulario
+            if (result.isConfirmed) {
+                this.submit();
+            }
+        });
+    });
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
