@@ -4,6 +4,9 @@
 
 @section('contenido')
 
+<!--asegura que los mensajes de SweetAlert se muestren -->
+@include('sweetalert::alert')
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +16,11 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> 
         <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+        <!-- Para el paquete de SweetAlert configurado -->
+        <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
         <style>
         /* Reducir ancho de la columna "Acciones" */
@@ -33,7 +41,7 @@
         <div class="container mt-5">
             <div class="card p-4"> <!-- Aumenté el padding aquí para la separación -->
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0"><b>Registro de Combustible</b></h3>
+                    <h3 class="card-title mb-0"><b>Registro de combustible</b></h3>
                     @if(Auth::user()->role !== 'Visualizador')
                         <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm">
                             <i class="fas fa-plus"></i> Nuevo registro
