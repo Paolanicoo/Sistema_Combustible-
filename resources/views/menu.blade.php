@@ -136,11 +136,13 @@ body {
         <a href="{{ route('RIndex') }}" class="nav-link">
             <i class="fas fa-chart-bar"></i> Reportes
         </a>
-
         </a>
+        
+        @if(Auth::user()->role === 'Administrador')
         <a href="{{ route('registrorol.table') }}" class="nav-link">
             <i class="fas fa-users"></i> Gestor de roles
         </a>
+        @endif
 
         @auth
         <form method="POST" action="{{ route('logout') }}" class="mt-3">
