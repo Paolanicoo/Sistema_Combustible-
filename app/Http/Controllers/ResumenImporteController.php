@@ -31,7 +31,7 @@ class ResumenImporteController extends Controller
         $asignado = $request->input('asignado');
         $mes = $request->input('mes');
 
-        // Query base
+        
         $query = ResumenImporte::with(['vehiculo', 'combustible']);
 
         // Aplicar filtros si existen

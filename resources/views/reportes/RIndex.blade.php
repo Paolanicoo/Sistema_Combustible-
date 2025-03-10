@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function crearTabla(id, data, columnas) {
         let tabla = `<table class='table table-bordered'><thead><tr>`;
         columnas.forEach(col => {
-            let titulo = col.charAt(0).toUpperCase() + col.slice(1);
+            let titulo = col === 'anio' ? 'Año' : (col === 'total' ? 'Total Galones' : col.charAt(0).toUpperCase() + col.slice(1));
             tabla += `<th>${titulo}</th>`;
         });
         tabla += `</tr></thead><tbody>`;
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch(`${urlReporte}?tipo=${tipo}`)
             .then(response => response.json())
             .then(data => {
-                let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
+                let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`; 
                 let tablaContainer = document.getElementById(tablaId);
 
                 if (tipo === 'anio' && data.consumoPorAnio.length > 0) {

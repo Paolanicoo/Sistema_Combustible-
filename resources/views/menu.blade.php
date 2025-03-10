@@ -13,8 +13,8 @@
 
 
 body {
-         background: url("/img/s.a.jpg") no-repeat center center fixed;
-            background-size: contain;
+    background: url("{{ asset('img/clasi.jpg') }}") no-repeat center center fixed;
+            background-size: cover  !important;
         }
 
         /* Oculta el fondo permanentemente */
