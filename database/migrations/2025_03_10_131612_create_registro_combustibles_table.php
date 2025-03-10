@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
         Schema::create('registro_combustibles', function (Blueprint $table) {
@@ -14,13 +13,16 @@ return new class extends Migration
             $table->date('fecha');
             $table->integer('num_factura');
             $table->unsignedBigInteger('id_registro_vehicular');
-            $table->integer('entradas')->nullable();
-            $table->integer('salidas')->nullable();
-            $table->integer('precio');
+            $table->decimal('entradas', 10, 2)->nullable();  
+            $table->decimal('salidas', 10, 2)->nullable();  
+            $table->decimal('precio', 10, 2); 
             $table->timestamps();
+
+             // Clave foránea
+             $table->foreign('id_registro_vehicular')->references('id')->on('registro_vehiculars')->onDelete('cascade');
+             
         });
     }
-
 
     public function down(): void
     {

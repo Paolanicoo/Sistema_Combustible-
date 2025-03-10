@@ -71,10 +71,6 @@
             serverSide: true,
             ajax: '{{ route('registrovehicular.table') }}',
             columns: [
-<<<<<<< HEAD
-                
-=======
->>>>>>> 65aa45ddae5fbf24b3b0ee3a9d95c5166565ae98
                 {data: 'equipo', name: 'equipo'},
                 {data: 'marca', name: 'marca'},
                 {data: 'placa', name: 'placa'},

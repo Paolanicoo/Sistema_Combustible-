@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\RegistroCombustible;
 use App\Models\RegistroVehicular; 
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RegistroCombustibleController extends Controller
 {
@@ -66,73 +67,64 @@ class RegistroCombustibleController extends Controller
  
     public function store(Request $request) 
     {
+       // Validación de los campos en Laravel
         $request->validate([
-            'fecha' => 'required',
-            'id_registro_vehicular' => 'required',
-            'num_factura' => 'required',
-            'entradas' => 'nullable',
-            'salidas' => 'nullable',
-            'precio' => 'required',
+            'fecha' => 'required|date',
+            'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
+            'num_factura' => 'required|string|max:50',
+            'entradas' => 'nullable|numeric|min:0',
+            'salidas' => 'nullable|numeric|min:0',
+            'precio' => 'required|numeric|min:0',
+        ], [
+            'entradas.numeric' => 'El campo entradas debe ser un número.',
+            'salidas.numeric' => 'El campo salidas debe ser un número.',
+            'precio.numeric' => 'El campo precio debe ser un número.',
         ]);
 
-        $registrocombustible = new RegistroCombustible();
-        $registrocombustible->id_registro_vehicular = $request->input('id_registro_vehicular');
-        $registrocombustible->fecha = $request->input('fecha');
-        $registrocombustible->num_factura = $request->input('num_factura');
-        $registrocombustible->entradas = $request->input('entradas')?: null;
-        $registrocombustible->salidas = $request->input('salidas')?: null;
-        $registrocombustible->precio = $request->input('precio');
+    
+        try {
+            // Crear un nuevo registro de combustible
+            $registrocombustible = new RegistroCombustible();
+            $registrocombustible->id_registro_vehicular = $request->input('id_registro_vehicular');
+            $registrocombustible->fecha = $request->input('fecha');
+            $registrocombustible->num_factura = $request->input('num_factura');
+            $registrocombustible->entradas = $request->input('entradas') ?: null;
+            $registrocombustible->salidas = $request->input('salidas') ?: null;
+            $registrocombustible->precio = $request->input('precio');
 
-        $registrocombustible->save();
-        
-        return redirect()->route('registrocombustible.index');
+            // Guardar el nuevo registro
+            $registrocombustible->save();
+    
+            // Mostrar mensaje de éxito con SweetAlert
+            Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
+    
+            // Redirigir a la vista de la lista de registros (solo en éxito)
+            return redirect()->route('registrocombustible.index');
+    
+        } catch (\Exception $e) {
+            // Si algo falla, mostrar el error
+            Alert::error('Error', 'Hubo un problema al crear el registro. Inténtalo de nuevo.');
+    
+            // Volver a la vista del formulario con los errores
+            return back();  // 'back()' asegura que regrese a la misma página
+        }
+    
     }
+    
 
-
- 
     public function show(string $id) // SOLO QUE MUESTRA UN DATO INDIVIDUAL
     {
         
     }
 
   
-        public function edit($id)
-{
-    $registro = RegistroCombustible::findOrFail($id);
-    $vehiculos = RegistroVehicular::all(); // Obtiene todos los vehículos para el select
+    public function edit($id)
+    {
+        $registro = RegistroCombustible::findOrFail($id);
+        $vehiculos = RegistroVehicular::all(); // Obtiene todos los vehículos para el select
 
-    return view('registrocombustible.RCEdit', compact('registro', 'vehiculos'));
-}
-
-public function update(Request $request, $id)
-{
-    // Encuentra el registro de combustible por ID
-    $registro = RegistroCombustible::findOrFail($id);
-
-    // Valida los datos
-    $validated = $request->validate([
-        'fecha' => 'required|date',
-        'id_registro_vehicular' => 'required|exists:registro_vehiculars,id', // Verifica que el vehículo exista
-        'num_factura' => 'required|numeric', // Valida que el número de factura sea un número
-        'entradas' => 'nullable|numeric',
-        'salidas' => 'nullable|numeric',
-        'precio' => 'required|numeric',
-    ]);
-
-    // Actualiza el registro de combustible
-    $registro->fecha = $validated['fecha'];
-    $registro->id_registro_vehicular = $validated['id_registro_vehicular']; // Asigna el ID del vehículo
-    $registro->num_factura = $validated['num_factura']; // Asigna el número de factura
-    $registro->entradas = $validated['entradas'];
-    $registro->salidas = $validated['salidas'];
-    $registro->precio = $validated['precio'];
-
-    // Guarda los cambios
-    $registro->save();
-
-    // Redirige con un mensaje de éxito
-    return redirect()->route('registrocombustible.index')->with('success', 'Registro actualizado correctamente.');
-}
+        return view('registrocombustible.RCEdit', compact('registro', 'vehiculos'));
+    }
 
 
     public function destroy(string $id)

@@ -166,7 +166,7 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label class="form-label" for="observacion">Observación:</label>
+                <label class="form-label" for="observacion">Observación (opcional):</label>
                 <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="40">{{ old('observacion', $registro->observacion) }}</textarea>
                 @error('observacion')
                     <div class="text-danger">{{ $message }}</div>

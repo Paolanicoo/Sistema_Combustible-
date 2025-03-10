@@ -1,20 +1,8 @@
 @extends('Layouts.app')
 
-@section('titulo','Crear Vehiculo')
+@section('titulo','combustible')
 
 @section('contenido')
-
-@if ($errors->any())     {{--ESTA ES LA ALERTA DE LAS VALIDACIONES--}}
-
-
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
     
 <style>
@@ -118,9 +106,6 @@
             <div class="col-md-6 form-group">
                 <label for="fecha" class="form-label">Fecha:</label>
                 <input type="date" id="fecha" name="fecha" class="form-control" required readonly>
-                @error('fecha')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-6 form-group">
@@ -137,9 +122,6 @@
                         </option>
                     @endforeach
                 </select>
-                @error('id_registro_vehicular')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>
 
@@ -170,36 +152,23 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="num_factura" class="form-label">Número de factura:</label>
-                <input type="number" id="num_factura" name="num_factura" class="form-control" required>
-                @error('num_factura')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" id="num_factura" name="num_factura" class="form-control" required oninput="validarNumeroEntero(this)">
             </div>
-
             <div class="col-md-6 form-group">
                 <label for="entradas" class="form-label">Entrada (galones):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" >
-                @error('entradas')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="salidas" class="form-label">Salida (galones):</label>
-                <input type="text" id="salidas" name="salidas" class="form-control" >
-                @error('salidas')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" id="salidas" name="salidas" class="form-control" oninput="validarNumeroDecimal(this)">
             </div>
 
             <div class="col-md-6 form-group">
                 <label for="precio" class="form-label">Precio por galón:</label>
-                <input type="number" id="precio" name="precio" class="form-control" required>
-                @error('precio')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+                <input type="text" id="precio" name="precio" class="form-control" required oninput="validarNumeroDecimal(this)">
             </div>
         </div>
 
@@ -207,10 +176,33 @@
     </form>
 </div>
 
+<script>
+    function validarNumeroEntero(input) {
+        input.value = input.value.replace(/\D/g, ''); // Solo permite números enteros
+    }
+
+    function validarNumeroDecimal(input) {
+        input.value = input.value.replace(/[^0-9.]/g, ''); // Permite números y un solo punto
+        if ((input.value.match(/\./g) || []).length > 1) {
+            input.value = input.value.replace(/\.+$/, ""); // Evita múltiples puntos decimales
+        }
+    }
+</script>
+
+<script>
+    function validarNumeroEntero(input) {
+        input.value = input.value.replace(/\D/g, ''); // Elimina cualquier caracter que no sea número
+    }
+</script>
+
+<script>
+    function validarNumero(input) {
+        input.value = input.value.replace(/[^0-9.]/g, ''); // Permite solo números y punto decimal
+    }
+</script>
 
 
 <script>
-
     window.onload = function() {
         var today = new Date(); // Obtiene la fecha actual
         var dd = String(today.getDate()).padStart(2, '0'); // Día
