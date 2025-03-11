@@ -4,25 +4,24 @@
 
 @section('contenido')
 
-@if ($errors->any())     {{--ESTA ES LA ALERTA DE LAS VALIDACIONES--}}
-
-
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-
 <style>  
         /* Estilos generales */
         body {
             background-color: #f9f9f9;
             font-family: 'Arial', sans-serif;
         }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+            background-color: #f8d7da !important;
+        }
+
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+        }
+
 
         .card {
             border-radius: 10px;
@@ -190,25 +189,28 @@
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="empresa">Empresa:</label>
-                <select id="empresa" name="empresa" class="form-control">
-                    <option value="">Seleccione una opción</option>
-                    <option value="Taosa">TAOSA</option>
-                    <option value="Clasificadora">Clasificadora</option>
-                    <option value="Francisco Gusman">Francisco Gusman</option>
-                </select>
-            </div>
+            <label for="empresa">Empresa:</label>
+            <select id="empresa" name="empresa" class="form-control @error('empresa') is-invalid @enderror">
+                <option value="">Seleccione una opción</option>
+                <option value="Taosa">TAOSA</option>
+                <option value="Clasificadora">Clasificadora</option>
+                <option value="Francisco Gusman">Francisco Gusman</option>
+            </select>
+            @error('empresa')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="cog">Tipo:</label>
-                <select id="cog" name="cog" class="form-control">
-                    <option value="">Seleccione una opción</option>
-                    <option value="costo">Costo</option>
-                    <option value="gasto">Gasto</option>
-                </select>
-            </div>
+        <div class="col-md-6 mb-3">
+            <label for="cog">Tipo:</label>
+            <select id="cog" name="cog" class="form-control @error('cog') is-invalid @enderror">
+                <option value="">Seleccione una opción</option>
+                <option value="costo">Costo</option>
+                <option value="gasto">Gasto</option>
+            </select>
+            @error('cog')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="submit" class="btn btn-custom w-100">Guardar registro</button>

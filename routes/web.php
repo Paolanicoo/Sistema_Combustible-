@@ -7,6 +7,8 @@ use App\Http\Controllers\ResumenImporteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteConsumoController;
 use App\Http\Controllers\RegistroRolController;
+use App\Http\Controllers\UserController;
+
 
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
@@ -46,8 +48,11 @@ Route::middleware(['auth'])->group(function () {
     // Ruta para editar un rol
     Route::get('/roles/editar/{id}', [RegistroRolController::class, 'editarRol']);
 
-    // Ruta para desactivar un rol
-    Route::post('/roles/desactivar/{id}', [RegistroRolController::class, 'desactivarRol']);
+
+    //Rutas de user
+    Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user', [UserController::class, 'store'])->name('user.store');
 
 
     // MENÚ

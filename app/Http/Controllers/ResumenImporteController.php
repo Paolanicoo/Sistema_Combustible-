@@ -129,6 +129,9 @@ class ResumenImporteController extends Controller
             'total' => 'required',
             'empresa' => 'required',
             'cog' => 'required'
+        ], [
+            'empresa.required' => 'El campo Empresa es obligatorio.',
+            'cog.required' => 'El campo Tipo es obligatorio.',
         ]);
 
         try {
@@ -187,6 +190,9 @@ class ResumenImporteController extends Controller
             'empresa' => 'required|string',
             'cog' => 'required|in:Gasto,Costo',
 
+        ], [
+            'empresa.required' => 'El campo Empresa es obligatorio.',
+            'cog.required' => 'El campo Tipo es obligatorio.',
         ]);
 
         // Obtener el registro de combustible asociado
