@@ -40,14 +40,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/combustible', [RegistroCombustibleController::class, 'index'])->name('registrocombustible.index');
     Route::get('/importe', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
        
-    // RUTAS DE ROL
-    Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
+        // RUTAS DE ROL
+        Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
 
-    // Ruta para editar un rol
-    Route::get('/roles/editar/{id}', [RegistroRolController::class, 'editarRol']);
+    // Editar rol (Formulario de edición)
+    Route::get('/roles/{id}/editar', [RegistroRolController::class, 'edit'])->name('roles.edit');
 
-    // Ruta para desactivar un rol
-    Route::post('/roles/desactivar/{id}', [RegistroRolController::class, 'desactivarRol']);
+    // Actualizar rol (Procesar formulario)
+    Route::post('/roles/{id}/actualizar', [RegistroRolController::class, 'update'])->name('roles.update');
+    Route::put('/roles/{id}/actualizar', [RegistroRolController::class, 'update'])->name('roles.update');
+
+
 
 
     // MENÚ

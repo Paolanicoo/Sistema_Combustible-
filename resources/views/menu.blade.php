@@ -11,16 +11,13 @@
 
     <style>
 
-
 body {
-    background: url("{{ asset('img/clasi.jpg') }}") no-repeat center center fixed;
-            background-size: cover  !important;
-        }
-
-        /* Oculta el fondo permanentemente */
-.no-background {
-    background: none !important;
+    background: url('img/clasi.jpg') no-repeat center center fixed;
+    background-size: 1550px 750px; /* Ancho x Alto */
 }
+
+
+
         /* Estilo del sidebar */
         .sidebar {
             width: 250px;
@@ -122,6 +119,8 @@ body {
     <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="text-center">Gestión de Combustible</h4>
+        <hr>
+        <h5 class="text-center">Bienvenido, {{ Auth::user()->name }}</h5>
         <hr>
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">

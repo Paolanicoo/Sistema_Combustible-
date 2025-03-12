@@ -26,6 +26,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    
+
     // Si deseas usar el campo 'nombre' para la autenticación
     public function getAuthIdentifierName()
     {

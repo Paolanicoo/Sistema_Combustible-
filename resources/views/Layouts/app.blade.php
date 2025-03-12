@@ -13,9 +13,14 @@
 
 
 body {
-    background: url("{{ asset('img/clasi.jpg') }}") no-repeat center center fixed;
-            background-size: contain;
-        }
+    background: url('clasi.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+.content {
+    background: rgba(255, 255, 255, 0.8); /* Blanco con opacidad */
+    padding: 20px;
+    border-radius: 10px;
+}
 
         /* Oculta el fondo permanentemente */
 .no-background {

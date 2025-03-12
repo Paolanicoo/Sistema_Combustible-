@@ -6,6 +6,9 @@
      
     <title>@yield('titulo')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
@@ -22,7 +25,8 @@
 
         /* Título principal */
         .title-panel {
-            font-size: 36px;
+            font-family: 'Cinzel', serif;
+            font-size: 30px;
             font-weight: 700;
             color: #000;
             text-align: center;
@@ -31,7 +35,7 @@
             margin-bottom: 30px;
             padding: 10px 20px;
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+            background: rgba(255, 255, 255, 0.57); /* Fondo blanco semitransparente */
         }
 
         /* Contenedor del login */
@@ -57,7 +61,9 @@
 
     <!-- Título Principal -->
     <div class="title-panel">
-        Gestión de Combustible Grupo Plasencia
+        Gestión de Combustible<br>
+        Clasificadora y Exportadora de Tabaco S.A <br>
+        Grupo Plasencia
     </div>
 
     <!-- Contenedor del Login -->

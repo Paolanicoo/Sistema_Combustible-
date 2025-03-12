@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name'); // Usar 'name' en lugar de 'email'
             $table->string('password');
-            $table->string('role'); // Asegúrate de que tienes el campo 'role'
+            $table->string('role');
             $table->rememberToken();
             $table->timestamps();
         });

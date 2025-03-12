@@ -3,107 +3,93 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\RegistroRol; 
+use App\Models\RegistroRol;
 use Illuminate\Support\Facades\Auth;
 
 class RegistroRolController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
     }
 
-        public function getData(Request $request)
+    public function getData(Request $request)
     {
+        if (!Auth::user() || Auth::user()->role !== 'Administrador') {
+            return response()->json(['error' => 'No autorizado'], 403);
+        }
+    
         if ($request->ajax()) {
-            // Obtener los registros de la base de datos
-            $roles = RegistroRol::select('id', 'rol', 'estado')
-            ->get()
-            ->map(function($rol) {
-                // Convertir el valor booleano de 'estado' a texto
-                $rol->estado_texto = $rol->estado ? 'Activo' : 'Inactivo';
-                return $rol;
+            $roles = RegistroRol::select('id', 'rol', 'estado')->get()->map(function ($role) {
+                $role->estado_texto = $role->estado ? 'Activo' : 'Inactivo';
+                return $role;
             });
     
-            // Retornar los datos para DataTables
             return datatables()->of($roles)
-            ->addColumn('acciones', function ($rol) {
-                return '
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-warning btn-sm" onclick="editarRol('.$rol->id.')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
-                ';
-            })
-            ->rawColumns(['acciones']) // Permitir HTML en esta columna
-            ->toJson();
-
+                ->addColumn('acciones', function ($role) {
+                    return '
+                        <div class="d-flex justify-content-center">
+                            <a href="'.route('roles.edit', $role->id).'" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    ';
+                })
+                ->rawColumns(['acciones'])
+                ->toJson();
         }
-
-        // Si no es una solicitud AJAX, mostrar la vista
+    
         return view('RegistroRol.RRCreate');
     }
+    
 
-    public function desactivarRol($id)
-    {
-        // Encuentra el rol por ID
-        $rol = RegistroRol::find($id);
-    
-        if ($rol) {
-            // Realiza la acción de desactivar el rol
-            $rol->estado = 'desactivado'; // Cambia el campo según lo que necesites
-            $rol->save();
-    
-            // Devuelve una respuesta exitosa
-            return response()->json(['message' => 'Rol desactivado exitosamente']);
-        }
-    
-        // Si no se encuentra el rol, devuelve un error 404
-        return response()->json(['message' => 'Rol no encontrado'], 404);
-    }
-    
-    public function create()
-    {
-        //
+    // 🛠 MÉTODO PARA MOSTRAR FORMULARIO DE EDICIÓN
+        public function edit($id)
+{
+    if (!Auth::user() || Auth::user()->role !== 'Administrador') {
+        return abort(403, "No tienes permisos para editar roles.");
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    $role = RegistroRol::find($id);
+
+    if (!$role) {
+        return abort(404, "Rol no encontrado");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+    return view('RegistroRol.REEditarRol', compact('role'));
+}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function editarRol($id){
-        $rol = RegistroRol::find($id);
-            if ($rol) {
-                return response()->json($rol);
+
+    //  MÉTODO PARA ACTUALIZAR EL ROL
+    public function update(Request $request, $id)
+    {
+            // Validar que el campo estado venga correctamente
+            $request->validate([
+                'estado' => 'required|in:1,0',
+                'rol' => 'required|string'
+            ]);
+        
+            // Buscar el registro en RegistroRol, no en User
+            $role = RegistroRol::find($id);
+        
+            if (!$role) {
+                return back()->withErrors(['error' => 'Rol no encontrado.']);
             }
-        return response()->json(['message' => 'Rol no encontrado'], 404);
+        
+            // Si es el rol "Administrador" y se intenta desactivar, prevenirlo
+            if ($role->rol === 'Administrador' && $request->estado == 0) {
+                return back()->withErrors(['error' => 'No puedes desactivar al Administrador.']);
+            }
+        
+            // Actualizar los valores correctamente en la tabla registro_rols
+            $role->update([
+                'rol' => $request->rol,
+                'estado' => $request->estado
+            ]);
+        
+            return redirect()->route('registrorol.table')->with('success', 'Rol actualizado correctamente.');
+        
     }
+    
 
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }
