@@ -5,27 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Combustible</title>
 
+    <!-- Agregado el meta CSRF -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Bootstrap y FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-
-
-body {
-    background: url('clasi.jpg') no-repeat center center fixed;
-    background-size: cover;
-}
-.content {
-    background: rgba(255, 255, 255, 0.8); /* Blanco con opacidad */
-    padding: 20px;
-    border-radius: 10px;
-}
+        body {
+            background: url("{{ asset('img/clasi.jpg') }}") no-repeat center center fixed;
+            background-size: contain;
+        }
 
         /* Oculta el fondo permanentemente */
-.no-background {
-    background: none !important;
-}
+        .no-background {
+            background: none !important;
+        }
+
         /* Estilo del sidebar */
         .sidebar {
             width: 250px;
@@ -176,22 +173,21 @@ body {
             const content = document.querySelector('.content');
             const links = document.querySelectorAll('.nav-link');
 
-
             // Verificar si el fondo debe estar oculto
-        if (localStorage.getItem("hideBackground") === "true") {
-            document.body.classList.add("no-background");
-        }
+            if (localStorage.getItem("hideBackground") === "true") {
+                document.body.classList.add("no-background");
+            }
 
-        // Función para ocultar el fondo y guardar estado en localStorage
-        function removeBackground() {
-            document.body.classList.add("no-background");
-            localStorage.setItem("hideBackground", "true");
-        }
+            // Función para ocultar el fondo y guardar estado en localStorage
+            function removeBackground() {
+                document.body.classList.add("no-background");
+                localStorage.setItem("hideBackground", "true");
+            }
 
-        // Agregar evento a los enlaces del menú
-        links.forEach(link => {
-            link.addEventListener("click", removeBackground);
-        });
+            // Agregar evento a los enlaces del menú
+            links.forEach(link => {
+                link.addEventListener("click", removeBackground);
+            });
 
             // Mostrar u ocultar el menú lateral
             toggleBtn.addEventListener('click', function () {
@@ -224,3 +220,4 @@ body {
 
 </body>
 </html>
+

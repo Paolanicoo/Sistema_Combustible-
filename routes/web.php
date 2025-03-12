@@ -7,6 +7,8 @@ use App\Http\Controllers\ResumenImporteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteConsumoController;
 use App\Http\Controllers\RegistroRolController;
+use App\Http\Controllers\UserController;
+
 
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
@@ -45,12 +47,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Editar rol (Formulario de edición)
     Route::get('/roles/{id}/editar', [RegistroRolController::class, 'edit'])->name('roles.edit');
+    Route::post('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
+    Route::put('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
 
-    // Actualizar rol (Procesar formulario)
-    Route::post('/roles/{id}/actualizar', [RegistroRolController::class, 'update'])->name('roles.update');
-    Route::put('/roles/{id}/actualizar', [RegistroRolController::class, 'update'])->name('roles.update');
-
-
+    //Rutas de user
+    Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user', [UserController::class, 'store'])->name('user.store');
 
 
     // MENÚ
