@@ -1,16 +1,15 @@
 <div class="d-flex gap-2">
     @if(Auth::user()->role !== 'Visualizador')
-        <a href="{{ route('registrovehicular.RVEdit', $usuario->id) }}" class="btn btn-warning btn-sm" title="Editar">
+        <!-- Botón de edición -->
+        <button type="button" class="btn btn-warning btn-sm edit-btn" data-id="{{ $usuario->id }}" title="Editar">
             <i class="fas fa-edit"></i>
-        </a>
+        </button>
 
-        <!-- Botón de eliminación -->
         <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $usuario->id }}" title="Eliminar">
             <i class="fas fa-trash"></i>
         </button>
     @endif
 </div>
-
 <!-- Importar SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
