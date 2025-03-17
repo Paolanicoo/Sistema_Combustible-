@@ -47,6 +47,14 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    
+    const modalCrearUsuario = document.getElementById('modalCrearUsuario');
+    
+    modalCrearUsuario.addEventListener('hidden.bs.modal', function() {
+        // Devolver el foco a un elemento seguro fuera del modal
+        document.querySelector('body').focus();
+    });
+
     // Función para resetear el formulario y los errores
     function resetFormulario() {
         document.getElementById("formCrearUsuario").reset();
@@ -138,6 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error:", error);
             Swal.fire("Error", "Ocurrió un error al procesar la solicitud", "error");
         });
+
+        this.blur();
+        // Luego cerrar el modal
+        bootstrap.Modal.getInstance(document.getElementById('modalCrearUsuario')).hide();
     });
 });
 </script>

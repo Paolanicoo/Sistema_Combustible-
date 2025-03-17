@@ -54,6 +54,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
+    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::get('/user/getUser/{id}', [UserController::class, 'getUser'])->name('user.get');
+    Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
 
 
     // MENÚ
