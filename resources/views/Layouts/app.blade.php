@@ -125,6 +125,8 @@
     <div class="sidebar">
         <h4 class="text-center">Gestión de Combustible</h4>
         <hr>
+        <h5 class="text-center">Bienvenido, {{ Auth::user()->name }}</h5>
+        <hr>
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
             <i class="fas fa-car"></i> Registro Vehicular
@@ -141,11 +143,16 @@
 
         </a>
 
-        @if(Auth::user()->role === 'Administrador')
-        <a href="{{ route('registrorol.table') }}" class="nav-link">
-            <i class="fas fa-users"></i> Gestor de roles
+        @if( Auth::user()->role === 'Administrador')
+        <a href="{{ route('user.index') }}" class="nav-link">
+        <i class="fas fa-user"></i> Registro de Usuario
+        </a>
+
+         <a href="{{ route('registrorol.table') }}" class="nav-link">
+        <i class="fas fa-users"></i> Gestor de roles
         </a>
         @endif
+        
 
         @auth
         <form method="POST" action="{{ route('logout') }}" class="mt-3">

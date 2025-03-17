@@ -6,24 +6,21 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h3>Editar Rol</h3>
+            <h3>Editar Estado de Rol</h3>
         </div>
         <div class="card-body">
         <form action="{{ route('roles.update', $role->id) }}" method="POST">
          @csrf
          @method('PUT')
                 <div class="mb-3">
-                    <label for="rol" class="form-label">Rol</label>
-                    <select name="rol" id="rol" class="form-control" required>
-    <option value="Administrador" {{ $role->rol == 'Administrador' ? 'selected' : '' }}>Administrador</option>
-    <option value="Usuario" {{ $role->rol == 'Usuario' ? 'selected' : '' }}>Usuario</option>
-    <option value="Visualizador" {{ $role->rol == 'Visualizador' ? 'selected' : '' }}>Visualizador</option>
-</select>
+                <label for="rol" class="form-label">Rol</label>
+    <input type="text" class="form-control" id="rol" name="rol" value="{{ $role->rol }}" readonly>
 
-<select name="estado" id="estado" class="form-control" required>
-    <option value="1" {{ $role->estado ? 'selected' : '' }}>Activo</option>
-    <option value="0" {{ !$role->estado ? 'selected' : '' }}>Inactivo</option>
-</select>
+    <label for="estado" class="form-label">Estado</label>
+    <select name="estado" id="estado" class="form-control" required>
+        <option value="1" {{ $role->estado == 1 ? 'selected' : '' }}>Activo</option>
+        <option value="0" {{ $role->estado == 0 ? 'selected' : '' }}>Inactivo</option>
+    </select>
 
                 </div>
 

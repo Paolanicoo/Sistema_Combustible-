@@ -16,11 +16,11 @@
                         <div id="nombreFeedback" class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="rolUsuario" class="form-label">Rol</label>
+                    <label for="rolUsuario" class="form-label">Rol</label>
                         <select class="form-control" id="rolUsuario" name="rol" required>
                             <option value="">Seleccione un rol</option>
                             <option value="Administrador">Administrador</option>
-                            <option value="Editor">Editor</option>
+                            <option value="Usuario">Usuario</option>
                             <option value="Visualizador">Visualizador</option>
                         </select>
                         <div id="rolFeedback" class="invalid-feedback"></div>

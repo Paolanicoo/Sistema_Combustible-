@@ -9,4 +9,5 @@ class RegistroRol extends Model
 {
     use HasFactory;
     protected $fillable = ['rol', 'estado'];
+   
 }

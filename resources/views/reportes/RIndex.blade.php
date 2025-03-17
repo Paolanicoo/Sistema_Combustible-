@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('contenido')
+
+
 <div class="container">
     <h2 class="text-center">Reportes de Consumo</h2>
 
@@ -23,8 +25,11 @@
         <button id="btnExportarExcel" class="btn btn-success d-none">Exportar a Excel</button>
     </div>
 
+    
     <!-- Contenedor para la gráfica comparativa anual -->
-    <canvas id="graficaConsumoAnio" class="d-none"></canvas>
+    <canvas id="graficaConsumoAnio"  style="max-width: 400px; max-height: 300px; "></canvas>
+
+
 
     <!-- Contenedores para las tablas -->
     <div id="tablaConsumoAnio" class="d-none"></div>
@@ -126,15 +131,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById('btnExportarPDF').addEventListener('click', function () {
-        const { jsPDF } = window.jspdf;
-        let doc = new jsPDF();
-        let tipo = document.getElementById('tipoReporte').value;
-        let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
-        let tabla = document.getElementById(tablaId).querySelector("table");
-        doc.text("Reporte de Consumo", 20, 10);
-        doc.autoTable({ html: tabla });
-        doc.save("reporte_consumo.pdf");
-    });
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF();
+
+    let tipo = document.getElementById('tipoReporte').value;
+    let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
+    let tabla = document.getElementById(tablaId).querySelector("table");
+
+    // Definir el título según el tipo de reporte
+    let titulo = "Reporte de Consumo de Combustible";
+    switch (tipo) {
+        case "anio":
+            titulo += " - Anual";
+            break;
+        case "mes":
+            titulo += " - Mensual";
+            break;
+        case "asignado":
+            titulo += " - Por Asignado";
+            break;
+        case "equipo":
+            titulo += " - Por Equipo";
+            break;
+        default:
+            titulo += " - General";
+            break;
+    }
+
+    doc.text(titulo, 20, 10);
+    doc.autoTable({ html: tabla });
+    doc.save("reporte_consumo.pdf");
+});
+
+
 
     document.getElementById('btnExportarExcel').addEventListener('click', function () {
         let tipo = document.getElementById('tipoReporte').value;
