@@ -34,13 +34,52 @@ class RegistroCombustibleController extends Controller
 
     public function getTableData(Request $request)
     {
-        $combustibles = RegistroCombustible::with('vehiculos')->paginate(10); // Cargar la relación 'vehiculos'
-
-        return response()->json([
-            "draw" => $request->input('draw'),
-            "recordsTotal" => $combustibles->total(),
-            "recordsFiltered" => $combustibles->total(),
-            "data" => $combustibles->map(function ($registro) {
+        try {
+            $query = RegistroCombustible::with('vehiculos');
+            
+            // Obtener total de registros sin filtrar
+            $recordsTotal = $query->count();
+            
+            // Aplicar búsqueda global si existe
+            if ($request->has('search') && !empty($request->input('search.value'))) {
+                $searchValue = $request->input('search.value');
+                $query->where(function($q) use ($searchValue) {
+                    $q->where('fecha', 'like', "%{$searchValue}%")
+                    ->orWhere('num_factura', 'like', "%{$searchValue}%")
+                    ->orWhereHas('vehiculos', function($subQuery) use ($searchValue) {
+                        $subQuery->where('equipo', 'like', "%{$searchValue}%")
+                                ->orWhere('marca', 'like', "%{$searchValue}%")
+                                ->orWhere('placa', 'like', "%{$searchValue}%")
+                                ->orWhere('asignado', 'like', "%{$searchValue}%");
+                    });
+                });
+            }
+            
+            // Obtener total de registros después del filtrado
+            $recordsFiltered = $query->count();
+            
+            // Ordenar resultados - manejo simplificado para evitar errores
+            if ($request->has('order') && $request->input('order.0.column') !== null) {
+                $columnIndex = $request->input('order.0.column');
+                $columnName = $request->input("columns.{$columnIndex}.data");
+                $columnDirection = $request->input('order.0.dir', 'asc');
+                
+                // Manejar ordenamiento de columnas básicas o por defecto
+                if (in_array($columnName, ['fecha', 'num_factura', 'entradas', 'salidas'])) {
+                    $query->orderBy($columnName, $columnDirection);
+                }
+                // No intentamos ordenar por columnas relacionadas por ahora
+            } else {
+                // Ordenamiento por defecto si no se especifica
+                $query->orderBy('fecha', 'desc');
+            }
+            
+            // Paginación
+            $start = $request->input('start', 0);
+            $length = $request->input('length', 10);
+            $combustibles = $query->skip($start)->take($length)->get();
+            
+            $data = $combustibles->map(function ($registro) {
                 return [
                     'id' => $registro->id,
                     'fecha' => $registro->fecha,
@@ -51,12 +90,28 @@ class RegistroCombustibleController extends Controller
                     'num_factura' => $registro->num_factura,
                     'entradas' => $registro->entradas,
                     'salidas' => $registro->salidas,
-                    'acciones' => view('RegistroCombustible.actions', compact('registro'))->render() // Aquí se carga la vista de acciones
+                    'acciones' => view('RegistroCombustible.actions', compact('registro'))->render()
                 ];
-            })
-        ]);
+            });
+            
+            return response()->json([
+                "draw" => intval($request->input('draw', 1)),
+                "recordsTotal" => $recordsTotal,
+                "recordsFiltered" => $recordsFiltered,
+                "data" => $data
+            ]);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error en DataTables: ' . $e->getMessage());
+            return response()->json([
+                "draw" => intval($request->input('draw', 1)),
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => [],
+                "error" => "Error al procesar los datos: " . $e->getMessage()
+            ]);
+        }
     }
-
 
     public function create() 
     {
