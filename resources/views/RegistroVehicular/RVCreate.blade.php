@@ -105,11 +105,25 @@
         }
     </style>
 
-<div class="card">
-    <h4 class="centered-title">Registro de vehículo</h4>
+<div class="card p-4">
     <form method="post" action="{{ route('registrovehicular.store') }}">
         @csrf 
 
+        <!-- Contenedor para el título y los botones alineados -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="centered-title m-0">Registro de vehículo</h4>
+            <div class="d-flex gap-2">
+                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <!-- Botón de guardar dentro del formulario -->
+                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i class="fas fa-save"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Campos del formulario -->
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="equipo">Equipo:</label>
@@ -181,10 +195,9 @@
                 @enderror
             </div>
         </div>
-
-        <button type="submit" class="btn btn-custom">Guardar registro</button>
     </form>
 </div>
+
 
 <!-- Formateo de la placa -->
 <script>
@@ -220,12 +233,6 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-<div class="mb-3 d-flex justify-content-end">
-    <a href="javascript:window.history.back();" class="btn btn-secondary px-4 w-25 d-flex align-items-center justify-content-center">
-        <i class="fas fa-arrow-left me-2"></i> Regresar
-    </a>
-</div>
 
 @endsection
 
