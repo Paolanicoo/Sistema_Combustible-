@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 
     // RUTAS DE COMBUSTIBLE
     Route::get('registrocombustible/data', [RegistroCombustibleController::class, 'getTableData'])->name('registrocombustible.getTableData');
-
+    Route::get('registrocombustible', [RegistroCombustibleController::class, 'index'])->name('registrocombustible.index');
     Route::get('/combustible_create', [RegistroCombustibleController::class, 'create'])->name('registrocombustible.create');
     Route::post('/combustible_store', [RegistroCombustibleController::class, 'store'])->name('registrocombustible.store');
     Route::get('/registrocombustible/{id}/edit', [RegistroCombustibleController::class, 'edit'])->name('registrocombustible.edit');

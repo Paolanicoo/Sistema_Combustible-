@@ -76,40 +76,68 @@ class ResumenImporteController extends Controller
 
         return view('RegistroImporte.RIIndex', compact('registroimporte', 'combustibles', 'vehiculos'));
     }
+    
+    public function getTableData(Request $request){
+        $draw = $request->get('draw');
+        $start = $request->get('start', 0);
+        $length = $request->get('length', 10);
+        $search = $request->get('search.value', '');
 
-    public function getTableData(Request $request)
-    {
-        $importes = ResumenImporte::with('vehiculo', 'combustible')->paginate(10); // Cargar relaciones
+        // Iniciar la consulta con relaciones
+        $query = ResumenImporte::with(['vehiculo', 'combustible']);
+
+        // Aplicar búsqueda si hay término
+        if (!empty($search)) {
+            $query->whereHas('vehiculo', function ($q) use ($search) {
+                $q->where('equipo', 'like', "%{$search}%")
+                ->orWhere('marca', 'like', "%{$search}%")
+                ->orWhere('placa', 'like', "%{$search}%")
+                ->orWhere('asignado', 'like', "%{$search}%");
+            })->orWhereHas('combustible', function ($q) use ($search) {
+                $q->where('num_factura', 'like', "%{$search}%");
+            })->orWhere('empresa', 'like', "%{$search}%")
+            ->orWhere('cog', 'like', "%{$search}%");
+        }
+
+        // Contar registros filtrados y totales
+        $recordsFiltered = $query->count();
+        $recordsTotal = ResumenImporte::count();
+
+        // Ordenar y paginar
+        $importes = $query->skip($start)->take($length)->get();
+
+        // Formatear los datos correctamente
+        $data = $importes->map(function ($registro) {
+            return [
+                'mes' => \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F'),
+                'fecha' => $registro->fecha ?? 'N/A',
+                'equipo' => optional($registro->vehiculo)->equipo ?? 'N/A',
+                'marca' => optional($registro->vehiculo)->marca ?? 'N/A',
+                'placa' => optional($registro->vehiculo)->placa ?? 'N/A',
+                'asignado' => optional($registro->vehiculo)->asignado ?? 'N/A',
+                'num_factura' => optional($registro->combustible)->num_factura ?? 'N/A',
+                'consumo' => optional($registro->combustible)->entradas > 0
+                    ? optional($registro->combustible)->entradas
+                    : optional($registro->combustible)->salidas ?? 'N/A',
+                'precio' => optional($registro->combustible)->precio ?? 'N/A',
+                'total' => optional($registro->combustible)->precio * 
+                    (optional($registro->combustible)->entradas > 0
+                        ? optional($registro->combustible)->entradas
+                        : optional($registro->combustible)->salidas) ?? 'N/A',
+                'empresa' => $registro->empresa,
+                'tipo' => $registro->cog,
+                'acciones' => view('RegistroImporte.actions', compact('registro'))->render()
+            ];
+        });
 
         return response()->json([
-            "draw" => $request->input('draw'),
-            "recordsTotal" => $importes->total(),
-            "recordsFiltered" => $importes->total(),
-            "data" => $importes->map(function ($registro) {
-                return [
-                    'mes' => \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F'),
-                    'fecha' => $registro->combustible->fecha ?? 'N/A',
-                    'equipo' => $registro->vehiculo->equipo ?? 'N/A',
-                    'marca' => $registro->vehiculo->marca ?? 'N/A',
-                    'placa' => $registro->vehiculo->placa ?? 'N/A',
-                    'asignado' => $registro->vehiculo->asignado ?? 'N/A',
-                    'num_factura' => $registro->combustible->num_factura ?? 'N/A',
-                    'consumo' => optional($registro->combustible)->entradas > 0 
-                        ? optional($registro->combustible)->entradas 
-                        : optional($registro->combustible)->salidas ?? 'N/A',
-                    'precio' => $registro->combustible->precio ?? 'N/A',
-                    'total' => (optional($registro->combustible)->entradas > 0 
-                        ? optional($registro->combustible)->entradas 
-                        : optional($registro->combustible)->salidas) * optional($registro->combustible)->precio ?? 'N/A',
-                    'empresa' => $registro->empresa,
-                    'tipo' => $registro->cog,
-                    'acciones' => view('RegistroImporte.actions', compact('registro'))->render()
-                ];
-            })
+            "draw" => intval($draw),
+            "recordsTotal" => $recordsTotal,
+            "recordsFiltered" => $recordsFiltered,
+            "data" => $data
         ]);
     }
 
- 
 
     public function create()
     {
@@ -179,45 +207,36 @@ class ResumenImporteController extends Controller
         return view('registroimporte.RIEdit', compact('registro', 'vehiculos', 'combustibles'));
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $request->validate([
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required',
             'id_registro_combustible' => 'required',
+            'consumo' => 'nullable|numeric',
             'precio' => 'nullable|numeric',
             'total' => 'nullable|numeric',
             'empresa' => 'required|string',
             'cog' => 'required|in:Gasto,Costo',
-
         ], [
             'empresa.required' => 'El campo Empresa es obligatorio.',
             'cog.required' => 'El campo Tipo es obligatorio.',
         ]);
 
-        // Obtener el registro de combustible asociado
-        $combustible = RegistroCombustible::findOrFail($request->id_registro_combustible);
-
-        // Determinar el consumo (salidas o entradas)
-        $consumo = $combustible->salidas > 0 ? $combustible->salidas : $combustible->entradas;
-
-        // Calcular el total de la compra
-        $total = $consumo * ($request->precio ?? $combustible->precio);
-
-        // Actualizar el registro
+        // Actualizar el registro sin recalcular valores
         $registro = ResumenImporte::findOrFail($id);
         $registro->update([
             'fecha' => $request->fecha,
             'id_registro_vehicular' => $request->id_registro_vehicular,
             'id_registro_combustible' => $request->id_registro_combustible,
-            'precio' => $request->precio ?? $combustible->precio,
-            'total' => $total,
+            'consumo' => $request->consumo,
+            'precio' => $request->precio,
+            'total' => $request->total,
             'empresa' => $request->empresa,
             'cog' => $request->cog,
-            
         ]);
+        
         Alert::success('Éxito', '¡Registro actualizado correctamente!');
-        return redirect()->route('registroimporte.index', $id);
+        return redirect()->route('registroimporte.index');
     }
 
     public function destroy(string $id)
