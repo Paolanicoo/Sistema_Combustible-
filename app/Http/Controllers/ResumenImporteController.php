@@ -77,64 +77,88 @@ class ResumenImporteController extends Controller
         return view('RegistroImporte.RIIndex', compact('registroimporte', 'combustibles', 'vehiculos'));
     }
     
-    public function getTableData(Request $request){
-        $draw = $request->get('draw');
-        $start = $request->get('start', 0);
-        $length = $request->get('length', 10);
-        $search = $request->get('search.value', '');
-
-        // Iniciar la consulta con relaciones
+    public function getTableData(Request $request)
+    {
+        // Recoger todos los parámetros que DataTables envía
+        $draw = $request->input('draw');
+        $start = $request->input('start', 0);
+        $length = $request->input('length', 10);
+        $search = $request->input('search.value', '');
+        
+        // Parámetros de ordenamiento
+        $orderColumn = $request->input('order.0.column', 0);
+        $orderDir = $request->input('order.0.dir', 'asc');
+        $columns = $request->input('columns');
+        $columnName = $columns[$orderColumn]['name'] ?? 'id';
+        
+        // Consulta base
         $query = ResumenImporte::with(['vehiculo', 'combustible']);
-
-        // Aplicar búsqueda si hay término
+        
+        // Filtrado global
         if (!empty($search)) {
-            $query->whereHas('vehiculo', function ($q) use ($search) {
-                $q->where('equipo', 'like', "%{$search}%")
-                ->orWhere('marca', 'like', "%{$search}%")
-                ->orWhere('placa', 'like', "%{$search}%")
-                ->orWhere('asignado', 'like', "%{$search}%");
-            })->orWhereHas('combustible', function ($q) use ($search) {
-                $q->where('num_factura', 'like', "%{$search}%");
-            })->orWhere('empresa', 'like', "%{$search}%")
-            ->orWhere('cog', 'like', "%{$search}%");
+            $query->where(function($q) use ($search) {
+                $q->where('empresa', 'like', "%{$search}%")
+                ->orWhere('cog', 'like', "%{$search}%")
+                ->orWhereHas('vehiculo', function($vq) use ($search) {
+                    $vq->where('equipo', 'like', "%{$search}%")
+                        ->orWhere('marca', 'like', "%{$search}%")
+                        ->orWhere('placa', 'like', "%{$search}%")
+                        ->orWhere('asignado', 'like', "%{$search}%");
+                })
+                ->orWhereHas('combustible', function($cq) use ($search) {
+                    $cq->where('num_factura', 'like', "%{$search}%");
+                });
+            });
         }
-
-        // Contar registros filtrados y totales
-        $recordsFiltered = $query->count();
-        $recordsTotal = ResumenImporte::count();
-
-        // Ordenar y paginar
-        $importes = $query->skip($start)->take($length)->get();
-
-        // Formatear los datos correctamente
-        $data = $importes->map(function ($registro) {
+        
+        // Contar registros totales y filtrados
+        $totalRecords = ResumenImporte::count();
+        $filteredRecords = $query->count();
+        
+        // Ordenamiento (simplificado para evitar problemas)
+        if ($columnName == 'fecha' || $columnName == 'mes') {
+            $query->orderBy('fecha', $orderDir);
+        } elseif ($columnName == 'empresa') {
+            $query->orderBy('empresa', $orderDir);
+        } elseif ($columnName == 'tipo') {
+            $query->orderBy('cog', $orderDir);
+        }
+        
+        // Paginación
+        $data = $query->skip($start)->take($length)->get();
+        
+        // Formatear datos para DataTables
+        $formattedData = $data->map(function ($registro) {
+            // Calcular consumo y total
+            $consumo = optional($registro->combustible)->entradas > 0 
+                ? optional($registro->combustible)->entradas 
+                : optional($registro->combustible)->salidas;
+                
+            $total = $consumo * optional($registro->combustible)->precio;
+            
             return [
                 'mes' => \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F'),
-                'fecha' => $registro->fecha ?? 'N/A',
-                'equipo' => optional($registro->vehiculo)->equipo ?? 'N/A',
-                'marca' => optional($registro->vehiculo)->marca ?? 'N/A',
-                'placa' => optional($registro->vehiculo)->placa ?? 'N/A',
-                'asignado' => optional($registro->vehiculo)->asignado ?? 'N/A',
-                'num_factura' => optional($registro->combustible)->num_factura ?? 'N/A',
-                'consumo' => optional($registro->combustible)->entradas > 0
-                    ? optional($registro->combustible)->entradas
-                    : optional($registro->combustible)->salidas ?? 'N/A',
-                'precio' => optional($registro->combustible)->precio ?? 'N/A',
-                'total' => optional($registro->combustible)->precio * 
-                    (optional($registro->combustible)->entradas > 0
-                        ? optional($registro->combustible)->entradas
-                        : optional($registro->combustible)->salidas) ?? 'N/A',
+                'fecha' => $registro->combustible->fecha ?? 'N/A',
+                'equipo' => $registro->vehiculo->equipo ?? 'N/A',
+                'marca' => $registro->vehiculo->marca ?? 'N/A',
+                'placa' => $registro->vehiculo->placa ?? 'N/A',
+                'asignado' => $registro->vehiculo->asignado ?? 'N/A',
+                'num_factura' => $registro->combustible->num_factura ?? 'N/A',
+                'consumo' => $consumo ?? 'N/A',
+                'precio' => $registro->combustible->precio ?? 'N/A',
+                'total' => $total ?? 'N/A',
                 'empresa' => $registro->empresa,
                 'tipo' => $registro->cog,
                 'acciones' => view('RegistroImporte.actions', compact('registro'))->render()
             ];
         });
-
+        
+        // Retornar respuesta
         return response()->json([
-            "draw" => intval($draw),
-            "recordsTotal" => $recordsTotal,
-            "recordsFiltered" => $recordsFiltered,
-            "data" => $data
+            'draw' => intval($draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data' => $formattedData
         ]);
     }
 

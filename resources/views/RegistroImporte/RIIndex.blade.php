@@ -91,13 +91,15 @@
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $('#importes-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('registroimporte.table') }}',
+            ajax: {
+                url: '{{ route('registroimporte.table') }}',
+                type: 'GET'
+            },
             columns: [
                 {data: 'mes', name: 'mes'},
                 {data: 'fecha', name: 'fecha'},
@@ -133,6 +135,5 @@
         });
     });
 </script>
-
 @endsection
 
