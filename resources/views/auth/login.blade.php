@@ -70,7 +70,7 @@
     <div class="login-container">
         <div class="text-center">
             <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
-            <h3 class="fw-bold">Iniciar Sesión</h3>
+            <h3 class="fw-bold">Iniciar sesión</h3>
         </div>
 
         @if (session('success'))
@@ -93,7 +93,7 @@
     @csrf
 
     <div class="mb-3">
-        <label for="nombre" class="form-label fw-semibold">Nombre de Usuario</label>
+        <label for="nombre" class="form-label fw-semibold">Nombre de usuario</label>
         <input type="text" id="nombre" name="nombre" class="form-control" required>
     </div>
 
@@ -102,7 +102,7 @@
         <input type="password" id="password" name="password" class="form-control" required>
     </div>
 
-    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+    <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
 </form>
 
 

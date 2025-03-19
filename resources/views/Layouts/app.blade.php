@@ -164,14 +164,15 @@
         
 
         @auth
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
-            @csrf
-            <button type="submit" class="btn btn-danger w-100">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-            </button>
-        </form>
+            <form id="logout-form" method="POST" action="{{ route('logout') }}" class="mt-3">
+                @csrf
+                <button type="button" class="btn btn-danger w-100" id="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </button>
+            </form>
         @endauth
-    </div>
+
+
 
     <!-- Contenido principal -->
     <div class="content">
@@ -183,6 +184,27 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.getElementById('logout-button').addEventListener('click', function(event) {
+            event.preventDefault(); // Previene el envío del formulario inmediatamente
+
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Cerrar sesión terminará tu sesión actual!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si el usuario confirma, enviamos el formulario
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        });
+
+
         document.addEventListener("DOMContentLoaded", function () {
             const sidebar = document.querySelector('.sidebar');
             const toggleBtn = document.getElementById('toggleSidebar');
