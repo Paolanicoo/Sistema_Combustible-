@@ -59,7 +59,7 @@
 <div class="container mt-5">
     <div class="card p-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Resumen de Importes</b></h3>
+            <h3 class="card-title mb-0"><b>Resumen de importes</b></h3>
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm">
                     <i class="fas fa-plus"></i> Nuevo registro

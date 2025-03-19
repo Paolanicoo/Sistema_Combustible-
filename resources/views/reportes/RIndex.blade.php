@@ -4,7 +4,7 @@
 
 
 <div class="container">
-    <h2 class="text-center">Reportes de Consumo</h2>
+    <h2 class="text-center">Reportes de consumo</h2>
 
     <!-- Filtro para seleccionar reporte -->
     <div class="mb-4">

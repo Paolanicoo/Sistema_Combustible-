@@ -7,7 +7,7 @@
 <div class="container mt-5 pt-3">
     <div class="card p-3 mt-3">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Registro de Roles</b></h3>
+            <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
         </div>
         <div class="table-responsive mt-3">
             <table class="table table-bordered table-striped w-100" id="roles-table">
