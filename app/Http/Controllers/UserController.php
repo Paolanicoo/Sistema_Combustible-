@@ -38,38 +38,39 @@ class UserController extends Controller
     public function store(Request $request){
         try {
             $validator = Validator::make($request->all(), [
-                'nombre' => 'required|string|max:255', 
+                'nombre' => 'required|string|max:255|unique:users,name', 
                 'rol' => 'required|string|in:Administrador,Usuario,Visualizador',
                 'password' => 'required|min:6|confirmed',
             ], [
                 'nombre.required' => 'El nombre es obligatorio',
+                'nombre.unique' => 'Este nombre ya está en uso, elige otro', 
                 'rol.required' => 'El rol es obligatorio',
                 'password.required' => 'La contraseña es obligatoria',
                 'password.min' => 'La contraseña debe tener al menos 6 caracteres',
                 'password.confirmed' => 'Las contraseñas no coinciden'
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors()
+                    'errors' => $validator->errors() // Retorna errores correctamente
                 ], 422);
             }
-
-             // Guardar usuario correctamente
+    
+            // Guardar usuario correctamente
             $user = new User();
-            $user->name = $request->nombre; // Asegúrate de que el nombre coincide con el formulario
+            $user->name = $request->nombre;
             $user->role = $request->rol;
             $user->password = bcrypt($request->password);
             $user->save();
-
-
+    
             return response()->json(['success' => true, 'message' => 'Usuario creado correctamente']);
         } catch (\Exception $e) {
             \Log::error('Error al crear usuario: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Error al crear el usuario'], 500);
         }
     }
+    
 
     public function edit($id)
 {
@@ -84,25 +85,6 @@ class UserController extends Controller
     }
 }
 
-
-    public function actualizar($id) {
-        try {
-            $usuario = User::findOrFail($id);
-            return view('User.RUEdit', compact('usuario'));
-        } catch (\Exception $e) {
-            \Log::error('Error al buscar usuario: ' . $e->getMessage());
-            
-            // Si la solicitud es AJAX, responder con JSON
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Usuario no encontrado'
-                ], 404);
-            }
-    
-            return redirect()->route('user.index')->with('error', 'Usuario no encontrado');
-        }
-    }
     
 
     public function update(Request $request, $id) {

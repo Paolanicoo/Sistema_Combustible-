@@ -39,12 +39,12 @@ $(document).ready(function () {
             {data: 'estado_texto', name: 'estado_texto', orderable: false, searchable: false},
             {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
         ],
+        searching: false, // Desactiva la barra de búsqueda
         language: {
             "processing": "Procesando...",
             "lengthMenu": "Mostrar _MENU_ registros",
             "zeroRecords": "No se encontraron resultados",
             "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-            "search": "Buscar:",
             "paginate": {
                 "first": "Primero",
                 "last": "Último",
@@ -79,6 +79,7 @@ $(document).ready(function () {
     });
 });
 </script>
+
 
 
 @endsection

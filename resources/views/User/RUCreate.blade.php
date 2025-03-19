@@ -99,35 +99,40 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function enviarFormulario() {
-        let formData = new FormData(document.getElementById("formCrearUsuario"));
+    let formData = new FormData(document.getElementById("formCrearUsuario"));
 
-        fetch("{{ route('user.store') }}", {
-            method: "POST",
-            body: formData,
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+    fetch("{{ route('user.store') }}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                title: "Éxito",
+                text: data.message || "Usuario creado correctamente",
+                icon: "success",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                window.location.href = "{{ route('user.index') }}"; // Redirige a la lista de usuarios
+            });
+        } else {
+            let mensaje = "No se pudo crear el usuario";
+            if (data.errors) {
+                mensaje = Object.values(data.errors).flat().join("\n"); // Muestra errores correctamente
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                Swal.fire({
-                    title: "Éxito",
-                    text: data.message || "Usuario creado correctamente",
-                    icon: "success",
-                    confirmButtonText: "Aceptar"
-                }).then(() => {
-                    window.location.href = "{{ route('user.index') }}"; // Redirige a la lista de usuarios
-                });
-            } else {
-                Swal.fire("Error", data.message || "No se pudo crear el usuario", "error");
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            Swal.fire("Error", "Ocurrió un error al procesar la solicitud", "error");
-        });
-    }
+            Swal.fire("Error", mensaje, "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire("Error", "Ocurrió un error al procesar la solicitud", "error");
+    });
+}
+
 });
 </script>
 

@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mantiene el script original de edición de usuario
     document.getElementById("btnActualizarUsuario").addEventListener("click", function(event) {
-        event.preventDefault(); // 🚀 Evita que el formulario se envíe automáticamente
+        event.preventDefault(); // Evita que el formulario se envíe automáticamente
 
         Swal.fire({
             title: "¿Actualizar usuario?",
@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function enviarFormulario() {
         let form = document.getElementById("formEditarUsuario");
         let formData = new FormData(form);
-        formData.append("_method", "PUT"); // 🚀 Laravel requiere este método para actualizar
+        formData.append("_method", "PUT"); // Laravel requiere este método para actualizar
 
         fetch(form.action, {
-            method: "POST", // 🚀 Laravel espera POST con _method para PUT
+            method: "POST", // Laravel espera POST con _method para PUT
             body: formData,
             headers: {
                 "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     icon: "success",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
-                    window.location.href = "{{ route('user.index') }}"; // 🚀 Redirige correctamente
+                    window.location.href = "{{ route('user.index') }}"; //  Redirige correctamente
                 });
             } else {
                 let mensaje = "No se pudo actualizar el usuario";
