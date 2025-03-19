@@ -15,6 +15,8 @@ class RegistroCombustible extends Model
         'precio',
         'entradas',
         'salidas',
+        'num_factura', // Asegúrate de que este campo está aquí
+        'id_registro_vehicular',
     ];
 
     public function vehiculos() {

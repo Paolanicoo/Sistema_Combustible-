@@ -181,6 +181,35 @@ class RegistroCombustibleController extends Controller
         return view('registrocombustible.RCEdit', compact('registro', 'vehiculos'));
     }
 
+    public function update(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'fecha' => 'required|date',
+            'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
+            'num_factura' => 'required|integer',
+            'entradas' => 'nullable|numeric|min:0',
+            'salidas' => 'nullable|numeric|min:0',
+            'precio' => 'required|numeric|min:0',
+        ]);
+
+        // Buscar el registro en la base de datos
+        $registro = RegistroCombustible::findOrFail($id);
+
+        // Actualizar los campos
+        $registro->update([
+            'fecha' => $request->fecha,
+            'id_registro_vehicular' => $request->id_registro_vehicular,
+            'num_factura' => $request->num_factura,
+            'entradas' => $request->entradas,
+            'salidas' => $request->salidas,
+            'precio' => $request->precio,
+        ]);
+
+        // Redirigir con mensaje de éxito
+        return redirect()->route('registrocombustible.index', $id)->with('success', 'Registro actualizado correctamente.');
+    }
+
 
     public function destroy(string $id)
     {
