@@ -4,79 +4,81 @@
 
 @section('contenido')
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 <style>
-    .form-container {
-        max-width: 800px; /* Ancho moderado para el formulario */
-        margin: 30px auto; /* Subido 15px para que quede más cerca de la barra superior */
-        padding: 30px; /* Espacio dentro del formulario */
-        background-color: #f9f9f9; /* Fondo suave para el formulario */
-        border-radius: 8px; /* Bordes redondeados */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    /* Estilos generales */
+    body {
+        background-color: #f9f9f9;
+        font-family: 'Arial', sans-serif;
     }
 
-    .form-title {
-        text-align: center; /* Centra el título */
-        font-size: 24px; /* Tamaño del título */
-        margin-bottom: 20px; /* Espacio debajo del título */
-        color: #333; /* Color oscuro para el título */
+    /* Estilos para los campos deshabilitados */
+    .form-control[readonly], .form-control[disabled] {
+        background-color: #f0f0f0; /* Fondo gris claro */
+        color: #888; /* Texto gris para indicar que están bloqueados */
+        cursor: not-allowed; /* Cambiar el cursor para indicar que no son interactivos */
     }
 
-    .row {
-        display: flex; /* Usamos flexbox para el layout de las columnas */
-        flex-wrap: wrap; /* Para que los campos se acomoden si el tamaño es pequeño */
-        gap: 20px; /* Espacio entre las columnas */
+
+    .card {
+        border-radius: 10px;
+        max-width: 900px;
+        margin-top: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #f9f9f9;
+        padding: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        min-height: 450px; /* Aumenta la altura del formulario */
+        height: auto; /* Asegura que la altura se ajuste automáticamente al contenido */
     }
 
-    .col-md-6 {
-        flex: 1 1 48%; /* Cada columna ocupa el 48% del contenedor */
-    }
-
-    .form-group {
-        margin-bottom: 15px; /* Espacio entre los campos */
+    .card-header {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .form-label {
-        font-size: 16px; /* Tamaño de la etiqueta */
-        margin-bottom: 10px; /* Espacio debajo de la etiqueta */
-        display: block; /* Para que la etiqueta ocupe toda la línea */
-        font-weight: bold; /* Negrita */
-        color: black; /* Color del texto */
+        font-weight: bold;
     }
 
-    .form-control {
-        padding: 8px; 
-        margin-bottom: 10px; /* Espacio entre los campos */
-        border-radius: 4px; /* Bordes redondeados */
-        border: 1px solid #ccc; /* Borde gris suave */
-        width: 100%; /* Asegura que los campos ocupen todo el espacio disponible */
+    .form-control, .btn {
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 100%;
     }
 
-    .btn-submit {
+    .form-control:focus {
+        background-color: #fff;
+        border-color: #66afe9;
+        outline: none;
+    }
+
+    .btn-custom {
         background-color: rgb(53, 192, 88);
         color: white;
         padding: 10px 20px;
         border-radius: 10px;
         width: 100%;
         border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
     }
 
-    .btn-submit:hover {
-        background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
+    .btn-custom:hover {
+        background-color: rgb(40, 160, 70);
         transition: 0.3s ease-in-out;
-        color: black; /* Cambia el color del texto a negro */
+    }
 
+    .centered-title {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
     }
 
     .text-danger {
@@ -84,139 +86,131 @@
         font-size: 14px;
     }
 
-    .centered-title {
-        text-align: center;
-        font-weight: bold;
-        margin-top: 15px;
+    /* Estilo de los campos de formulario */
+    .form-container {
+        max-width: 900px;
+        margin: 30px auto;
+        padding: 30px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .header {
-        background-color: #333;
-        color: white;
-        padding: 15px 0;
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px; /* Aumenta el margen entre filas */
     }
 
-    input[readonly], select[disabled] {
-    background-color: #f0f0f0; /* Fondo gris claro */
-    cursor: not-allowed; /* Cursor de no permitido */
-    border: 1px solid #dcdcdc; /* Borde más suave */
-    color: #000; /* Color de texto normal */
+    .col-md-4 {
+        flex: 1 1 32%;
     }
-    
+
+    .col-md-3 {
+        flex: 1 1 23%;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    .small-input {
+        width: 100%;
+        font-size: 0.85rem;
+    }
 
 </style>
 
-
-<div class="form-container">
-    <h4 class="centered-title">Editar registro de combustible</h4>
-
-    <form method="post" action="{{ route('registrocombustible.update', $registro->id) }}" id="update-form">
+<div class="card p-4">
+    <form method="post" action="{{ route('registrocombustible.update', $registro->id) }}">
         @csrf
         @method('PUT')
 
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="fecha" class="form-label">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" value="{{ old('fecha', $registro->fecha) }}" required>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="centered-title m-0">Editar Registro de Combustible</h4>
+            <div class="d-flex gap-2">
+                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                <i class="fas fa-sync-alt"></i>
+                </button>
             </div>
-            <div class="col-md-6 form-group">
-                <label for="vehiculo" class="form-label">Seleccionar vehículo:</label>
+        </div>
+
+        <!-- Primera fila (3 campos) -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control" value="{{ $registro->fecha }}" required readonly>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="vehiculo">Seleccionar vehículo:</label>
                 <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
-                <option value="">Seleccione un vehículo</option>
-                @foreach($vehiculos as $vehiculo)
-                    <option value="{{ $vehiculo->id }}"
-                        data-equipo="{{ $vehiculo->equipo }}"
-                        data-placa="{{ $vehiculo->placa }}"
-                        data-marca="{{ $vehiculo->marca }}"
-                        data-asignado="{{ $vehiculo->asignado }}"
-                        {{ $vehiculo->id == old('id_registro_vehicular', $registro->id_registro_vehicular) ? 'selected' : '' }}>
-                        {{ $vehiculo->placa }} - {{ $vehiculo->marca }}
-                    </option>
-                @endforeach
-            </select>
+                    <option value="">Seleccione un vehículo</option>
+                    @foreach($vehiculos as $vehiculo)
+                        <option value="{{ $vehiculo->id }}" 
+                            data-equipo="{{ $vehiculo->equipo }}" 
+                            data-placa="{{ $vehiculo->placa }}" 
+                            data-marca="{{ $vehiculo->marca }}" 
+                            data-asignado="{{ $vehiculo->asignado }}" 
+                            {{ $vehiculo->id == $registro->id_registro_vehicular ? 'selected' : '' }}>
+                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="equipo">Equipo:</label>
+                <input type="text" id="equipo" name="equipo" class="form-control" value="{{ $registro->equipo }}" readonly>
             </div>
         </div>
 
+        <!-- Segunda fila (3 campos) -->
         <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="equipo" class="form-label">Equipo:</label>
-                <input type="text" id="equipo" name="equipo" class="form-control" readonly value="{{ old('equipo', $registro->vehiculo->equipo ?? '') }}">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="placa">Placa:</label>
+                <input type="text" id="placa" name="placa" class="form-control" value="{{ $registro->placa }}" readonly>
             </div>
 
-            <div class="col-md-6 form-group">
-                <label for="placa" class="form-label">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" readonly value="{{ old('placa', $registro->vehiculo->placa ?? '') }}">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="marca">Marca:</label>
+                <input type="text" id="marca" name="marca" class="form-control" value="{{ $registro->marca }}" readonly>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="asignado">Asignado:</label>
+                <input type="text" id="asignado" name="asignado" class="form-control" value="{{ $registro->asignado }}" readonly>
             </div>
         </div>
 
+        <!-- Tercera fila (4 campos) -->
         <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="marca" class="form-label">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" readonly value="{{ old('marca', $registro->vehiculo->marca ?? '') }}">
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="num_factura">Número de factura:</label>
+                <input type="text" id="num_factura" name="num_factura" class="form-control" value="{{ $registro->num_factura }}" required oninput="validarNumeroEntero(this)">
             </div>
 
-            <div class="col-md-6 form-group">
-                <label for="asignado" class="form-label">Asignado:</label>
-                <input type="text" id="asignado" name="asignado" class="form-control" readonly value="{{ old('asignado', $registro->vehiculo->asignado ?? '') }}">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="num_factura" class="form-label">Número de factura:</label>
-                <input type="number" id="num_factura" name="num_factura" class="form-control" value="{{ old('num_factura', $registro->num_factura) }}" required>
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="entradas">Entrada (galones):</label>
+                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ $registro->entradas }}" oninput="validarNumeroDecimal(this)">
             </div>
 
-            <div class="col-md-6 form-group">
-                <label for="entradas" class="form-label">Entrada (galones):</label>
-                <input type="number" id="entradas" name="entradas" class="form-control" value="{{ old('entradas', $registro->entradas) }}">
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="salidas">Salida (galones):</label>
+                <input type="text" id="salidas" name="salidas" class="form-control" value="{{ $registro->salidas }}" oninput="validarNumeroDecimal(this)">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label class="form-label" for="precio">Precio por galón:</label>
+                <input type="text" id="precio" name="precio" class="form-control" value="{{ $registro->precio }}" required oninput="validarNumeroDecimal(this)">
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="salidas" class="form-label">Salida (galones):</label>
-                <input type="number" id="salidas" name="salidas" class="form-control" value="{{ old('salidas', $registro->salidas) }}">
-            </div>
-
-            <div class="col-md-6 form-group">
-                <label for="precio" class="form-label">Precio por galón:</label>
-                <input type="number" id="precio" name="precio" class="form-control" value="{{ old('precio', $registro->precio) }}" required>
-            </div>
-        </div>
-        
-
-        <button type="submit" class="btn-submit">Actualizar registro</button>
     </form>
 </div>
-
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script type="text/javascript">
-    // Capturamos el evento de envío del formulario
-    document.getElementById('update-form').addEventListener('submit', function (e) {
-        // Evitamos que el formulario se envíe inmediatamente
-        e.preventDefault();
-
-        // Mostramos el SweetAlert de éxito
-        Swal.fire({
-            title: 'Registro actualizado',
-            text: 'El registro se ha actualizado correctamente.',
-            icon: 'success',
-            confirmButtonText: 'Aceptar'
-        }).then((result) => {
-            // Si el usuario acepta, enviamos el formulario
-            if (result.isConfirmed) {
-                this.submit();
-            }
-        });
-    });
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -261,12 +255,4 @@ document.addEventListener("DOMContentLoaded", function() {
     calcularTotal();
 });
 </script>
-
-<div class="mb-3 d-flex justify-content-end">
-    <a href="javascript:window.history.back();" class="btn btn-secondary px-4 w-25 d-flex align-items-center justify-content-center">
-
-        <i class="fas fa-arrow-left me-2"></i> Regresar
-    </a>
-</div>
-
 @endsection

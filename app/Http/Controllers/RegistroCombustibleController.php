@@ -192,22 +192,34 @@ class RegistroCombustibleController extends Controller
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
         ]);
-
+    
         // Buscar el registro en la base de datos
         $registro = RegistroCombustible::findOrFail($id);
-
-        // Actualizar los campos
-        $registro->update([
-            'fecha' => $request->fecha,
-            'id_registro_vehicular' => $request->id_registro_vehicular,
-            'num_factura' => $request->num_factura,
-            'entradas' => $request->entradas,
-            'salidas' => $request->salidas,
-            'precio' => $request->precio,
-        ]);
-
-        // Redirigir con mensaje de éxito
-        return redirect()->route('registrocombustible.index', $id)->with('success', 'Registro actualizado correctamente.');
+    
+        try {
+            // Actualizar los campos
+            $registro->update([
+                'fecha' => $request->fecha,
+                'id_registro_vehicular' => $request->id_registro_vehicular,
+                'num_factura' => $request->num_factura,
+                'entradas' => $request->entradas,
+                'salidas' => $request->salidas,
+                'precio' => $request->precio,
+            ]);
+    
+            // Mostrar mensaje de éxito con SweetAlert
+            Alert::success('Éxito', '¡Registro actualizado correctamente!');
+    
+            // Redirigir con mensaje de éxito
+            return redirect()->route('registrocombustible.index');
+    
+        } catch (\Exception $e) {
+            // Mostrar mensaje de error con SweetAlert si ocurre un problema
+            Alert::error('Error', 'Hubo un problema al actualizar el registro.');
+    
+            // Volver a la vista del formulario con los errores
+            return back();
+        }
     }
 
 
