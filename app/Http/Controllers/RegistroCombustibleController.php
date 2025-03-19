@@ -126,11 +126,12 @@ class RegistroCombustibleController extends Controller
         $request->validate([
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
-            'num_factura' => 'required|string|max:50',
+            'num_factura' => 'required|string|max:10',
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
         ], [
+            'num_factura' => 'El numero de factura es requerido.',
             'entradas.numeric' => 'El campo entradas debe ser un número.',
             'salidas.numeric' => 'El campo salidas debe ser un número.',
             'precio.numeric' => 'El campo precio debe ser un número.',

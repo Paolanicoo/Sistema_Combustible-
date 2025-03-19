@@ -114,7 +114,7 @@
 <div class="container mt-4">
     <div class="card p-4">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0">Nuevo Usuario</h4>
+            <h4 class="centered-title m-0">Registro de usuario</h4>
             <div class="d-flex gap-2">
                 <a href="{{ route('user.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
                     <i class="fas fa-arrow-left"></i>
