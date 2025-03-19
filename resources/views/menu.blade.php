@@ -21,7 +21,19 @@
             body {
                 background: url('img/PlasenciaSA.jpg') no-repeat center center fixed;
                 background-size: 1550px 780px; /* Ancho x Alto */
-                
+                transition: background 2s ease-in-out; /* Transición suave */
+            }
+
+            /* Pseudo-elemento para crear un efecto de degradado */
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+                z-index: -1;
             }
 
 
@@ -142,6 +154,24 @@
 <footer class="welcome-footer">
     <h1 class="text-center">Bienvenido, {{ Auth::user()->name }}</h1>
 </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let images = [
+            "img/151.jpeg",
+            "img/finca.jpg",
+            "img/149.jpg"
+        ];
+        
+        let index = 0;
+        
+        function changeBackground() {
+            document.body.style.backgroundImage = `url('${images[index]}')`;
+            index = (index + 1) % images.length; // Cicla las imágenes
+        }
+
+        setInterval(changeBackground, 5000); // Cambia cada 5 segundos
+    });
+</script>
 
 
 </body>
