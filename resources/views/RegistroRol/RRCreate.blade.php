@@ -54,26 +54,57 @@ $(document).ready(function () {
         }
     });
 
-    // Evento para cambiar el estado con AJAX
+   // Evento para cambiar el estado con AJAX
     $('#roles-table').on('click', '.toggleEstado', function() {
         let button = $(this);
         let roleId = button.data('id');
         let newEstado = button.data('estado') == 1 ? 0 : 1;
-
-        $.ajax({
-            url: "{{ route('roles.toggleEstado') }}",
-            method: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: roleId,
-                estado: newEstado
-            },
-            success: function(response) {
-                if (response.success) {
-                    table.ajax.reload(); // Recarga la tabla automáticamente
-                } else {
-                    alert(response.message); // Muestra alerta si no puede desactivar
-                }
+        let accion = newEstado == 1 ? 'activar' : 'desactivar';
+        let mensaje = newEstado == 1 ? 'activado' : 'desactivado';
+        
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: `¿Deseas ${accion} este rol?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('roles.toggleEstado') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: roleId,
+                        estado: newEstado
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire(
+                                '¡Listo!',
+                                `El rol ha sido ${mensaje} correctamente.`,
+                                'success'
+                            );
+                            table.ajax.reload(); // Recarga la tabla automáticamente
+                        } else {
+                            Swal.fire(
+                                'Error',
+                                response.message || 'Ha ocurrido un error.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error',
+                            'Ha ocurrido un error en la operación.',
+                            'error'
+                        );
+                    }
+                });
             }
         });
     });
