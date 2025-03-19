@@ -127,12 +127,15 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-    <a href="{{ route('menu') }}" class="nav-link text-center">
-        <h4>Gestión de Combustible</h4>
-    </a>
+        <a href="{{ route('menu') }}" class="nav-link text-center">
+            <h4>Gestión de Combustible</h4>
+        </a>
         <hr>
-        <h5 class="text-center">{{ Auth::user()->name }}</h5>
-        <hr>
+            <h5 class="text-center">
+                <i class="fas fa-user"></i> {{ Auth::user()->name }}
+            </h5>
+            <hr>
+
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
             <i class="fas fa-car"></i> Registro Vehicular
