@@ -13,6 +13,8 @@
     <!-- Bootstrap y FontAwesome -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
 
     <style>
 
@@ -100,17 +102,22 @@
         }
 
         /* Estilos para el mensaje de bienvenida */
-            .welcome-footer h1{
-                position: fixed;
-                bottom: 40px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 100%;
-                text-align: center;
-                font-size: 40px; /* Aumentar el tamaño de la letra */
-                padding: 10px 0;
-                color: white;
-            }
+        .welcome-footer h1 {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            font-size: 40px;
+            padding: 15px 0; /* Aumentar el espacio arriba y abajo */
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px; /* Espaciado entre letras */
+            word-spacing: 5px; /* Espaciado entre palabras */
+        }
+
+
 
 
         /* Ajuste para móviles */
