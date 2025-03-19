@@ -164,9 +164,9 @@
         
 
         @auth
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+        <form method="POST" action="{{ route('logout') }}" id="logout-form" class="mt-3">
             @csrf
-            <button type="submit" class="btn btn-danger w-100">
+            <button type="button" id="logout-button" class="btn btn-danger w-100">
                 <i class="fas fa-sign-out-alt"></i> Cerrar sesión
             </button>
         </form>
@@ -181,6 +181,29 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#logout-button').on('click', function(e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: '¿Cerrar sesión?',
+                    text: '¿Estás seguro que deseas cerrar tu sesión?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, cerrar sesión',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Enviar formulario de logout
+                        document.getElementById('logout-form').submit();
+                    }
+                });
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
