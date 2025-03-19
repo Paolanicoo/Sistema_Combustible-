@@ -38,12 +38,8 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0"><b>Registro de usuarios</b></h3>
             @if(Auth::user()->role !== 'Visualizador')
-            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario">
             <a href="{{ route('user.create') }}" class="btn btn-info btn-sm">
-    <i class="fas fa-plus"></i> Nuevo Registro
-</a>
-            </button>
-
+                    <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif
         </div>

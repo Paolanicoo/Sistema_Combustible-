@@ -4,10 +4,26 @@
 
 @section('contenido')
 
-<div class="container mt-5 pt-3">
-    <div class="card p-3 mt-3">
+<style>
+    /* Ajustar el ancho de la columna "Acciones" */
+    .acciones-columna {
+        width: 120px;
+        text-align: center;
+    }
+
+    /* Centrar los botones en la columna de acciones */
+    .acciones-columna div {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+</style>
+
+<!-- Ajustamos el margen superior para que suba un poco -->
+<div class="container mt-5">
+    <div class="card p-4">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Registro de Roles</b></h3>
+            <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
         </div>
         <div class="table-responsive mt-3">
             <table class="table table-bordered table-striped w-100" id="roles-table">
@@ -54,26 +70,57 @@ $(document).ready(function () {
         }
     });
 
-    // Evento para cambiar el estado con AJAX
+   // Evento para cambiar el estado con AJAX
     $('#roles-table').on('click', '.toggleEstado', function() {
         let button = $(this);
         let roleId = button.data('id');
         let newEstado = button.data('estado') == 1 ? 0 : 1;
-
-        $.ajax({
-            url: "{{ route('roles.toggleEstado') }}",
-            method: "POST",
-            data: {
-                _token: "{{ csrf_token() }}",
-                id: roleId,
-                estado: newEstado
-            },
-            success: function(response) {
-                if (response.success) {
-                    table.ajax.reload(); // Recarga la tabla automáticamente
-                } else {
-                    alert(response.message); // Muestra alerta si no puede desactivar
-                }
+        let accion = newEstado == 1 ? 'activar' : 'desactivar';
+        let mensaje = newEstado == 1 ? 'activado' : 'desactivado';
+        
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: `¿Deseas ${accion} este rol?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('roles.toggleEstado') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: roleId,
+                        estado: newEstado
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire(
+                                '¡Listo!',
+                                `El rol ha sido ${mensaje} correctamente.`,
+                                'success'
+                            );
+                            table.ajax.reload(); // Recarga la tabla automáticamente
+                        } else {
+                            Swal.fire(
+                                'Error',
+                                response.message || 'Ha ocurrido un error.',
+                                'error'
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error',
+                            'Ha ocurrido un error en la operación.',
+                            'error'
+                        );
+                    }
+                });
             }
         });
     });

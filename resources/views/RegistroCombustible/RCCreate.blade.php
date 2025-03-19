@@ -126,7 +126,7 @@
         @csrf
 
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0">Crear Registro de Combustible</h4>
+            <h4 class="centered-title m-0">Registro de combustible</h4>
             <div class="d-flex gap-2">
                 <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
                     <i class="fas fa-arrow-left"></i>

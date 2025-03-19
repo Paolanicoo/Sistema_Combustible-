@@ -49,7 +49,7 @@
         }
 
         .sidebar .nav-link:hover {
-            background: #28a745;
+            background: #17a2b8;
             color: white;
         }
 
@@ -138,10 +138,10 @@
 
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
-            <i class="fas fa-car"></i> Registro Vehicular
+            <i class="fas fa-car"></i> Registro vehicular
         </a>
         <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-            <i class="fas fa-gas-pump"></i> Registro Combustible
+            <i class="fas fa-gas-pump"></i> Registro combustible
         </a>
         <a href="{{ route('registroimporte.index') }}" class="nav-link">
             <i class="fas fa-dollar-sign"></i> Importe
@@ -154,7 +154,7 @@
 
         @if( Auth::user()->role === 'Administrador')
         <a href="{{ route('user.index') }}" class="nav-link">
-        <i class="fas fa-user"></i> Registro de Usuario
+        <i class="fas fa-user"></i> Registro de usuario
         </a>
 
          <a href="{{ route('registrorol.table') }}" class="nav-link">
@@ -164,10 +164,10 @@
         
 
         @auth
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
+        <form method="POST" action="{{ route('logout') }}" id="logout-form" class="mt-3">
             @csrf
-            <button type="submit" class="btn btn-danger w-100">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            <button type="button" id="logout-button" class="btn btn-danger w-100">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
             </button>
         </form>
         @endauth
@@ -181,6 +181,29 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+        $(document).ready(function() {
+            $('#logout-button').on('click', function(e) {
+                e.preventDefault();
+                
+                Swal.fire({
+                    title: '¿Cerrar sesión?',
+                    text: '¿Estás seguro que deseas cerrar tu sesión?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, cerrar sesión',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Enviar formulario de logout
+                        document.getElementById('logout-form').submit();
+                    }
+                });
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -222,4 +245,3 @@
 
 </body>
 </html>
-
