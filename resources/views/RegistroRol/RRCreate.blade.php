@@ -4,8 +4,24 @@
 
 @section('contenido')
 
-<div class="container mt-5 pt-3">
-    <div class="card p-3 mt-3">
+<style>
+    /* Ajustar el ancho de la columna "Acciones" */
+    .acciones-columna {
+        width: 120px;
+        text-align: center;
+    }
+
+    /* Centrar los botones en la columna de acciones */
+    .acciones-columna div {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+</style>
+
+<!-- Ajustamos el margen superior para que suba un poco -->
+<div class="container mt-5">
+    <div class="card p-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
         </div>
