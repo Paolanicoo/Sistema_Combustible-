@@ -62,7 +62,7 @@
             <h3 class="card-title mb-0"><b>Resumen de Importes</b></h3>
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm">
-                    <i class="fas fa-plus"></i> Agregar nuevo
+                    <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif
         </div>
