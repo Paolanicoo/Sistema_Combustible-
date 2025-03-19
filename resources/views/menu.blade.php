@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('titulo', 'Menú')
+
+@section('contenido')
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,10 +16,11 @@
 
     <style>
 
-body {
-    background: url('img/clasi.jpg') no-repeat center center fixed;
-    background-size: 1550px 750px; /* Ancho x Alto */
-}
+            body {
+                background: url('img/PlasenciaSA.jpg') no-repeat center center fixed;
+                background-size: 1550px 780px; /* Ancho x Alto */
+                
+            }
 
 
 
@@ -93,6 +99,20 @@ body {
             left: 10px;
         }
 
+        /* Estilos para el mensaje de bienvenida */
+            .welcome-footer h1{
+                position: fixed;
+                bottom: 40px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+                text-align: center;
+                font-size: 40px; /* Aumentar el tamaño de la letra */
+                padding: 10px 0;
+                color: white;
+            }
+
+
         /* Ajuste para móviles */
         @media (max-width: 768px) {
             .sidebar {
@@ -111,112 +131,11 @@ body {
 </head>
 <body>
 
-    <!-- Botón para mostrar/ocultar el menú -->
-    <button id="toggleSidebar">
-        <i class="fas fa-bars"></i>
-    </button>
+<!-- Mensaje de bienvenida en la parte inferior -->
+<footer class="welcome-footer">
+    <h1 class="text-center">Bienvenido, {{ Auth::user()->name }}</h1>
+</footer>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h4 class="text-center">Gestión de Combustible</h4>
-        <hr>
-        <h5 class="text-center">Bienvenido, {{ Auth::user()->name }}</h5>
-        <hr>
-
-
-        <a href="{{ route('registrovehicular.index') }}" class="nav-link">
-            <i class="fas fa-car"></i> Registro Vehicular
-        </a>
-        <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-            <i class="fas fa-gas-pump"></i> Registro Combustible
-        </a>
-        <a href="{{ route('registroimporte.index') }}" class="nav-link">
-            <i class="fas fa-dollar-sign"></i> Importe
-        </a>
-        <a href="{{ route('RIndex') }}" class="nav-link">
-            <i class="fas fa-chart-bar"></i> Reportes
-        </a>
-        @if( Auth::user()->role === 'Administrador')
-        <a href="{{ route('user.index') }}" class="nav-link">
-        <i class="fas fa-user"></i> Registro de Usuario
-        </a>
-
-         <a href="{{ route('registrorol.table') }}" class="nav-link">
-        <i class="fas fa-users"></i> Gestor de roles
-        </a>
-        @endif
-        
-        @auth
-        <form method="POST" action="{{ route('logout') }}" class="mt-3">
-            @csrf
-            <button type="submit" class="btn btn-danger w-100">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </button>
-        </form>
-        @endauth
-    </div>
-
-    <!-- Contenido principal -->
-    <div class="content">
-        <div class="container mt-4">
-            @yield('contenido')
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const sidebar = document.querySelector('.sidebar');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const content = document.querySelector('.content');
-            const links = document.querySelectorAll('.nav-link');
-
-
-            // Verificar si el fondo debe estar oculto
-        if (localStorage.getItem("hideBackground") === "true") {
-            document.body.classList.add("no-background");
-        }
-
-        // Función para ocultar el fondo y guardar estado en localStorage
-        function removeBackground() {
-            document.body.classList.add("no-background");
-            localStorage.setItem("hideBackground", "true");
-        }
-
-        // Agregar evento a los enlaces del menú
-        links.forEach(link => {
-            link.addEventListener("click", removeBackground);
-        });
-
-            // Mostrar u ocultar el menú lateral
-            toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('hidden');
-                content.classList.toggle('full-width');
-                toggleBtn.classList.toggle('hidden');
-            });
-
-            // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
-            links.forEach(link => {
-                link.addEventListener('click', function () {
-                    if (window.innerWidth <= 768) {
-                        sidebar.classList.add('hidden');
-                        content.classList.add('full-width');
-                        toggleBtn.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Mostrar el botón cuando el menú esté oculto en pantallas pequeñas
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('hidden');
-                    content.classList.remove('full-width');
-                    toggleBtn.classList.remove('hidden');
-                }
-            });
-        });
-    </script>
 
 </body>
 </html>

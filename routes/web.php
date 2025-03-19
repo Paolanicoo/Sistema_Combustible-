@@ -49,15 +49,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/roles/{id}/editar', [RegistroRolController::class, 'edit'])->name('roles.edit');
     Route::post('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
     Route::put('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
+    Route::get('/roles/data', [RegistroRolController::class, 'getData'])->name('registrorol.table');
+Route::post('/roles/toggleEstado', [RegistroRolController::class, 'toggleEstado'])->name('roles.toggleEstado');
+
+
 
     //Rutas de user
     Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
-    Route::get('/user', [UserController::class, 'index'])->name('user.index');
-    Route::post('/user', [UserController::class, 'store'])->name('user.store');
-    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-    Route::get('/user/getUser/{id}', [UserController::class, 'getUser'])->name('user.get');
-    Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create'); // Nueva ruta para formulario de creación
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
+Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
 
 
 

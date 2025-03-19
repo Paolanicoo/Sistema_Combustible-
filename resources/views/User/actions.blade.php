@@ -1,9 +1,10 @@
 <div class="d-flex gap-2">
     @if(Auth::user()->role !== 'Visualizador')
         <!-- Botón de edición -->
-        <button type="button" class="btn btn-warning btn-sm edit-btn" data-id="{{ $usuario->id }}" title="Editar">
-            <i class="fas fa-edit"></i>
-        </button>
+        <a href="{{ route('user.edit', $usuario->id) }}" class="btn btn-warning btn-sm" title="Editar">
+    <i class="fas fa-edit"></i>
+</a>
+
 
         <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $usuario->id }}" title="Eliminar">
             <i class="fas fa-trash"></i>
@@ -30,7 +31,7 @@
             if (result.isConfirmed) {
                 // Si se confirma, realiza la petición AJAX
                 $.ajax({
-                    url: '{{ route("registrovehicular.destroy", ":id") }}'.replace(':id', usuarioId),  // Usar la ruta con el ID del registro
+                    url: '{{ route("user.destroy", ":id") }}'.replace(':id', usuarioId),  // Usar la ruta con el ID del registro
                     type: 'DELETE',  // Método DELETE
                     data: {
                         _token: '{{ csrf_token() }}',  // Token CSRF

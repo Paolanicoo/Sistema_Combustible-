@@ -8,26 +8,44 @@
         <div class="card-header">
             <h3>Editar Estado de Rol</h3>
         </div>
-        <div class="card-body">
-        <form action="{{ route('roles.update', $role->id) }}" method="POST">
-         @csrf
-         @method('PUT')
-                <div class="mb-3">
-                <label for="rol" class="form-label">Rol</label>
-    <input type="text" class="form-control" id="rol" name="rol" value="{{ $role->rol }}" readonly>
+        <div class="card-body text-center">
+            <h4>{{ $role->rol }}</h4>
 
-    <label for="estado" class="form-label">Estado</label>
-    <select name="estado" id="estado" class="form-control" required>
-        <option value="1" {{ $role->estado == 1 ? 'selected' : '' }}>Activo</option>
-        <option value="0" {{ $role->estado == 0 ? 'selected' : '' }}>Inactivo</option>
-    </select>
+            <button id="toggleEstado" class="btn {{ $role->estado ? 'btn-success' : 'btn-danger' }}" 
+                data-id="{{ $role->id }}" data-estado="{{ $role->estado }}">
+                {{ $role->estado ? 'Activo' : 'Inactivo' }}
+            </button>
 
-                </div>
-
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                <a href="{{ route('registrorol.table') }}" class="btn btn-secondary">Cancelar</a>
-            </form>
+            <a href="{{ route('registrorol.table') }}" class="btn btn-secondary mt-3">Volver</a>
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#toggleEstado').click(function() {
+            let button = $(this);
+            let roleId = button.data('id');
+            let newEstado = button.data('estado') == 1 ? 0 : 1;
+
+            $.ajax({
+                url: "{{ route('roles.toggleEstado') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id: roleId,
+                    estado: newEstado
+                },
+                success: function(response) {
+                    if (response.success) {
+                        button.data('estado', newEstado);
+                        button.text(newEstado ? 'Activo' : 'Inactivo');
+                        button.toggleClass('btn-success btn-danger');
+                    }
+                }
+            });
+        });
+    });
+</script>
 @endsection

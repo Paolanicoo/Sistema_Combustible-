@@ -17,7 +17,8 @@ class User extends Authenticatable
     protected $table = 'users';
 
     // Campos que se pueden asignar masivamente
-    protected $fillable = ['name', 'password', 'role'];
+    protected $fillable = ['name', 'role', 'password'];
+
 
     // Campos que se deben ocultar (no serán accesibles desde las respuestas)
     protected $hidden = ['password', 'remember_token'];

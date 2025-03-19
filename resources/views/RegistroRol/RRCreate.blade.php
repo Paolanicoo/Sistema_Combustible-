@@ -30,24 +30,14 @@
 
 <script>
 $(document).ready(function () {
-    $('#roles-table').DataTable({
+    let table = $('#roles-table').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{{ route('registrorol.table') }}',
         columns: [
             {data: 'rol', name: 'rol'},
-            {data: 'estado_texto', name: 'estado_texto'},
-            {
-                data: 'id',
-                name: 'acciones',
-                orderable: false,
-                searchable: false,
-                render: function (data, type, row) {
-                    return `<a href="{{ url('/roles/') }}/${data}/editar" class="btn btn-warning btn-sm" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </a>`;
-                }
-            }
+            {data: 'estado_texto', name: 'estado_texto', orderable: false, searchable: false},
+            {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
         ],
         language: {
             "processing": "Procesando...",
@@ -63,7 +53,32 @@ $(document).ready(function () {
             }
         }
     });
+
+    // Evento para cambiar el estado con AJAX
+    $('#roles-table').on('click', '.toggleEstado', function() {
+        let button = $(this);
+        let roleId = button.data('id');
+        let newEstado = button.data('estado') == 1 ? 0 : 1;
+
+        $.ajax({
+            url: "{{ route('roles.toggleEstado') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: roleId,
+                estado: newEstado
+            },
+            success: function(response) {
+                if (response.success) {
+                    table.ajax.reload(); // Recarga la tabla automáticamente
+                } else {
+                    alert(response.message); // Muestra alerta si no puede desactivar
+                }
+            }
+        });
+    });
 });
 </script>
+
 
 @endsection

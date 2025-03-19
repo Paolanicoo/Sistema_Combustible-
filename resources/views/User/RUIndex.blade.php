@@ -6,7 +6,6 @@
 
 <!--asegura que los mensajes de SweetAlert se muestren -->
 @include('sweetalert::alert')
-@include('User.RUCreate')
 
 <meta name="csrf-token" content="{{ csrf_token() }}"> 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -39,7 +38,9 @@
             <h3 class="card-title mb-0"><b>Registro de usuarios</b></h3>
             @if(Auth::user()->role !== 'Visualizador')
             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalCrearUsuario">
-                <i class="fas fa-plus"></i> Nuevo registro
+            <a href="{{ route('user.create') }}" class="btn btn-info btn-sm">
+    <i class="fas fa-plus"></i> Nuevo Registro
+</a>
             </button>
 
                 </a>

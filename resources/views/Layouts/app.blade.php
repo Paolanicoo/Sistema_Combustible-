@@ -25,15 +25,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body {
-            background: url("{{ asset('img/clasi.jpg') }}") no-repeat center center fixed;
-            background-size: contain;
-        }
-
-        /* Oculta el fondo permanentemente */
-        .no-background {
-            background: none !important;
-        }
+        
 
         /* Estilo del sidebar */
         .sidebar {
@@ -137,7 +129,7 @@
     <div class="sidebar">
         <h4 class="text-center">Gestión de Combustible</h4>
         <hr>
-        <h5 class="text-center">Bienvenido, {{ Auth::user()->name }}</h5>
+        <h5 class="text-center">{{ Auth::user()->name }}</h5>
         <hr>
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
@@ -192,21 +184,7 @@
             const content = document.querySelector('.content');
             const links = document.querySelectorAll('.nav-link');
 
-            // Verificar si el fondo debe estar oculto
-            if (localStorage.getItem("hideBackground") === "true") {
-                document.body.classList.add("no-background");
-            }
-
-            // Función para ocultar el fondo y guardar estado en localStorage
-            function removeBackground() {
-                document.body.classList.add("no-background");
-                localStorage.setItem("hideBackground", "true");
-            }
-
-            // Agregar evento a los enlaces del menú
-            links.forEach(link => {
-                link.addEventListener("click", removeBackground);
-            });
+            
 
             // Mostrar u ocultar el menú lateral
             toggleBtn.addEventListener('click', function () {

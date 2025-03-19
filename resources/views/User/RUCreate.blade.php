@@ -1,155 +1,134 @@
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Modal para crear un nuevo usuario -->
-<div class="modal fade" id="modalCrearUsuario" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Crear Nuevo Usuario</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formCrearUsuario">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="nombreUsuario" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombreUsuario" name="nombre" required>
-                        <div id="nombreFeedback" class="invalid-feedback"></div>
+@extends('layouts.app')
+
+@section('titulo', 'Crear Usuario')
+
+@section('contenido')
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="mb-0">Crear Nuevo Usuario</h2>
+            <a href="{{ route('user.index') }}" class="btn btn-light btn-sm">Volver</a>
+        </div>
+        <div class="card-body">
+            <form id="formCrearUsuario">
+                @csrf
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre:</label>
+                    <input type="text" id="nombreUsuario" name="nombre" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Rol:</label>
+                    <select id="rolUsuario" name="rol" class="form-select" required>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Usuario">Usuario</option>
+                        <option value="Visualizador">Visualizador</option>
+                    </select>
+                </div>
+
+                <!-- Campo de contraseña con botón de ojo -->
+                <div class="mb-3">
+                    <label class="form-label">Contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" id="passwordUsuario" name="password" class="form-control" required>
+                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="passwordUsuario">
+                            <i class="fa fa-eye"></i>
+                        </button>
                     </div>
-                    <div class="mb-3">
-                    <label for="rolUsuario" class="form-label">Rol</label>
-                        <select class="form-control" id="rolUsuario" name="rol" required>
-                            <option value="">Seleccione un rol</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Usuario">Usuario</option>
-                            <option value="Visualizador">Visualizador</option>
-                        </select>
-                        <div id="rolFeedback" class="invalid-feedback"></div>
+                </div>
+
+                <!-- Campo de confirmar contraseña con botón de ojo -->
+                <div class="mb-3">
+                    <label class="form-label">Confirmar Contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" id="passwordConfirmUsuario" name="password_confirmation" class="form-control" required>
+                        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="passwordConfirmUsuario">
+                            <i class="fa fa-eye"></i>
+                        </button>
                     </div>
-                    <div class="mb-3">
-                        <label for="passwordUsuario" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="passwordUsuario" name="password" required>
-                        <div id="passwordFeedback" class="invalid-feedback"></div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="passwordConfirmUsuario" class="form-label">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" id="passwordConfirmUsuario" name="password_confirmation" required>
-                        <div id="passwordConfirmFeedback" class="invalid-feedback"></div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnGuardarUsuario" class="btn btn-success">Guardar</button>
-            </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('user.index') }}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="button" id="btnGuardarUsuario" class="btn btn-success">Guardar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+<!-- Scripts de SweetAlert y funcionalidad del botón de ojo -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    
-    const modalCrearUsuario = document.getElementById('modalCrearUsuario');
-    
-    modalCrearUsuario.addEventListener('hidden.bs.modal', function() {
-        // Devolver el foco a un elemento seguro fuera del modal
-        document.querySelector('body').focus();
-    });
-
-    // Función para resetear el formulario y los errores
-    function resetFormulario() {
-        document.getElementById("formCrearUsuario").reset();
-        document.querySelectorAll('.is-invalid').forEach(element => {
-            element.classList.remove('is-invalid');
+    // Mostrar/ocultar contraseña
+    document.querySelectorAll(".toggle-password").forEach(button => {
+        button.addEventListener("click", function() {
+            let target = document.getElementById(this.getAttribute("data-target"));
+            let icon = this.querySelector("i");
+            
+            if (target.type === "password") {
+                target.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                target.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
         });
-    }
-
-    // Obtener la instancia del modal usando la API de Bootstrap 5
-    const modalElement = document.getElementById('modalCrearUsuario');
-    const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-
-    // Resetear formulario cuando se cierra el modal
-    modalElement.addEventListener('hidden.bs.modal', function() {
-        resetFormulario();
     });
 
-    // Manejar el envío del formulario
+    // Guardar usuario con confirmación de SweetAlert
     document.getElementById("btnGuardarUsuario").addEventListener("click", function() {
-        let nombre = document.getElementById("nombreUsuario").value;
-        let rol = document.getElementById("rolUsuario").value;
-        let password = document.getElementById("passwordUsuario").value;
-        let passwordConfirm = document.getElementById("passwordConfirmUsuario").value;
-        
-        // Validar que las contraseñas coincidan
-        if (password !== passwordConfirm) {
-            document.getElementById("passwordConfirmUsuario").classList.add('is-invalid');
-            document.getElementById("passwordConfirmFeedback").textContent = "Las contraseñas no coinciden";
-            return;
-        }
+        Swal.fire({
+            title: "¿Guardar usuario?",
+            text: "¿Estás seguro de que deseas crear este usuario?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, guardar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                enviarFormulario();
+            }
+        });
+    });
 
-        // Obtener el token CSRF
-        let token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-        
-        // Crear FormData para enviar los datos
-        let formData = new FormData();
-        formData.append('nombre', nombre);
-        formData.append('rol', rol);
-        formData.append('password', password);
-        formData.append('password_confirmation', passwordConfirm);
-        formData.append('_token', token);
+    function enviarFormulario() {
+        let formData = new FormData(document.getElementById("formCrearUsuario"));
 
         fetch("{{ route('user.store') }}", {
             method: "POST",
+            body: formData,
             headers: {
-                "X-CSRF-TOKEN": token
-            },
-            body: formData
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+            }
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 Swal.fire({
                     title: "Éxito",
-                    text: data.message,
+                    text: data.message || "Usuario creado correctamente",
                     icon: "success",
                     confirmButtonText: "Aceptar"
                 }).then(() => {
-                    modal.hide();
-                    
-                    // Recargar la tabla de DataTables
-                    if ($.fn.DataTable && $.fn.DataTable.isDataTable('#users-table')) {
-                        $('#users-table').DataTable().ajax.reload();
-                    } else {
-                        // Si por alguna razón la tabla no es una instancia de DataTable, recarga la página
-                        location.reload();
-                    }
+                    window.location.href = "{{ route('user.index') }}"; // Redirige a la lista de usuarios
                 });
             } else {
-                // Manejar errores de validación
-                if (data.errors) {
-                    Object.keys(data.errors).forEach(key => {
-                        let field = key === 'nombre' ? 'nombreUsuario' :
-                                key === 'rol' ? 'rolUsuario' : 
-                                key === 'password' ? 'passwordUsuario' :
-                                key === 'password_confirmation' ? 'passwordConfirmUsuario' : '';
-                        
-                        if (field) {
-                            document.getElementById(field).classList.add('is-invalid');
-                            document.getElementById(field + 'Feedback').textContent = data.errors[key][0];
-                        }
-                    });
-                } else {
-                    Swal.fire("Error", "No se pudo crear el usuario", "error");
-                }
+                Swal.fire("Error", data.message || "No se pudo crear el usuario", "error");
             }
         })
         .catch(error => {
             console.error("Error:", error);
             Swal.fire("Error", "Ocurrió un error al procesar la solicitud", "error");
         });
-
-        this.blur();
-        // Luego cerrar el modal
-        bootstrap.Modal.getInstance(document.getElementById('modalCrearUsuario')).hide();
-    });
+    }
 });
 </script>
+
+@endsection
