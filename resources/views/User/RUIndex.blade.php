@@ -32,6 +32,7 @@
     }
 </style>
 
+
 <div class="container mt-5">
     <div class="card p-4"> <!-- Aumenté el padding aquí para la separación -->
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -138,6 +139,7 @@
 </div>
 
 <script>
+    
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializar el modal correctamente
     const modalEditarUsuario = document.getElementById('modalEditarUsuario');

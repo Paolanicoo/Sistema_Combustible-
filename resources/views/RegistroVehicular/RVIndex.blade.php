@@ -18,6 +18,9 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
+     .dataTables_filter {
+    margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
+}
     /* Reducir ancho de la columna "Acciones" */
     .acciones-columna {
         width: 40px; /* Aumenté el tamaño para permitir más espacio para los botones */

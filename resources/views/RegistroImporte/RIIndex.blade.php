@@ -19,6 +19,10 @@
 
 
 <style>
+    .dataTables_filter {
+    margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
+}
+
     /* Ajustar el tamaño del contenedor */
     .container {
         width: 100%; /* Ahora el contenedor usa el 100% del ancho */
