@@ -127,7 +127,9 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="text-center">Gestión de Combustible</h4>
+    <a href="{{ route('menu') }}" class="nav-link text-center">
+        <h4>Gestión de Combustible</h4>
+    </a>
         <hr>
         <h5 class="text-center">{{ Auth::user()->name }}</h5>
         <hr>
