@@ -138,10 +138,10 @@
 
 
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
-            <i class="fas fa-car"></i> Registro Vehicular
+            <i class="fas fa-car"></i> Registro vehicular
         </a>
         <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-            <i class="fas fa-gas-pump"></i> Registro Combustible
+            <i class="fas fa-gas-pump"></i> Registro combustible
         </a>
         <a href="{{ route('registroimporte.index') }}" class="nav-link">
             <i class="fas fa-dollar-sign"></i> Importe
@@ -154,7 +154,7 @@
 
         @if( Auth::user()->role === 'Administrador')
         <a href="{{ route('user.index') }}" class="nav-link">
-        <i class="fas fa-user"></i> Registro de Usuario
+        <i class="fas fa-user"></i> Registro de usuario
         </a>
 
          <a href="{{ route('registrorol.table') }}" class="nav-link">
@@ -167,7 +167,7 @@
         <form method="POST" action="{{ route('logout') }}" class="mt-3">
             @csrf
             <button type="submit" class="btn btn-danger w-100">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
             </button>
         </form>
         @endauth
