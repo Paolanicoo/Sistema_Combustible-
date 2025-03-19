@@ -20,7 +20,7 @@
 
     <!-- Botones de exportación -->
     <div class="mb-3">
-        <button id="btnImprimir" class="btn btn-primary d-none">Imprimir</button>
+       
         <button id="btnExportarPDF" class="btn btn-danger d-none">Exportar a PDF</button>
         <button id="btnExportarExcel" class="btn btn-success d-none">Exportar a Excel</button>
     </div>
@@ -115,20 +115,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 tablaContainer.classList.remove('d-none');
-                document.querySelectorAll('#btnImprimir, #btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.remove('d-none'));
+                document.querySelectorAll(' #btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.remove('d-none'));
             })
             .catch(error => console.error('Error al cargar los datos:', error));
     });
 
-    document.getElementById('btnImprimir').addEventListener('click', function () {
-        let tipo = document.getElementById('tipoReporte').value;
-        let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
-        let contenido = document.getElementById(tablaId).innerHTML;
-        let ventana = window.open('', '', 'width=800,height=600');
-        ventana.document.write(`<html><head><title>Reporte</title></head><body>${contenido}</body></html>`);
-        ventana.document.close();
-        ventana.print();
-    });
+    
 
     document.getElementById('btnExportarPDF').addEventListener('click', function () {
     const { jsPDF } = window.jspdf;
