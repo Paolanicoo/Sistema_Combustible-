@@ -49,7 +49,7 @@
         }
 
         .sidebar .nav-link:hover {
-            background: #28a745;
+            background: #5bc0de;
             color: white;
         }
 
