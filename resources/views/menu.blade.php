@@ -152,7 +152,7 @@
 
 <!-- Mensaje de bienvenida en la parte inferior -->
 <footer class="welcome-footer">
-    <h1 class="text-center">Bienvenido, {{ Auth::user()->name }}</h1>
+    <h1 class="text-center">Bienvenid@, {{ Auth::user()->name }}</h1>
 </footer>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
