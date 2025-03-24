@@ -1,42 +1,71 @@
 @extends('layouts.app')
 
 @section('contenido')
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header text-center">
+            <h2 class="mb-0" style="color: black;">Reportes de consumo de combustible</h2>
+        </div>
+        <div class="card-body">
+            <!-- Filtro para seleccionar reporte -->
+            <div class="mb-4">
+                <label for="tipoReporte" class="form-label fw-bold" style="color:rgb(8, 8, 8);">Seleccionar Reporte:</label>
+                <select id="tipoReporte" class="form-select" style="width: 250px; margin-left: 0;">
+                    <option value="">-- Selecciona --</option>
+                    <option value="anio">📅 Comparativo anual</option>
+                    <option value="mes">📆 Consumo por mes</option>
+                    <option value="equipo">🚌 Consumo por equipo</option>
+                    <option value="asignado">👤 Consumo por asignado</option>
+                </select>
+            </div>
 
+            <!-- Botones de exportación -->
+            <div class="mb-4 text-end">
+                <button id="btnExportarPDF" class="btn btn-danger btn-sm d-none">
+                    <i class="fas fa-file-pdf"></i> Exportar a PDF
+                </button>
+                <button id="btnExportarExcel" class="btn btn-success btn-sm d-none">
+                    <i class="fas fa-file-excel"></i> Exportar a Excel
+                </button>
+            </div>
 
-<div class="container">
-    <h2 class="text-center">Reportes de consumo</h2>
+            <!-- Contenedor de gráfica y tabla -->
+            <div class="row">
+                <!-- Gráfica -->
+                <div class="col-md-6 d-flex justify-content-center">
+                    <canvas id="graficaConsumoAnio" style="max-width: 100%; max-height: 300px;"></canvas>
+                </div>
 
-    <!-- Filtro para seleccionar reporte -->
-    <div class="mb-4">
-        <label for="tipoReporte">Seleccionar Reporte:</label>
-        <select id="tipoReporte" class="form-control">
-            <option value="">-- Selecciona --</option>
-            <option value="anio">Comparativo Anual</option>
-            <option value="mes">Consumo por Mes</option>
-            <option value="equipo">Consumo por Equipo</option>
-            <option value="asignado">Consumo por Asignado</option>
-        </select>
+                <!-- Tabla -->
+                <div class="col-md-6 d-flex justify-content-center">
+                    <div id="tablaConsumoAnio" class="d-none" style="width: 80%;"></div>
+                </div>
+            </div>
+            
+            <!-- Contenedor dedicado para tablas de mes, equipo y asignado -->
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <div id="tablaConsumoMes" class="d-none" style="width: 90%; max-width: 600px;"></div>
+                    <div id="tablaConsumoEquipo" class="d-none" style="width: 90%; max-width: 600px;"></div>
+                    <div id="tablaConsumoAsignado" class="d-none" style="width: 90%; max-width: 600px;"></div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Botones de exportación -->
-    <div class="mb-3">
-       
-        <button id="btnExportarPDF" class="btn btn-danger d-none">Exportar a PDF</button>
-        <button id="btnExportarExcel" class="btn btn-success d-none">Exportar a Excel</button>
-    </div>
-
-    
-    <!-- Contenedor para la gráfica comparativa anual -->
-    <canvas id="graficaConsumoAnio"  style="max-width: 400px; max-height: 300px; "></canvas>
-
-
-
-    <!-- Contenedores para las tablas -->
-    <div id="tablaConsumoAnio" class="d-none"></div>
-    <div id="tablaConsumoMes" class="d-none"></div>
-    <div id="tablaConsumoEquipo" class="d-none"></div>
-    <div id="tablaConsumoAsignado" class="d-none"></div>
 </div>
+
+<style>
+    /* Estilo para centrar el contenido de las celdas */
+    .table td, .table th {
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    /* Estilo para filas alternas */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -67,9 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function crearTabla(id, data, columnas) {
-        let tabla = `<table class='table table-bordered'><thead><tr>`;
+        let tabla = `<table class='table table-bordered table-striped'><thead class="bg-light"><tr>`;
         columnas.forEach(col => {
-            let titulo = col === 'anio' ? 'Año' : (col === 'total' ? 'Total Galones' : col.charAt(0).toUpperCase() + col.slice(1));
+            let titulo = col === 'anio' ? 'Año' : (col === 'total' ? 'Total galones' : col.charAt(0).toUpperCase() + col.slice(1));
             tabla += `<th>${titulo}</th>`;
         });
         tabla += `</tr></thead><tbody>`;
@@ -115,47 +144,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 tablaContainer.classList.remove('d-none');
-                document.querySelectorAll(' #btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.remove('d-none'));
+                document.querySelectorAll('#btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.remove('d-none'));
             })
             .catch(error => console.error('Error al cargar los datos:', error));
     });
 
-    
-
     document.getElementById('btnExportarPDF').addEventListener('click', function () {
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
+        const { jsPDF } = window.jspdf;
+        let doc = new jsPDF();
 
-    let tipo = document.getElementById('tipoReporte').value;
-    let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
-    let tabla = document.getElementById(tablaId).querySelector("table");
+        let tipo = document.getElementById('tipoReporte').value;
+        let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
+        let tabla = document.getElementById(tablaId).querySelector("table");
 
-    // Definir el título según el tipo de reporte
-    let titulo = "Reporte de Consumo de Combustible";
-    switch (tipo) {
-        case "anio":
-            titulo += " - Anual";
-            break;
-        case "mes":
-            titulo += " - Mensual";
-            break;
-        case "asignado":
-            titulo += " - Por Asignado";
-            break;
-        case "equipo":
-            titulo += " - Por Equipo";
-            break;
-        default:
-            titulo += " - General";
-            break;
-    }
+        let titulo = "Reporte de Consumo de Combustible";
+        switch (tipo) {
+            case "anio":
+                titulo += " - Anual";
+                break;
+            case "mes":
+                titulo += " - Mensual";
+                break;
+            case "asignado":
+                titulo += " - Por Asignado";
+                break;
+            case "equipo":
+                titulo += " - Por Equipo";
+                break;
+            default:
+                titulo += " - General";
+                break;
+        }
 
-    doc.text(titulo, 20, 10);
-    doc.autoTable({ html: tabla });
-    doc.save("reporte_consumo.pdf");
-});
-
-
+        doc.text(titulo, 20, 10);
+        doc.autoTable({ html: tabla });
+        doc.save("reporte_consumo.pdf");
+    });
 
     document.getElementById('btnExportarExcel').addEventListener('click', function () {
         let tipo = document.getElementById('tipoReporte').value;
