@@ -120,7 +120,7 @@
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <button type="submit" id="btnActualizarUsuario" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
-                    <i class="fas fa-save"></i>
+                    <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
         </div>
