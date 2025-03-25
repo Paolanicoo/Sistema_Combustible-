@@ -14,56 +14,56 @@ class RegistroRolController extends Controller
     }
 
     public function getData(Request $request)
-{
-    if (!Auth::user() || Auth::user()->role !== 'Administrador') {
-        return response()->json(['error' => 'No autorizado'], 403);
+    {
+        if (!Auth::user() || Auth::user()->role !== 'Administrador') {
+            return response()->json(['error' => 'No autorizado'], 403);
+        }
+
+        if ($request->ajax()) {
+            $roles = RegistroRol::select('id', 'rol', 'estado')->get()->map(function ($role) {
+                $role->estado_texto = $role->estado ? '<span class="badge bg-success">Activo</span>' 
+                                                    : '<span class="badge bg-danger">Inactivo</span>';
+                return $role;
+            });
+
+            return datatables()->of($roles)
+                ->addColumn('acciones', function ($role) {
+                    // Cambiamos el ícono a pleca y X
+                    $btnClass = $role->estado ? 'btn-danger' : 'btn-success';
+                    $iconClass = $role->estado ? 'fa-times text-white' : 'fa-check text-white';
+
+                    return '
+                        <div class="d-flex justify-content-center">
+                            <button class="btn btn-sm toggleEstado ' . $btnClass . '" 
+                                    data-id="' . $role->id . '" 
+                                    data-estado="' . $role->estado . '">
+                                <i class="fas ' . $iconClass . '"></i>
+                            </button>
+                        </div>
+                    ';
+                })
+                ->rawColumns(['estado_texto', 'acciones'])
+                ->toJson();
+        }
+
+        return view('RegistroRol.RRCreate');
     }
-
-    if ($request->ajax()) {
-        $roles = RegistroRol::select('id', 'rol', 'estado')->get()->map(function ($role) {
-            $role->estado_texto = $role->estado ? '<span class="badge bg-success">Activo</span>' 
-                                                : '<span class="badge bg-danger">Inactivo</span>';
-            return $role;
-        });
-
-        return datatables()->of($roles)
-            ->addColumn('acciones', function ($role) {
-                $btnClass = $role->estado ? 'btn-success' : 'btn-danger';
-                $btnText = $role->estado ? 'Desactivar' : 'Activar';
-
-                return '
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-sm toggleEstado ' . $btnClass . '" 
-                                data-id="' . $role->id . '" 
-                                data-estado="' . $role->estado . '">
-                            ' . $btnText . '
-                        </button>
-                    </div>
-                ';
-            })
-            ->rawColumns(['estado_texto', 'acciones'])
-            ->toJson();
-    }
-
-    return view('RegistroRol.RRCreate');
-}
-
 
     // 🛠 MÉTODO PARA MOSTRAR FORMULARIO DE EDICIÓN
         public function edit($id)
-{
-    if (!Auth::user() || Auth::user()->role !== 'Administrador') {
-        return abort(403, "No tienes permisos para editar roles.");
+    {
+        if (!Auth::user() || Auth::user()->role !== 'Administrador') {
+            return abort(403, "No tienes permisos para editar roles.");
+        }
+
+        $role = RegistroRol::find($id);
+
+        if (!$role) {
+            return abort(404, "Rol no encontrado");
+        }
+
+        return view('RegistroRol.REEditarRol', compact('role'));
     }
-
-    $role = RegistroRol::find($id);
-
-    if (!$role) {
-        return abort(404, "Rol no encontrado");
-    }
-
-    return view('RegistroRol.REEditarRol', compact('role'));
-}
 
 
     //  MÉTODO PARA ACTUALIZAR EL ROL
@@ -97,19 +97,19 @@ class RegistroRolController extends Controller
         
     }
     public function toggleEstado(Request $request)
-{
-    $role = RegistroRol::findOrFail($request->id);
+    {
+        $role = RegistroRol::findOrFail($request->id);
 
-    // Prevenir desactivar el Administrador
-    if ($role->rol === 'Administrador' && $request->estado == 0) {
-        return response()->json(['success' => false, 'message' => 'No puedes desactivar al Administrador.']);
+        // Prevenir desactivar el Administrador
+        if ($role->rol === 'Administrador' && $request->estado == 0) {
+            return response()->json(['success' => false, 'message' => 'No puedes desactivar al Administrador.']);
+        }
+
+        $role->estado = $request->estado;
+        $role->save();
+
+        return response()->json(['success' => true]);
     }
-
-    $role->estado = $request->estado;
-    $role->save();
-
-    return response()->json(['success' => true]);
-}
 
 
 
