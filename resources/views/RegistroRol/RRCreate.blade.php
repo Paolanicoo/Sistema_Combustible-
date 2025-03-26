@@ -17,6 +17,8 @@
         justify-content: center;
         gap: 5px;
     }
+    
+
 </style>
 
 <!-- Ajustamos el margen superior para que suba un poco -->
@@ -29,8 +31,8 @@
             <table class="table table-bordered table-striped w-100" id="roles-table">
                 <thead>
                     <tr>
-                        <th>Rol</th>  
-                        <th>Estado</th>
+                        <th class="rol-columna text-center">Rol</th>  
+                        <th class="estado-columna text-center">Estado</th>
                         <th class="acciones-columna text-center">Acciones</th>        
                     </tr>
                 </thead>
@@ -56,18 +58,19 @@ $(document).ready(function () {
             {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
         ],
         searching: false, // Desactiva la barra de búsqueda
+        paging: false, // Desactiva la paginación
         language: {
             "processing": "Procesando...",
-            "lengthMenu": "Mostrar _MENU_ registros",
             "zeroRecords": "No se encontraron resultados",
-            "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
             "paginate": {
                 "first": "Primero",
                 "last": "Último",
                 "next": "Siguiente",
                 "previous": "Anterior"
             }
-        }
+            
+        },
+        lengthChange: false // Oculta la opción de cambiar el número de registros mostrados
     });
 
    // Evento para cambiar el estado con AJAX
@@ -126,7 +129,5 @@ $(document).ready(function () {
     });
 });
 </script>
-
-
 
 @endsection
