@@ -54,7 +54,6 @@ class RegistroVehicularController extends Controller
             'asignado'  => 'required|string|max:30',
             'observacion' => 'nullable|string|max:40',
         ], [
-            'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
             'placa.unique' => 'La placa ya está registrada.',
             'equipo.required' => 'El equipo es obligatorio.',
             'asignado.required' => 'El asignado es obligatorio.',
@@ -113,6 +112,8 @@ class RegistroVehicularController extends Controller
     
     public function update(Request $request, $id)
     {
+        $registro = RegistroVehicular::findOrFail($id);
+        
         $request->validate([
             'equipo'    => ['required', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
             'placa'     => 'nullable|max:10|unique:registro_vehiculars,placa,' . $id,
@@ -128,53 +129,44 @@ class RegistroVehicularController extends Controller
             'asignado.required' => 'El asignado es obligatorio.',
         ]);
 
-        try {
-            // Buscar el registro por ID
-            $registro = RegistroVehicular::findOrFail($id);
-            
-            // Guardar el valor original antes de actualizar
-            $asignadoOriginal = $registro->asignado;
+        // Comparar los datos existentes con los nuevos
+        $datosOriginales = $registro->getOriginal();
+        $datosNuevos = $request->all();
 
-            // Preparar los datos para actualizar
-            $datosActualizar = $request->all();
+        // Filtrar para quitar campos nulos o vacíos
+        $datosNuevos = array_filter($datosNuevos, function($value) {
+            return $value !== null && $value !== '';
+        });
 
-            // Eliminar campos vacíos para evitar sobrescribir con valores nulos
-            $datosActualizar = array_filter($datosActualizar, function($value) {
-                return $value !== null && $value !== '';
-            });
-
-            // Actualizar el registro vehicular
-            $registro->update($datosActualizar);
-
-            // Verificar si el asignado cambió
-            if ($asignadoOriginal !== $registro->asignado) {
-                // 1. Cerrar el historial anterior
-                $historialAnterior = HistorialAsignacion::where('registro_vehicular_id', $registro->id)
-                    ->whereNull('fecha_cambio')
-                    ->latest()
-                    ->first();
-
-                if ($historialAnterior) {
-                    $historialAnterior->update([
-                        'fecha_cambio' => now() // Fecha de cambio = ahora
-                    ]);
-                }
-
-                // 2. Crear nuevo registro en el historial
-                HistorialAsignacion::create([
-                    'registro_vehicular_id' => $registro->id,
-                    'asignado' => $registro->asignado // Nuevo valor
-                ]);
+        // Verificar si hay cambios
+        $hayCambios = false;
+        foreach ($datosNuevos as $key => $value) {
+            if ($key != '_token' && 
+                isset($datosOriginales[$key]) && 
+                $datosOriginales[$key] != $value) {
+                $hayCambios = true;
+                break;
             }
+        }
+
+        // Si no hay cambios, redirigir sin actualizar
+        if (!$hayCambios) {
+            Alert::info('Sin cambios', 'No se detectaron modificaciones.');
+            return redirect()->route('registrovehicular.index');
+        }
+
+        try {
+            // Actualizar el registro
+            $registro->update($datosNuevos);
 
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
+            return redirect()->route('registrovehicular.index');
 
         } catch (\Exception $e) {
             \Log::error('Error en update: ' . $e->getMessage());
             Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
+            return back();
         }
-
-        return redirect()->route('registrovehicular.index');
     }
 
     public function destroy($id){

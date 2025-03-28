@@ -231,7 +231,8 @@ class ResumenImporteController extends Controller
         return view('registroimporte.RIEdit', compact('registro', 'vehiculos', 'combustibles'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required',
@@ -246,9 +247,11 @@ class ResumenImporteController extends Controller
             'cog.required' => 'El campo Tipo es obligatorio.',
         ]);
 
-        // Actualizar el registro sin recalcular valores
+        // Buscar el registro en la base de datos
         $registro = ResumenImporte::findOrFail($id);
-        $registro->update([
+
+        // Preparar los datos para actualizar
+        $datosNuevos = [
             'fecha' => $request->fecha,
             'id_registro_vehicular' => $request->id_registro_vehicular,
             'id_registro_combustible' => $request->id_registro_combustible,
@@ -257,10 +260,40 @@ class ResumenImporteController extends Controller
             'total' => $request->total,
             'empresa' => $request->empresa,
             'cog' => $request->cog,
-        ]);
-        
-        Alert::success('Éxito', '¡Registro actualizado correctamente!');
-        return redirect()->route('registroimporte.index');
+        ];
+
+        // Verificar si hay cambios
+        $hayCambios = false;
+        foreach ($datosNuevos as $key => $value) {
+            if ($registro->$key != $value) {
+                $hayCambios = true;
+                break;
+            }
+        }
+
+        // Si no hay cambios, redirigir sin actualizar
+        if (!$hayCambios) {
+            Alert::info('Sin cambios', 'No se detectaron modificaciones.');
+            return redirect()->route('registroimporte.index');
+        }
+
+        try {
+            // Actualizar el registro
+            $registro->update($datosNuevos);
+            
+            Alert::success('Éxito', '¡Registro actualizado correctamente!');
+            return redirect()->route('registroimporte.index');
+
+        } catch (\Exception $e) {
+            // Registrar el error para depuración
+            \Log::error('Error al actualizar registro de importe: ' . $e->getMessage());
+
+            // Mostrar mensaje de error con SweetAlert
+            Alert::error('Error', 'Hubo un problema al actualizar el registro: ' . $e->getMessage());
+
+            // Volver a la vista del formulario con los errores
+            return back()->withInput();
+        }
     }
 
     public function destroy(string $id)

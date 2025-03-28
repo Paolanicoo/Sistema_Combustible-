@@ -203,37 +203,50 @@ class RegistroCombustibleController extends Controller
             'observacion' => 'nullable|string|max:255',
         ]);
 
-        // Limpiar y convertir valores numéricos
-        $entradas = $request->entradas ? str_replace([',', ' '], '', $request->entradas) : null;
-        $salidas = $request->salidas ? str_replace([',', ' '], '', $request->salidas) : null;
-        $precio = str_replace([',', ' '], '', $request->precio);
-
         // Buscar el registro en la base de datos
         $registro = RegistroCombustible::findOrFail($id);
 
+        // Limpiar y convertir valores numéricos
+        $datosNuevos = [
+            'fecha' => $request->fecha,
+            'id_registro_vehicular' => $request->id_registro_vehicular,
+            'num_factura' => $request->num_factura,
+            'entradas' => $request->entradas ? str_replace([',', ' '], '', $request->entradas) : null,
+            'salidas' => $request->salidas ? str_replace([',', ' '], '', $request->salidas) : null,
+            'precio' => str_replace([',', ' '], '', $request->precio),
+            'observacion' => $request->observacion,
+        ];
+
+        // Verificar si hay cambios
+        $hayCambios = false;
+        foreach ($datosNuevos as $key => $value) {
+            if ($registro->$key != $value) {
+                $hayCambios = true;
+                break;
+            }
+        }
+
+        // Si no hay cambios, redirigir sin actualizar
+        if (!$hayCambios) {
+            Alert::info('Sin cambios', 'No se detectaron modificaciones.');
+            return redirect()->route('registrocombustible.index');
+        }
+
         try {
             // Actualizar los campos
-            $registro->update([
-                'fecha' => $request->fecha,
-                'id_registro_vehicular' => $request->id_registro_vehicular,
-                'num_factura' => $request->num_factura,
-                'entradas' => $entradas,
-                'salidas' => $salidas,
-                'precio' => $precio,
-                'observacion' => $request->observacion,
-            ]);
+            $registro->update($datosNuevos);
 
             // Mostrar mensaje de éxito con SweetAlert
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
 
-            // Redirigir con mensaje de éxito
+            // Redirigir a la lista de registros
             return redirect()->route('registrocombustible.index');
 
         } catch (\Exception $e) {
             // Registrar el error para depuración
             \Log::error('Error al actualizar registro de combustible: ' . $e->getMessage());
 
-            // Mostrar mensaje de error con SweetAlert si ocurre un problema
+            // Mostrar mensaje de error con SweetAlert
             Alert::error('Error', 'Hubo un problema al actualizar el registro: ' . $e->getMessage());
 
             // Volver a la vista del formulario con los errores
