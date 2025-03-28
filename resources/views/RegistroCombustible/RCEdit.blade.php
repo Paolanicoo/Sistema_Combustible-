@@ -195,8 +195,8 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <label class="form-label" for="entradas">Entrada (galones):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ $registro->entradas }}" oninput="validarNumeroDecimal(this)">
+                <label class="form-label" for="entradas">Entrada (litros):</label>
+                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
             </div>
 
             <div class="col-md-3 mb-3">
@@ -212,47 +212,56 @@
     </form>
 </div>
 
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    let vehiculoSelect = document.getElementById('vehiculoSelect');
-
-    function actualizarDatosVehiculo() {
-        var selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
-
-        document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo') || '';
-        document.getElementById('placa').value = selectedOption.getAttribute('data-placa') || '';
-        document.getElementById('marca').value = selectedOption.getAttribute('data-marca') || '';
-        document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado') || '';
+    function validarNumeroDecimal(input) {
+        let value = input.value.replace(/[^0-9.]/g, ''); // Eliminar caracteres no numéricos
+        if ((value.match(/\./g) || []).length > 1) {
+            value = value.replace(/\.+$/, ""); // Evitar múltiples puntos decimales
+        }
+        input.value = parseFloat(value).toFixed(3);  // Limitar a 3 decimales
     }
 
-    // Evento para cuando se cambia de vehículo
-    vehiculoSelect.addEventListener('change', actualizarDatosVehiculo);
+    document.addEventListener("DOMContentLoaded", function() {
+        let vehiculoSelect = document.getElementById('vehiculoSelect');
 
-    // Llenar los datos al cargar la página
-    actualizarDatosVehiculo();
-});
+        function actualizarDatosVehiculo() {
+            var selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
 
-document.addEventListener("DOMContentLoaded", function() {
-    let precioInput = document.getElementById('precio');
-    let salidasInput = document.getElementById('salidas');
-    let totalInput = document.getElementById('total');
+            document.getElementById('equipo').value = selectedOption.getAttribute('data-equipo') || '';
+            document.getElementById('placa').value = selectedOption.getAttribute('data-placa') || '';
+            document.getElementById('marca').value = selectedOption.getAttribute('data-marca') || '';
+            document.getElementById('asignado').value = selectedOption.getAttribute('data-asignado') || '';
+        }
 
-    function calcularTotal() {
-        let precio = parseFloat(precioInput.value) || 0;
-        let salidas = parseFloat(salidasInput.value) || 0;
+        // Evento para cuando se cambia de vehículo
+        vehiculoSelect.addEventListener('change', actualizarDatosVehiculo);
 
-        let total = precio * (salidas);
-        totalInput.value = total.toFixed(2); // Redondea a 2 decimales
+        // Llenar los datos al cargar la página
+        actualizarDatosVehiculo();
+    });
 
-    
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        let precioInput = document.getElementById('precio');
+        let salidasInput = document.getElementById('salidas');
+        let totalInput = document.getElementById('total');
 
-    // Eventos para calcular el total automáticamente cuando el usuario cambia los valores
-    precioInput.addEventListener('input', calcularTotal);
-    salidasInput.addEventListener('input', calcularTotal);
+        function calcularTotal() {
+            let precio = parseFloat(precioInput.value) || 0;
+            let salidas = parseFloat(salidasInput.value) || 0;
 
-    // Calcular el total al cargar la página si ya hay valores
-    calcularTotal();
-});
+            let total = precio * (salidas);
+            totalInput.value = total.toFixed(2); // Redondea a 2 decimales
+
+        
+        }
+
+        // Eventos para calcular el total automáticamente cuando el usuario cambia los valores
+        precioInput.addEventListener('input', calcularTotal);
+        salidasInput.addEventListener('input', calcularTotal);
+
+        // Calcular el total al cargar la página si ya hay valores
+        calcularTotal();
+    });
 </script>
 @endsection

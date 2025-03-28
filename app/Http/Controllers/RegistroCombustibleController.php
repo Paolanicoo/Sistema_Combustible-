@@ -80,6 +80,9 @@ class RegistroCombustibleController extends Controller
             $combustibles = $query->skip($start)->take($length)->get();
             
             $data = $combustibles->map(function ($registro) {
+                // Convertir entradas de litros a galones
+                $entradasGalones = $registro->entradas * 3.785;
+            
                 return [
                     'id' => $registro->id,
                     'fecha' => $registro->fecha,
@@ -88,8 +91,9 @@ class RegistroCombustibleController extends Controller
                     'vehiculo_placa' => $registro->vehiculos->placa ?? 'N/A',
                     'vehiculo_asignado' => $registro->vehiculos->asignado ?? 'N/A',
                     'num_factura' => $registro->num_factura,
-                    'entradas' => $registro->entradas,
-                    'salidas' => $registro->salidas,
+                    // Formatear galones a 3 decimales
+                    'entradas' => number_format($entradasGalones, 3, '.', ''),
+                    'salidas' => number_format($registro->salidas, 3, '.', ''),
                     'observacion' => $registro->observacion,
                     'acciones' => view('RegistroCombustible.actions', compact('registro'))->render()
                 ];
@@ -113,6 +117,7 @@ class RegistroCombustibleController extends Controller
             ]);
         }
     }
+
 
     public function create() 
     {
@@ -146,7 +151,7 @@ class RegistroCombustibleController extends Controller
             $registrocombustible->id_registro_vehicular = $request->input('id_registro_vehicular');
             $registrocombustible->fecha = $request->input('fecha');
             $registrocombustible->num_factura = $request->input('num_factura');
-            $registrocombustible->entradas = $request->input('entradas') ?: null;
+            $registrocombustible->entradas = $request->input('entradas') ? number_format($request->input('entradas'), 3, '.', '') : null;
             $registrocombustible->salidas = $request->input('salidas') ?: null;
             $registrocombustible->precio = $request->input('precio');
             $registrocombustible->observacion = $request->input('observacion');
