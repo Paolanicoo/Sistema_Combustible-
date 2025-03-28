@@ -202,37 +202,44 @@ class RegistroCombustibleController extends Controller
             'precio' => 'required|numeric|min:0',
             'observacion' => 'nullable|string|max:255',
         ]);
-    
+
+        // Limpiar y convertir valores numéricos
+        $entradas = $request->entradas ? str_replace([',', ' '], '', $request->entradas) : null;
+        $salidas = $request->salidas ? str_replace([',', ' '], '', $request->salidas) : null;
+        $precio = str_replace([',', ' '], '', $request->precio);
+
         // Buscar el registro en la base de datos
         $registro = RegistroCombustible::findOrFail($id);
-    
+
         try {
             // Actualizar los campos
             $registro->update([
                 'fecha' => $request->fecha,
                 'id_registro_vehicular' => $request->id_registro_vehicular,
                 'num_factura' => $request->num_factura,
-                'entradas' => $request->entradas,
-                'salidas' => $request->salidas,
-                'precio' => $request->precio,
+                'entradas' => $entradas,
+                'salidas' => $salidas,
+                'precio' => $precio,
                 'observacion' => $request->observacion,
             ]);
-    
+
             // Mostrar mensaje de éxito con SweetAlert
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
-    
+
             // Redirigir con mensaje de éxito
             return redirect()->route('registrocombustible.index');
-    
+
         } catch (\Exception $e) {
+            // Registrar el error para depuración
+            \Log::error('Error al actualizar registro de combustible: ' . $e->getMessage());
+
             // Mostrar mensaje de error con SweetAlert si ocurre un problema
-            Alert::error('Error', 'Hubo un problema al actualizar el registro.');
-    
+            Alert::error('Error', 'Hubo un problema al actualizar el registro: ' . $e->getMessage());
+
             // Volver a la vista del formulario con los errores
-            return back();
+            return back()->withInput();
         }
     }
-
 
     public function destroy(string $id)
     {
