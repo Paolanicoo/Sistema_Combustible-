@@ -42,53 +42,52 @@ class RegistroVehicularController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validación de los campos
-        $request->validate([
-            'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
-            'marca'     => ['required', 'string', 'max:25', 'regex:/^[a-zA-Z\s]+$/'],  // Sin la regla "unique"
-            'placa'     => ['required', 'string', 'regex:/^[A-Z]{3} \d{4}$/', 'max:8', 'unique:registro_vehiculars,placa'],
-            'motor'     => 'required|string|max:35',
-            'modelo'    => 'required|string|max:30',
-            'serie'     => 'required|string|max:25',
-            'asignado'  => 'required|string|max:30',
-            'observacion' => 'nullable|string|max:40',
-        ], [
-            'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
-            'placa.unique' => 'La placa ya está registrada.',
-            'required' => 'El campo :attribute es obligatorio.',
-            'max' => 'El campo :attribute no puede superar los :max caracteres.',
+{
+    // Validación de los campos
+    $request->validate([
+        'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
+        'marca'     => ['required', 'string', 'max:25', 'regex:/^[a-zA-Z\s]+$/'],
+        'placa'     => ['required', 'string', 'regex:/^[A-Z]{3} \d{4}$/', 'max:8', 'unique:registro_vehiculars,placa'],
+        'motor'     => 'required|string|max:35',
+        'modelo'    => 'required|string|max:30',
+        'serie'     => 'required|string|max:25',
+        'asignado'  => 'required|string|max:30',
+        'observacion' => 'nullable|string|max:40',
+    ], [
+        'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
+        'placa.unique' => 'La placa ya está registrada.',
+        'required' => 'El campo :attribute es obligatorio.',
+        'max' => 'El campo :attribute no puede superar los :max caracteres.',
+    ]);
+
+    try {
+        // Crear y guardar el registro vehicular
+        $registrovehicular = RegistroVehicular::create([
+            'equipo' => $request->equipo,
+            'marca' => $request->marca,
+            'placa' => $request->placa,
+            'motor' => $request->motor,
+            'modelo' => $request->modelo,
+            'serie' => $request->serie,
+            'asignado' => $request->asignado,
+            'observacion' => $request->observacion
         ]);
-    
-        try {
-            // Crear un nuevo registro vehicular
-            $registrovehicular = new RegistroVehicular();
-            $registrovehicular->equipo = $request->input('equipo');
-            $registrovehicular->marca = $request->input('marca');
-            $registrovehicular->placa = $request->input('placa');
-            $registrovehicular->motor = $request->input('motor');
-            $registrovehicular->modelo = $request->input('modelo');
-            $registrovehicular->serie = $request->input('serie');
-            $registrovehicular->asignado = $request->input('asignado');
-            $registrovehicular->observacion = $request->input('observacion');
-    
-            // Guardar el nuevo registro
-            $registrovehicular->save();
-    
-            // Mostrar mensaje de éxito con SweetAlert
-            Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
-    
-            // Redirigir a la vista de la lista de registros (solo en éxito)
-            return redirect()->route('registrovehicular.index');
-    
-        } catch (\Exception $e) {
-            // Si algo falla, mostrar el error
-            Alert::error('Error', 'Hubo un problema al crear el registro. Inténtalo de nuevo.');
-    
-            // Volver a la vista del formulario con los errores
-            return back();  // 'back()' asegura que regrese a la misma página
-        }
+
+        // Crear el historial de asignación
+        HistorialAsignacion::create([
+            'registro_vehicular_id' => $registrovehicular->id,
+            'asignado' => $request->asignado
+        ]);
+
+        Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
+        return redirect()->route('registrovehicular.index');
+
+    } catch (\Exception $e) {
+        \Log::error('Error al crear registro: ' . $e->getMessage());
+        Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
+        return back();
     }
+}
     
 
     public function show($id)

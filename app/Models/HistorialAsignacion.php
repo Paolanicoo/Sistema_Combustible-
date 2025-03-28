@@ -8,9 +8,10 @@ class HistorialAsignacion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['registro_vehicular_id', 'asignado', 'fecha_asignacion', 'fecha_cambio'];
+    protected $table = 'historial_asignaciones'; // Agregar esta línea
 
-    // Relación con RegistroVehicular
+    protected $fillable = ['registro_vehicular_id', 'asignado'];
+
     public function registroVehicular()
     {
         return $this->belongsTo(RegistroVehicular::class);
