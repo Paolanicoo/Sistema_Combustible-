@@ -54,7 +54,6 @@ class RegistroVehicularController extends Controller
             'asignado'  => 'required|string|max:30',
             'observacion' => 'nullable|string|max:40',
         ], [
-            'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
             'placa.unique' => 'La placa ya está registrada.',
             'equipo.required' => 'El equipo es obligatorio.',
             'asignado.required' => 'El asignado es obligatorio.',

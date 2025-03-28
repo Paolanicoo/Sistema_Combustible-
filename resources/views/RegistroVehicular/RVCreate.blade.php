@@ -129,11 +129,17 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="equipo">Equipo:</label>
                 <input type="text" id="equipo" name="equipo" class="form-control @error('equipo') is-invalid @enderror" value="{{ old('equipo') }}" maxlength="20" required>
+                @error('equipo')
+                     <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="placa">Placa:</label>
                 <input type="text" id="placa" name="placa" class="form-control @error('placa') is-invalid @enderror" value="{{ old('placa') }}" oninput="formatPlaca(this)" placeholder="Ej: ABC 1234">
+                @error('placa')
+                     <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>    
 
@@ -165,6 +171,9 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="asignado">Asignado:</label>
                 <input type="text" id="asignado" name="asignado" class="form-control @error('asignado') is-invalid @enderror" value="{{ old('asignado') }}" maxlength="30" required>
+                @error('asignado')
+                     <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
