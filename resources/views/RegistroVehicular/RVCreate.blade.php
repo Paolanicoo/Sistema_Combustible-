@@ -5,7 +5,6 @@
 @section('contenido')
 @include('sweetalert::alert')
 
-
     <style>  
         /* Estilos generales */
         body {
@@ -137,7 +136,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="placa">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control @error('placa') is-invalid @enderror" value="{{ old('placa') }}" required oninput="formatPlaca(this)" placeholder="Ej: ABC 1234">
+                <input type="text" id="placa" name="placa" class="form-control @error('placa') is-invalid @enderror" value="{{ old('placa') }}" oninput="formatPlaca(this)" placeholder="Ej: ABC 1234">
                 @error('placa')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -147,7 +146,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="motor">Motor:</label>
-                <input type="text" id="motor" name="motor" class="form-control @error('motor') is-invalid @enderror" value="{{ old('motor') }}" maxlength="35" required>
+                <input type="text" id="motor" name="motor" class="form-control @error('motor') is-invalid @enderror" value="{{ old('motor') }}" maxlength="35">
                 @error('motor')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -155,7 +154,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control @error('marca') is-invalid @enderror" value="{{ old('marca') }}" maxlength="25" required>
+                <input type="text" id="marca" name="marca" class="form-control @error('marca') is-invalid @enderror" value="{{ old('marca') }}" maxlength="25">
                 @error('marca')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -165,7 +164,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" class="form-control @error('modelo') is-invalid @enderror" value="{{ old('modelo') }}" maxlength="30" required>
+                <input type="text" id="modelo" name="modelo" class="form-control @error('modelo') is-invalid @enderror" value="{{ old('modelo') }}" maxlength="30">
                 @error('modelo')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -173,7 +172,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="serie">Serie:</label>
-                <input type="text" id="serie" name="serie" class="form-control @error('serie') is-invalid @enderror" value="{{ old('serie') }}" maxlength="25" required>
+                <input type="text" id="serie" name="serie" class="form-control @error('serie') is-invalid @enderror" value="{{ old('serie') }}" maxlength="25">
                 @error('serie')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

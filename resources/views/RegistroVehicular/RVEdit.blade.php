@@ -125,7 +125,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="placa">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" value="{{ old('placa', $registro->placa) }}" required oninput="formatPlaca(this)">
+                <input type="text" id="placa" name="placa" class="form-control" value="{{ old('placa', $registro->placa) }}" oninput="formatPlaca(this)">
                 @error('placa')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -135,7 +135,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="motor">Motor:</label>
-                <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor', $registro->motor) }}" maxlength="35" required>
+                <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor', $registro->motor) }}" maxlength="35">
                 @error('motor')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -143,7 +143,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca', $registro->marca) }}" maxlength="25" required>
+                <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca', $registro->marca) }}" maxlength="25">
                 @error('marca')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -153,7 +153,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo', $registro->modelo) }}" maxlength="30" required>
+                <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo', $registro->modelo) }}" maxlength="30">
                 @error('modelo')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -161,7 +161,7 @@
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="serie">Serie:</label>
-                <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie', $registro->serie) }}" maxlength="25" required>
+                <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie', $registro->serie) }}" maxlength="25">
                 @error('serie')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
