@@ -118,17 +118,11 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="equipo">Equipo:</label>
                 <input type="text" id="equipo" name="equipo" class="form-control" value="{{ old('equipo', $registro->equipo) }}" maxlength="20" required>
-                @error('equipo')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="placa">Placa:</label>
                 <input type="text" id="placa" name="placa" class="form-control" value="{{ old('placa', $registro->placa) }}" oninput="formatPlaca(this)">
-                @error('placa')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>    
 
@@ -136,17 +130,11 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="motor">Motor:</label>
                 <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor', $registro->motor) }}" maxlength="35">
-                @error('motor')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="marca">Marca:</label>
                 <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca', $registro->marca) }}" maxlength="25">
-                @error('marca')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>
 
@@ -154,17 +142,11 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="modelo">Modelo:</label>
                 <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo', $registro->modelo) }}" maxlength="30">
-                @error('modelo')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="serie">Serie:</label>
                 <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie', $registro->serie) }}" maxlength="25">
-                @error('serie')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>
 
@@ -172,17 +154,11 @@
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="asignado">Asignado:</label>
                 <input type="text" id="asignado" name="asignado" class="form-control" value="{{ old('asignado', $registro->asignado) }}" maxlength="30" required>
-                @error('asignado')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
 
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="observacion">Observación (opcional):</label>
                 <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="40">{{ old('observacion', $registro->observacion) }}</textarea>
-                @error('observacion')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
             </div>
         </div>
     </form>
