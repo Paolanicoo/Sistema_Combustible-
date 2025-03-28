@@ -141,7 +141,7 @@
             <i class="fas fa-car"></i> Registro vehicular
         </a>
         <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-            <i class="fas fa-gas-pump"></i> Registro combustible
+        <i class="fa fa-id-card"></i> Registro combustible
         </a>
         <a href="{{ route('combus.index') }}" class="nav-link">
             <i class="fas fa-gas-pump"></i> Inventario combustible
@@ -150,7 +150,7 @@
             <i class="fas fa-dollar-sign"></i> Importe
         </a>
         <a href="{{ route('RIndex') }}" class="nav-link">
-            <i class="fas fa-chart-bar"></i> Reportes
+            <i class="fas fa-signal"></i> Reportes
         </a>
 
         </a>
