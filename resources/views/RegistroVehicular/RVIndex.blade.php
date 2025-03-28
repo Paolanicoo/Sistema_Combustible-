@@ -76,15 +76,27 @@
             serverSide: true,
             ajax: '{{ route('registrovehicular.table') }}',
             columns: [
-                {data: 'equipo', name: 'equipo'},
-                {data: 'marca', name: 'marca'},
-                {data: 'placa', name: 'placa'},
-                {data: 'modelo', name: 'modelo'},
-                {data: 'motor', name: 'motor'},
-                {data: 'serie', name: 'serie'},
-                {data: 'asignado', name: 'asignado'},
-                {data: 'observacion', name: 'observacion'},
-                {data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna'}
+                { data: 'equipo', name: 'equipo' },
+                { data: 'marca', name: 'marca' },
+                { data: 'placa', name: 'placa' },
+                { data: 'modelo', name: 'modelo' },
+                { data: 'motor', name: 'motor' },
+                { 
+                    data: 'serie', 
+                    name: 'serie', 
+                    render: function(data) { 
+                        return data ? data.substring(0, 6) : ''; 
+                    } 
+                },
+                { data: 'asignado', name: 'asignado' },
+                { 
+                    data: 'observacion', 
+                    name: 'observacion', 
+                    render: function(data) { 
+                        return data ? data.substring(0, 6) : ''; 
+                    } 
+                },
+                { data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna' }
             ],
             language: {
                 "processing": "Procesando...",
@@ -102,5 +114,6 @@
         });
     });
 </script>
+
 @endsection
 

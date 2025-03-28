@@ -112,42 +112,64 @@ class RegistroVehicularController extends Controller
     }
     
     public function update(Request $request, $id)
-    {
-        // Validación de los campos con la regla unique para la placa
-        $request->validate([
-            'equipo'    => 'required|max:20',
-            'placa'     => 'required|max:10|unique:registro_vehiculars,placa,' . $id, // Evita que se valide la placa del propio registro
-            'motor'     => 'required|max:35',
-            'marca'     => 'required|max:25',
-            'modelo'    => 'required|max:30',
-            'serie'     => 'required|max:25',
-            'asignado'  => 'required|max:30',
-            'observacion' => 'nullable|max:40',
-        ], [
-            'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
-            'placa.unique' => 'La placa ya está registrada.',
-            'required' => 'El campo :attribute es obligatorio.',
-            'max' => 'El campo :attribute no puede superar los :max caracteres.',
-        ]);
+{
+    $request->validate([
+        'equipo'    => 'required|max:20',
+        'placa'     => 'required|max:10|unique:registro_vehiculars,placa,' . $id,
+        'motor'     => 'required|max:35',
+        'marca'     => 'required|max:25',
+        'modelo'    => 'required|max:30',
+        'serie'     => 'required|max:25',
+        'asignado'  => 'required|max:30',
+        'observacion' => 'nullable|max:40',
+    ], [
+        'placa.regex' => 'El formato de la placa debe ser 3 letras mayúsculas seguidas de un espacio y 4 números (Ej: ABC 1234).',
+        'placa.unique' => 'La placa ya está registrada.',
+        'required' => 'El campo :attribute es obligatorio.',
+        'max' => 'El campo :attribute no puede superar los :max caracteres.',
+    ]);
 
-        try {
-            // Buscar el registro por ID
-            $registro = RegistroVehicular::findOrFail($id);
+    try {
+        // Buscar el registro por ID
+        $registro = RegistroVehicular::findOrFail($id);
+        
+        // Guardar el valor original antes de actualizar
+        $asignadoOriginal = $registro->asignado;
 
-            // Actualizar los datos del registro
-            $registro->update($request->all());
+        // Actualizar el registro vehicular
+        $registro->update($request->all());
 
-            // Mostrar mensaje de éxito con SweetAlert
-            Alert::success('Éxito', '¡Registro actualizado correctamente!');
+        // Verificar si el asignado cambió
+        if ($asignadoOriginal !== $registro->asignado) {
+            
+            // 1. Cerrar el historial anterior
+            $historialAnterior = HistorialAsignacion::where('registro_vehicular_id', $registro->id)
+                ->whereNull('fecha_cambio')
+                ->latest()
+                ->first();
 
-        } catch (\Exception $e) {
-            // Mostrar mensaje de error con SweetAlert si ocurre un problema
-            Alert::error('Error', 'Hubo un problema al actualizar el registro.');
+            if ($historialAnterior) {
+                $historialAnterior->update([
+                    'fecha_cambio' => now() // Fecha de cambio = ahora
+                ]);
+            }
+
+            // 2. Crear nuevo registro en el historial
+            HistorialAsignacion::create([
+                'registro_vehicular_id' => $registro->id,
+                'asignado' => $registro->asignado // Nuevo valor
+            ]);
         }
 
-        // Redirigir a la vista de lista de registros
-        return redirect()->route('registrovehicular.index');
+        Alert::success('Éxito', '¡Registro actualizado correctamente!');
+
+    } catch (\Exception $e) {
+        \Log::error('Error en update: ' . $e->getMessage());
+        Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
     }
+
+    return redirect()->route('registrovehicular.index');
+}
 
     public function destroy($id){
         $registro = RegistroVehicular::find($id);
