@@ -21,14 +21,14 @@ class ReporteConsumoController extends Controller
         
         switch ($tipo) {
             case 'mes':
-                $consumoPorMes = RegistroCombustible::selectRaw('MONTH(fecha) as mes, SUM(COALESCE(entradas, 0) + COALESCE(salidas, 0)) as total')
+                $consumoPorMes = RegistroCombustible::selectRaw('MONTH(fecha) as mes, SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total')
                     ->groupBy('mes')
                     ->orderBy('mes')
                     ->get();
                 break;
 
             case 'anio':
-                $consumoPorAnio = RegistroCombustible::selectRaw('YEAR(fecha) as anio, SUM(COALESCE(entradas, 0) + COALESCE(salidas, 0)) as total')
+                $consumoPorAnio = RegistroCombustible::selectRaw('YEAR(fecha) as anio, SUM(COALESCE(entradas, 0)* 3.785 + COALESCE(salidas, 0)) as total')
                     ->groupBy('anio')
                     ->orderBy('anio')
                     ->get();
@@ -36,7 +36,7 @@ class ReporteConsumoController extends Controller
 
             case 'equipo':
                 $consumoPorEquipo = RegistroCombustible::join('registro_vehiculars', 'registro_combustibles.id_registro_vehicular', '=', 'registro_vehiculars.id')
-                    ->selectRaw('registro_vehiculars.equipo, SUM(COALESCE(entradas, 0) + COALESCE(salidas, 0)) as total')
+                    ->selectRaw('registro_vehiculars.equipo, SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total')
                     ->groupBy('registro_vehiculars.equipo')
                     ->orderBy('total', 'DESC')
                     ->get();
@@ -44,7 +44,7 @@ class ReporteConsumoController extends Controller
 
             case 'asignado':
                 $consumoPorAsignado = RegistroCombustible::join('registro_vehiculars', 'registro_combustibles.id_registro_vehicular', '=', 'registro_vehiculars.id')
-                    ->selectRaw('registro_vehiculars.asignado, SUM(COALESCE(entradas, 0) + COALESCE(salidas, 0)) as total')
+                    ->selectRaw('registro_vehiculars.asignado, SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total')
                     ->groupBy('registro_vehiculars.asignado')
                     ->orderBy('total', 'DESC')
                     ->get();
