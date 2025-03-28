@@ -18,6 +18,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 'edit'])->name('registrovehicular.RVEdit');
     Route::put('/registrovehicular/{id}', [RegistroVehicularController::class, 'update'])->name('registrovehicular.update');
     Route::delete('/registrovehicular/{id}', [RegistroVehicularController::class, 'destroy'])->name('registrovehicular.destroy');
+// Mostrar detalles de un vehículo
+Route::get('registrovehicular/{id}', [RegistroVehicularController::class, 'show'])->name('registrovehicular.show');
+
+
+Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::class, 'getHistorialAsignaciones'])->name('historialasignaciones.data');
 
     // RUTAS DE COMBUSTIBLE
     Route::get('registrocombustible/data', [RegistroCombustibleController::class, 'getTableData'])->name('registrocombustible.getTableData');
@@ -62,6 +67,8 @@ Route::post('/user', [UserController::class, 'store'])->name('user.store');
 Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
 Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+
+
 
 
 

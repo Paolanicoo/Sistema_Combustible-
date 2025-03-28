@@ -24,20 +24,20 @@
 
         <style>
              .dataTables_filter {
-    margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
-}
-        /* Reducir ancho de la columna "Acciones" */
-        .acciones-columna {
-            width: 40px; /* Aumenté el tamaño para permitir más espacio para los botones */
-            text-align: center;
-        }
+                margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
+            }
+            /* Reducir ancho de la columna "Acciones" */
+            .acciones-columna {
+                width: 40px; /* Aumenté el tamaño para permitir más espacio para los botones */
+                text-align: center;
+            }
 
-        /* Centrar los botones en la columna de acciones */
-        .acciones-columna div {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
+            /* Centrar los botones en la columna de acciones */
+            .acciones-columna div {
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+            }
         </style>
     </head>
     <body>
@@ -63,6 +63,7 @@
                                 <th>N° de factura</th>
                                 <th>Entrada galones</th>
                                 <th>Salida galones</th>
+                                <th>Observación</th> <!-- Nueva columna Observación -->
                                 <th class="acciones-columna text-center">Acciones</th> <!-- Centrado y ancho ajustado -->
                             </tr>
                         </thead>
@@ -88,6 +89,7 @@
                         {data: 'num_factura', name: 'num_factura'},
                         {data: 'entradas', name: 'entradas'},
                         {data: 'salidas', name: 'salidas'},
+                        {data: 'observacion', name: 'observacion'}, <!-- Columna de Observación -->
                         {data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna'}
                     ],
                     language: {
@@ -108,4 +110,5 @@
         </script>
     </body>
 </html>
+
 @endsection

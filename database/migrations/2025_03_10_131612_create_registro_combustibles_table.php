@@ -16,6 +16,7 @@ return new class extends Migration
             $table->decimal('entradas', 10, 2)->nullable();  
             $table->decimal('salidas', 10, 2)->nullable();  
             $table->decimal('precio', 10, 2); 
+            $table->string('observacion')->nullable();  // Agregar la columna de observación
             $table->timestamps();
 
              // Clave foránea

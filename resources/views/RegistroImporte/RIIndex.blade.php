@@ -83,7 +83,7 @@
                         <th>N° de factura</th>
                         <th>Consumo</th>
                         <th>Precio</th>
-                        <th>Total</th>
+                        <th>Importe</th>
                         <th>Empresa</th>
                         <th>Tipo</th>
                         <th class="acciones-columna text-center">Acciones</th>

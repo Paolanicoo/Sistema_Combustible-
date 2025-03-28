@@ -90,6 +90,7 @@ class RegistroCombustibleController extends Controller
                     'num_factura' => $registro->num_factura,
                     'entradas' => $registro->entradas,
                     'salidas' => $registro->salidas,
+                    'observacion' => $registro->observacion,
                     'acciones' => view('RegistroCombustible.actions', compact('registro'))->render()
                 ];
             });
@@ -130,6 +131,7 @@ class RegistroCombustibleController extends Controller
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
+            'observacion' => 'nullable|string|max:255',
         ], [
             'num_factura' => 'El numero de factura es requerido.',
             'entradas.numeric' => 'El campo entradas debe ser un número.',
@@ -147,6 +149,7 @@ class RegistroCombustibleController extends Controller
             $registrocombustible->entradas = $request->input('entradas') ?: null;
             $registrocombustible->salidas = $request->input('salidas') ?: null;
             $registrocombustible->precio = $request->input('precio');
+            $registrocombustible->observacion = $request->input('observacion');
 
             // Guardar el nuevo registro
             $registrocombustible->save();
@@ -192,6 +195,7 @@ class RegistroCombustibleController extends Controller
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
+            'observacion' => 'nullable|string|max:255',
         ]);
     
         // Buscar el registro en la base de datos
@@ -206,6 +210,7 @@ class RegistroCombustibleController extends Controller
                 'entradas' => $request->entradas,
                 'salidas' => $request->salidas,
                 'precio' => $request->precio,
+                'observacion' => $request->observacion,
             ]);
     
             // Mostrar mensaje de éxito con SweetAlert

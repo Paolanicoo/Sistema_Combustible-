@@ -144,7 +144,7 @@ class ResumenImporteController extends Controller
                 'placa' => $registro->vehiculo->placa ?? 'N/A',
                 'asignado' => $registro->vehiculo->asignado ?? 'N/A',
                 'num_factura' => $registro->combustible->num_factura ?? 'N/A',
-                'consumo' => $consumo ?? 'N/A',
+                'consumo' => $consumo ?? 0,
                 'precio' => $registro->combustible->precio ?? 'N/A',
                 'total' => $total ?? 'N/A',
                 'empresa' => $registro->empresa,

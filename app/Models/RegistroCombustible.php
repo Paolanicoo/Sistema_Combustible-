@@ -9,13 +9,15 @@ class RegistroCombustible extends Model
 {
     use HasFactory;
     
-
+    protected $table = 'registro_combustibles';
+    
     protected $fillable = [
         'fecha', 
         'precio',
         'entradas',
         'salidas',
-        'num_factura', // Asegúrate de que este campo está aquí
+        'num_factura', 
+        'observacion',
         'id_registro_vehicular',
     ];
 

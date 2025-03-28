@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
 
         // Crear un usuario manualmente con nombre y contraseña específica
         User::factory()->create([
-            'name' => 'Usuario',
+            'name' => 'Admin',
             'password' => bcrypt('holamundo1234'),
-            'role' => 'Usuario', // Asignamos un rol directamente
+            'role' => 'Administrador', // Asignamos un rol directamente
         ]);
 
         // Insertar roles en la tabla registro_rols

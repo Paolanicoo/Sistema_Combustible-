@@ -89,10 +89,20 @@ class RegistroVehicularController extends Controller
     }
     
 
-    public function show(string $id)
-    {
-        //
-    }
+    public function show($id)
+{
+    // Obtener el vehículo por su ID
+    $registro = RegistroVehicular::findOrFail($id);
+
+    // Obtener el historial de asignaciones (si existe)
+    $historialAsignaciones = \DB::table('historial_asignaciones')
+                                ->where('registro_vehicular_id', $id)
+                                ->get();
+
+    // Retornar la vista con el vehículo y el historial de asignaciones
+    return view('RegistroVehicular.RVShow', compact('registro', 'historialAsignaciones'));
+}
+
 
     public function edit($id)
     {

@@ -12,11 +12,11 @@ return new class extends Migration
         Schema::create('registro_vehiculars', function (Blueprint $table) {
             $table->id();
             $table->string('equipo');
-            $table->string('marca');
-            $table->string('placa');
-            $table->string('modelo');
-            $table->string('motor');
-            $table->string('serie');
+            $table->string('marca')->nullable();;
+            $table->string('placa')->nullable();;
+            $table->string('modelo')->nullable();;
+            $table->string('motor')->nullable();;
+            $table->string('serie')->nullable();;
             $table->string('asignado');
             $table->string('observacion')->nullable();
             $table->timestamps();

@@ -1,4 +1,7 @@
 <div class="d-flex gap-2">
+<a href="{{ route('registrovehicular.show', $registro->id) }}" class="btn btn-info btn-sm">
+            Ver Detalles
+        </a>
     @if(Auth::user()->role !== 'Visualizador')
         <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
             <i class="fas fa-edit"></i>
