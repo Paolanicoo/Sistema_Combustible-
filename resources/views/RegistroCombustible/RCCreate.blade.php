@@ -192,8 +192,8 @@
             </div>
 
             <div class="col-md-3 mb-3">
-                <label class="form-label" for="entradas">Entrada (galones):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
+                <label class="form-label" for="entradas">Entrada (litros):</label>
+                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
             </div>
 
             <div class="col-md-3 mb-3">
@@ -217,6 +217,10 @@
 
 
 <script>
+    document.getElementById('entradas').addEventListener('input', function () {
+        let value = parseFloat(this.value).toFixed(3);  // Limitar a 3 decimales
+        this.value = value; // Establece el valor con 3 decimales
+    });
     function validarNumeroEntero(input) {
         input.value = input.value.replace(/\D/g, ''); // Solo permite números enteros
     }
