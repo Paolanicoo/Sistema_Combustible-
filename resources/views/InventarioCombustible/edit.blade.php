@@ -119,12 +119,12 @@
 </style>
 
 <div class="card p-4">
-    <form method="POST" action="{{ route('combus.update', $combustible->id) }}">
+    <form method="POST" action="{{ route('combus.update', $combustible->id) }}" id="salidaCombustibleForm">
         @csrf
         @method('PUT')
 
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0">Registro de salida de combustible</h4>
+            <h4 class="centered-title m-0"><i class="fas fa-gas-pump mr-2"></i>Registro de salida de combustible</h4>
             <div class="d-flex gap-2">
                 <a href="{{ route('combus.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
                     <i class="fas fa-arrow-left"></i>
@@ -138,7 +138,7 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label" for="cantidad_actual">Cantidad actual (galones):</label>
-                <input type="number" id="cantidad_actual" value="{{ $combustible->cantidad }}" class="form-control" disabled>
+                <input type="number" id="cantidad_actual" value="{{ $combustible->cantidad_actual }}" class="form-control" disabled>
             </div>
 
             <div class="col-md-6 mb-3">
@@ -170,6 +170,9 @@
     </form>
 </div>
 
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     function validarNumeroDecimal(input) {
         input.value = input.value.replace(/[^0-9.]/g, '');
@@ -188,5 +191,62 @@
         
         document.getElementById('fecha').value = today;
     }
+
+    // Manejo del formulario con SweetAlert
+    document.getElementById('salidaCombustibleForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const cantidadActual = parseFloat(document.getElementById('cantidad_actual').value);
+        const cantidadRetirada = parseFloat(document.getElementById('cantidad_retirada').value);
+        const persona = document.getElementById('persona').value;
+        
+        if (!cantidadRetirada || !persona) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos incompletos',
+                text: 'Por favor complete todos los campos requeridos',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+        
+        if (cantidadRetirada > cantidadActual) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Cantidad no disponible',
+                text: 'No hay suficiente combustible disponible para retirar',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
+        
+        Swal.fire({
+            title: '¿Confirmar salida de combustible?',
+            html: `<p>Va a registrar la salida de <strong>${cantidadRetirada} galones</strong></p>
+                  <p>Persona que retira: <strong>${persona}</strong></p>
+                  <p>Saldo restante: <strong>${(cantidadActual - cantidadRetirada).toFixed(2)} galones</strong></p>`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, registrar salida',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si confirma, enviar el formulario
+                e.target.submit();
+                
+                // Mostrar mensaje de éxito
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Salida registrada',
+                    text: 'El registro de salida se ha completado correctamente',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        });
+    });
 </script>
+
 @endsection

@@ -5,7 +5,7 @@
 @section('contenido')
 <div class="container mt-4">
     <div class="card shadow">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-secondary text-white">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <h3 class="mb-0"><i class="fas fa-gas-pump"></i> Inventario de Combustible</h3>
@@ -31,8 +31,9 @@
                     <thead class="table-dark">
                         <tr>
                             <th>#</th>
-                            <th>Descripción</th>
+                            <th>Entrada de Combustible</th>
                             <th>Cantidad Actual</th>
+                            <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -40,8 +41,9 @@
                         @foreach($combustibles as $combustible)
                         <tr>
                             <td>{{ $combustible->id }}</td>
-                            <td>{{ $combustible->descripcion }}</td>
-                            <td>{{ $combustible->cantidad }} galones</td>
+                            <td>{{ $combustible->cantidad_entrada }}</td>
+                            <td>{{ $combustible->cantidad_actual }}</td>
+                            <td>{{ $combustible->descripcion }} galones</td>
                             <td>
                                 <a href="{{ route('combus.edit', $combustible->id) }}" 
                                    class="btn btn-sm btn-warning"
