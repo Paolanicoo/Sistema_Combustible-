@@ -7,6 +7,7 @@ use App\Http\Controllers\ResumenImporteController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReporteConsumoController;
 use App\Http\Controllers\RegistroRolController;
+use App\Http\Controllers\InventarioCombustibleController;
 use App\Http\Controllers\UserController;
 
 
@@ -70,6 +71,16 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.des
 
 
 
+
+ //Rutas de inventario combustible
+// Rutas de Inventario de Combustible
+Route::get('/InventarioCombustible/index', [InventarioCombustibleController::class, 'index'])->name('combus.index');
+Route::get('/InventarioCombustible/create', [InventarioCombustibleController::class, 'create'])->name('combus.create');
+Route::post('/InventarioCombustible/create', [InventarioCombustibleController::class, 'store'])->name('combustible.store');
+Route::get('/InventarioCombustible/{inventario}/edit', [InventarioCombustibleController::class, 'edit'])->name('combus.edit');
+Route::put('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'update'])->name('combus.update');
+Route::get('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'show'])->name('combus.show');
+Route::delete('/InventarioCombustible/{id}', [InventarioCombustibleController::class, 'destroy'])->name('combus.destroy');
 
 
 
