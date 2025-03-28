@@ -29,7 +29,5 @@ class DatabaseSeeder extends Seeder
             'role' => 'Administrador'
         ]);
 
-        // Crear usuarios de prueba
-        User::factory()->count(5)->create();
     }
 }
