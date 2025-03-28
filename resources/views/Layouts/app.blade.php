@@ -143,6 +143,9 @@
         <a href="{{ route('registrocombustible.index') }}" class="nav-link">
             <i class="fas fa-gas-pump"></i> Registro combustible
         </a>
+        <a href="" class="nav-link">
+            <i class="fas fa-chart-bar"></i> Inventario combustible
+        </a>
         <a href="{{ route('registroimporte.index') }}" class="nav-link">
             <i class="fas fa-dollar-sign"></i> Importe
         </a>
