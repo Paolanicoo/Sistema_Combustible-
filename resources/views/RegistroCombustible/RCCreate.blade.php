@@ -193,7 +193,7 @@
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="entradas">Entrada (litros):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
+                <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
             </div>
 
             <div class="col-md-3 mb-3">

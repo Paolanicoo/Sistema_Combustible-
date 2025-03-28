@@ -196,7 +196,7 @@
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="entradas">Entrada (litros):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
+                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}">
             </div>
 
             <div class="col-md-3 mb-3">
@@ -212,14 +212,18 @@
     </form>
 </div>
 
-
 <script>
     function validarNumeroDecimal(input) {
-        let value = input.value.replace(/[^0-9.]/g, ''); // Eliminar caracteres no numéricos
+        // Eliminar caracteres no numéricos
+        let value = input.value.replace(/[^0-9.]/g, '');
+        
+        // Evitar múltiples puntos decimales
         if ((value.match(/\./g) || []).length > 1) {
-            value = value.replace(/\.+$/, ""); // Evitar múltiples puntos decimales
+            value = value.replace(/\.+$/, "");
         }
-        input.value = parseFloat(value).toFixed(3);  // Limitar a 3 decimales
+        
+        // Permitir escritura sin forzar inmediatamente 3 decimales
+        input.value = value;
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -246,17 +250,28 @@
         let salidasInput = document.getElementById('salidas');
         let totalInput = document.getElementById('total');
 
+        // Añadir validación de entrada para precio y salidas
+        precioInput.addEventListener('input', function() {
+            validarNumeroDecimal(this);
+        });
+
+        salidasInput.addEventListener('input', function() {
+            validarNumeroDecimal(this);
+        });
+
         function calcularTotal() {
             let precio = parseFloat(precioInput.value) || 0;
             let salidas = parseFloat(salidasInput.value) || 0;
 
-            let total = precio * (salidas);
-            totalInput.value = total.toFixed(2); // Redondea a 2 decimales
-
-        
+            let total = precio * salidas;
+            
+            // Solo establecer total si existe el input
+            if (totalInput) {
+                totalInput.value = total.toFixed(2);
+            }
         }
 
-        // Eventos para calcular el total automáticamente cuando el usuario cambia los valores
+        // Eventos para calcular el total automáticamente
         precioInput.addEventListener('input', calcularTotal);
         salidasInput.addEventListener('input', calcularTotal);
 
