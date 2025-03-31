@@ -4,12 +4,17 @@
 
 @section('contenido')
     <!-- Mostrar los detalles del vehículo -->
-    <div class="container mt-5">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h3 class="card-title"><b>Detalles del Vehículo</b></h3>
+    <div class="container mt-5">        
+        <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e8f4fd; color: #333;">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-car me-2"></i><b>Detalles del vehículo</b>
+                </h3>
+                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-light">
                 <div class="row">
                     <div class="col-md-6">
                         <p><strong>Equipo:</strong> {{ $registro->equipo }}</p>
@@ -20,24 +25,24 @@
                     <div class="col-md-6">
                         <p><strong>Motor:</strong> {{ $registro->motor }}</p>
                         <p><strong>Serie:</strong> {{ $registro->serie }}</p>
+                        <p><strong>Asignado:</strong> {{ $registro->asignado }}</p>
                         <p><strong>Observación:</strong> {{ $registro->observacion }}</p>
-                        <p><strong>Asignado a:</strong> {{ $registro->asignado }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Historial de Asignaciones -->
-        <div class="card mt-4">
-            <div class="card-header bg-secondary text-white">
-                <h4>Historial de Asignaciones</h4>
+        <div class="card shadow mt-4">
+            <div class="card-header" style="background-color: #e8f4fd; color: #333;">
+                <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historial de asignaciones</h4>
             </div>
             <div class="card-body">
-                <table id="historial-asignaciones-table" class="table table-striped table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Asignado a</th>
-                            <th>Fecha de Asignación</th>
+                <table id="historial-asignaciones-table" class="table table-striped table-hover">
+                    <thead>
+                        <tr style="background-color: #f8f9fa; color: #333;">
+                            <th>Asignado</th>
+                            <th>Fecha de asignación</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,11 +55,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <!-- Botón de regreso -->
-        <div class="text-center mt-3">
-            <a href="{{ route('registrovehicular.index') }}" class="btn btn-secondary">Volver a la lista</a>
         </div>
     </div>
 @endsection
