@@ -111,10 +111,10 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
             <h3 class="fw-bold m-0">Editar resumen importe</h3>
             <div class="d-flex gap-2">
-                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                 <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
