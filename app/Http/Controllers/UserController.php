@@ -73,19 +73,17 @@ class UserController extends Controller
     
 
     public function edit($id)
-{
-    try {
-        $usuario = User::findOrFail($id); // Buscar usuario por ID
+    {
+        try {
+            $usuario = User::findOrFail($id); // Buscar usuario por ID
 
-        return view('User.RUEdit', compact('usuario')); // Retornar la vista con el usuario
-    } catch (\Exception $e) {
-        \Log::error('Error al buscar usuario: ' . $e->getMessage());
+            return view('User.RUEdit', compact('usuario')); // Retornar la vista con el usuario
+        } catch (\Exception $e) {
+            \Log::error('Error al buscar usuario: ' . $e->getMessage());
 
-        return redirect()->route('user.index')->with('error', 'Usuario no encontrado');
+            return redirect()->route('user.index')->with('error', 'Usuario no encontrado');
+        }
     }
-}
-
-    
 
     public function update(Request $request, $id) {
         try {
@@ -93,9 +91,9 @@ class UserController extends Controller
     
             // Validación de datos
             $validator = Validator::make($request->all(), [
-                'nombre' => 'required|string|max:255|unique:users,name,' . $id, // Verifica que el nombre sea único excepto para el usuario actual
+                'nombre' => 'required|string|max:255|unique:users,name,' . $id,
                 'rol' => 'required|string|in:Administrador,Usuario,Visualizador',
-                'password' => 'nullable|min:6|confirmed', // La contraseña es opcional, pero si se proporciona, debe ser confirmada
+                'password' => 'nullable|min:6|confirmed',
             ], [
                 'nombre.required' => 'El nombre es obligatorio',
                 'nombre.unique' => 'Este nombre ya está en uso, elige otro',
@@ -111,20 +109,51 @@ class UserController extends Controller
                 ], 422);
             }
     
-            // Actualizar datos del usuario
-            $usuario->name = $request->nombre;
-            $usuario->role = $request->rol;
+            // Verificar cambios específicos
+            $nombreActual = $usuario->name;
+            $rolActual = $usuario->role;
+            
+            $nombreNuevo = $request->nombre;
+            $rolNuevo = $request->rol;
     
-            if ($request->filled('password')) {
-                $usuario->password = Hash::make($request->password);
+            // Bandera para detectar cambios
+            $seActualizo = false;
+    
+            // Verificar cambio de nombre
+            if ($nombreActual !== $nombreNuevo) {
+                $usuario->name = $nombreNuevo;
+                $seActualizo = true;
             }
     
+            // Verificar cambio de rol
+            if ($rolActual !== $rolNuevo) {
+                $usuario->role = $rolNuevo;
+                $seActualizo = true;
+            }
+    
+            // Verificar cambio de contraseña
+            if ($request->filled('password')) {
+                $usuario->password = Hash::make($request->password);
+                $seActualizo = true;
+            }
+    
+            // Si no hubo cambios, devolver respuesta específica
+            if (!$seActualizo) {
+                return response()->json([
+                    'success' => true,
+                    'noChanges' => true,  // Nuevo campo para indicar que no hubo cambios
+                    'message' => 'No se detectaron modificaciones'
+                ]);
+            }
+    
+            // Guardar cambios
             $usuario->save();
     
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario actualizado correctamente'
             ]);
+    
         } catch (\Exception $e) {
             \Log::error('Error al actualizar usuario: ' . $e->getMessage());
             return response()->json([
@@ -134,9 +163,6 @@ class UserController extends Controller
         }
     }
     
-    
-    
-
     public function destroy($id){
         try {
             $user = User::findOrFail($id);

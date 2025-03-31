@@ -228,18 +228,34 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                Swal.fire({
-                    title: "Éxito",
-                    text: "Usuario actualizado correctamente",
-                    icon: "success",
-                    confirmButtonText: "Aceptar"
-                }).then(() => {
-                    window.location.href = "{{ route('user.index') }}"; //  Redirige correctamente
-                });
+                // Verificar si hubo cambios o no
+                if (data.noChanges) {
+                    // No se detectaron cambios
+                    Swal.fire({
+                        title: "Sin cambios",
+                        text: data.message || "No se detectaron modificaciones",
+                        icon: "info",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
+                        window.location.href = "{{ route('user.index') }}";
+                    });
+                } else {
+                    // Hubo cambios y se actualizó correctamente
+                    Swal.fire({
+                        title: "Éxito",
+                        text: data.message || "Usuario actualizado correctamente",
+                        icon: "success",
+                        confirmButtonText: "Aceptar"
+                    }).then(() => {
+                        window.location.href = "{{ route('user.index') }}";
+                    });
+                }
             } else {
                 let mensaje = "No se pudo actualizar el usuario";
                 if (data.errors) {
                     mensaje = Object.values(data.errors).flat().join("\n");
+                } else if (data.message) {
+                    mensaje = data.message;
                 }
                 Swal.fire("Error", mensaje, "error");
             }
