@@ -4,20 +4,13 @@
 
 @section('contenido')
 <div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-secondary text-white">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h3 class="mb-0"><i class="fas fa-gas-pump"></i> Inventario de Combustible</h3>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a href="{{ route('combus.create') }}" class="btn btn-light">
-                        <i class="fas fa-plus-circle"></i> Nuevo Registro
-                    </a>
-                </div>
-            </div>
+    <div class="card shadow bg-white">
+        <div class="card-header d-flex justify-content-between align-items-center" style="background-color:rgb(226, 228, 230); color: #333;">
+            <h3 class="card-title mb-0"><i class="fas fa-gas-pump me-2"></i><b>Inventario de combustible</b></h3>
+                <a href="{{ route('combus.create') }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-plus"></i> Nuevo registro
+                </a>
         </div>
-
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -28,11 +21,10 @@
 
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
-                    <thead class="table-dark">
+                    <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Entrada de Combustible</th>
-                            <th>Cantidad Actual</th>
+                            <th>Entrada de combustible</th>
+                            <th>Cantidad actual</th>
                             <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>
@@ -40,7 +32,6 @@
                     <tbody>
                         @foreach($combustibles as $combustible)
                         <tr>
-                            <td>{{ $combustible->id }}</td>
                             <td>{{ $combustible->cantidad_entrada }} galones</td>
                             <td>{{ $combustible->cantidad_actual }} galones</td>
                             <td>{{ $combustible->descripcion }}</td>
@@ -49,7 +40,7 @@
                                     <a href="{{ route('combus.edit', $combustible->id) }}" 
                                        class="btn btn-sm btn-warning"
                                        title="Registrar salida">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-sign-out-alt"></i>
                                     </a>
                                     <a href="{{ route('combus.show', $combustible->id) }}" 
                                        class="btn btn-sm btn-info"

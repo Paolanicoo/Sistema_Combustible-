@@ -124,12 +124,12 @@
         @method('PUT')
 
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0"><i class="fas fa-gas-pump mr-2"></i>Registro de salida de combustible</h4>
+            <h4 class="centered-title m-0"><i class="fas fa-gas-pump mr-2"></i> Registro de salida de combustible</h4>
             <div class="d-flex gap-2">
-                <a href="{{ route('combus.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                <a href="{{ route('combus.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-save"></i>
                 </button>
             </div>

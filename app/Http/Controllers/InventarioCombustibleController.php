@@ -17,22 +17,34 @@ class InventarioCombustibleController extends Controller
 
 
     public function store(Request $request)
-{
-    $request->validate([
-        'cantidad_entrada' => 'required|numeric|min:0',
-        'descripcion' => 'required|string|max:255'
-    ]);
+    {
+        // Validación de los campos
+        $request->validate([
+            'cantidad_entrada' => 'required|numeric|min:0',
+            'descripcion' => 'required|string|max:255'
+        ]);
 
-    // Guardamos tanto la entrada como la cantidad actual (que al inicio son iguales)
-    Combustible::create([
-        'cantidad_entrada' => $request->cantidad_entrada,
-        'cantidad_actual' => $request->cantidad_entrada, // Mismo valor al crear
-        'descripcion' => $request->descripcion
-    ]);
+        try {
+            // Guardamos tanto la entrada como la cantidad actual (que al inicio son iguales)
+            Combustible::create([
+                'cantidad_entrada' => $request->cantidad_entrada,
+                'cantidad_actual' => $request->cantidad_entrada, // Mismo valor al crear
+                'descripcion' => $request->descripcion
+            ]);
 
-    Alert::success('Éxito', 'Entrada de combustible creada');
-    return redirect()->route('combus.index');
-}
+            // SweetAlert para éxito
+            Alert::success('Éxito', 'Entrada de combustible creada');
+
+            return redirect()->route('combus.index');
+        } catch (\Exception $e) {
+            // Manejo de errores y SweetAlert para fallos
+            \Log::error('Error al crear entrada de combustible: ' . $e->getMessage());
+            Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
+
+            return back();
+        }
+    }
+
 
     public function edit($id)
     {

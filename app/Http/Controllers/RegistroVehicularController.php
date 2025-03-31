@@ -89,8 +89,6 @@ class RegistroVehicularController extends Controller
         }
     }
 
-    
-
     public function show($id)
     {
         // Obtener el vehículo por su ID
