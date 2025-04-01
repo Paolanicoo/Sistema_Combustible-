@@ -87,8 +87,8 @@ class RegistroCombustibleController extends Controller
                     'id' => $registro->id,
                     'fecha' => $registro->fecha,
                     'vehiculo_equipo' => $registro->vehiculos->equipo ?? 'N/A',
-                    'vehiculo_marca' => $registro->vehiculos->marca ?? 'N/A',
-                    'vehiculo_placa' => $registro->vehiculos->placa ?? 'N/A',
+                    'vehiculo_marca' => $registro->vehiculos->marca ?? null,
+                    'vehiculo_placa' => $registro->vehiculos->placa ?? null,
                     'vehiculo_asignado' => $registro->vehiculos->asignado ?? 'N/A',
                     'num_factura' => $registro->num_factura,
                     // Formatear galones a 3 decimales
