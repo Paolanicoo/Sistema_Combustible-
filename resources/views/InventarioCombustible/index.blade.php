@@ -23,7 +23,7 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>Entrada de combustible</th>
+                            <th>Salida de combustible</th>
                             <th>Cantidad actual</th>
                             <th>Descripción</th>
                             <th>Acciones</th>
