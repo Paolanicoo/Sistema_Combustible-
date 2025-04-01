@@ -191,22 +191,39 @@ class RegistroVehicularController extends Controller
         }
     }
 
-    public function destroy($id){
-        $registro = RegistroVehicular::find($id);
+    public function destroy($id)
+    {
+        try {
+            // Iniciar una transacción de base de datos
+            \DB::beginTransaction();
+            
+            $registro = RegistroVehicular::find($id);
 
-        if (!$registro) {
-            return response()->json(['success' => false, 'message' => 'Registro no encontrado']);
+            if (!$registro) {
+                return response()->json(['success' => false, 'message' => 'Registro no encontrado']);
+            }
+
+            // Verificar si el vehículo está en uso en la tabla `resumen_importes`
+            $enUso = \DB::table('resumen_importes')->where('id_registro_vehicular', $id)->exists();
+
+            if ($enUso) {
+                return response()->json(['success' => false, 'message' => 'No se puede eliminar el vehículo porque está en uso.']);
+            }
+
+            // Eliminar manualmente los registros relacionados en historial_asignaciones
+            \DB::table('historial_asignaciones')->where('registro_vehicular_id', $id)->delete();
+            
+            $registro->delete();
+
+            // Confirmar la transacción
+            \DB::commit();
+
+            return response()->json(['success' => true, 'message' => 'Registro eliminado correctamente']);
+        } catch (\Exception $e) {
+            // Si algo salió mal, revertir todos los cambios
+            \DB::rollBack();
+            
+            return response()->json(['success' => false, 'message' => 'Error al eliminar el registro: ' . $e->getMessage()]);
         }
-
-        // Verificar si el vehículo está en uso en la tabla `resumen_importes`
-        $enUso = \DB::table('resumen_importes')->where('id_registro_vehicular', $id)->exists();
-
-        if ($enUso) {
-            return response()->json(['success' => false, 'message' => 'No se puede eliminar el vehículo porque está en uso.']);
-        }
-
-        $registro->delete();
-
-        return response()->json(['success' => true, 'message' => 'Registro eliminado correctamente']);
     }
 }
