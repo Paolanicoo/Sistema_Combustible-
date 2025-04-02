@@ -1,134 +1,176 @@
 @extends('Layouts.app')
 
-@section('titulo','combustible')
+@section('titulo','Registro de Combustible')
 
 @section('contenido')
 
-<style>
-    /* Estilos generales */
+@include('sweetalert::alert')
+
+<style>  
+    /* Estilos base */
     body {
-        background-color: #f9f9f9;
-        font-family: 'Arial', sans-serif;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        color: #000;
+        font-size: 15px; /* Tamaño base aumentado */
     }
-
-    /* Estilos para los campos deshabilitados */
-    .form-control[readonly], .form-control[disabled] {
-        background-color: #f0f0f0; /* Fondo gris claro */
-        color: #888; /* Texto gris para indicar que están bloqueados */
-        cursor: not-allowed; /* Cambiar el cursor para indicar que no son interactivos */
-    }
-
+    
     .card {
-        border-radius: 10px;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin: 50px auto;
         max-width: 900px;
-        margin-top: 50px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: #f9f9f9;
-        padding: 50px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        min-height: 450px; /* Aumenta la altura del formulario */
-        height: auto; /* Asegura que la altura se ajuste automáticamente al contenido */
     }
-
+    
     .card-header {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-size: 24px;
-        font-weight: bold;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-control, .btn {
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        width: 100%;
-    }
-
-    .form-control:focus {
         background-color: #fff;
-        border-color: #66afe9;
-        outline: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .centered-title {
+        color: #344767;
+        font-weight: 530;
+        margin-bottom: 0;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+        background-color: #fff;
     }
 
-    .btn-custom {
-        background-color: rgb(53, 192, 88);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 10px;
+    /* LABELS - Tamaño aumentado y más visibles */
+    .form-label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600; /* Más negrita */
+        color: #344767; /* Color más oscuro */
+        font-size: 1rem !important; /* 16px - Tamaño aumentado */
+        letter-spacing: 0.3px;
+    }
+
+    /* INPUTS - Tamaño consistente */
+    .form-control {
         width: 100%;
+        padding: 10px 12px; /* Más espacio interno */
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.9375rem; /* 15px */
+        transition: all 0.3s ease;
+        color: #344767;
+    }
+    
+    .form-control:focus {
+        border-color: #0ea5e9;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+    }
+    
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+    
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.8125rem; /* 13px */
+        margin-top: 4px;
+        display: block;
+    }
+    
+    /* Botones */
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9375rem; /* 15px */
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary {
+        background-color: #f1f5f9;
+        color: #000;
         border: none;
     }
-
-    .btn-custom:hover {
-        background-color: rgb(40, 160, 70);
-        transition: 0.3s ease-in-out;
+    
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
     }
-
-    .centered-title {
-        text-align: center;
-        font-weight: bold;
-        margin-top: 20px;
+    
+    .btn-custom {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+    }
+    
+    .btn-custom:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    textarea.form-control {
+        height: 80px;
+        resize: vertical;
+    }
+    
+    /* Botones de acción */
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .btn-icon {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+    }
+    
+    @media (max-width: 768px) {
+        .form-group {
+            flex: 1 1 100%;
+        }
+        
+        /* Ajustes para móviles */
+        .form-label {
+            font-size: 0.9375rem !important; /* 15px en móviles */
+        }
+    }
+    .form-control.is-invalid {
+    border-color: #dc3545;
     }
 
     .text-danger {
-        color: red;
-        font-size: 14px;
+        color: #dc3545;
+        font-size: 0.75rem;
+        margin-top: 3px;
+        display: block;
     }
-
-    /* Estilo de los campos de formulario */
-    .form-container {
-        max-width: 900px;
-        margin: 30px auto;
-        padding: 30px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 20px; /* Aumenta el margen entre filas */
-    }
-
-    .col-md-4 {
-        flex: 1 1 32%;
-    }
-
-    .col-md-3 {
-        flex: 1 1 23%;
-    }
-
-    .mb-3 {
-        margin-bottom: 1rem;
-    }
-
-    .small-input {
-        width: 100%;
-        font-size: 0.85rem;
-    }
-
+    
 </style>
+
 
 <div class="card p-4">
     <form method="post" action="{{ route('registrocombustible.store') }}">
         @csrf
-
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0">Registro de combustible</h4>
-            <div class="d-flex gap-2">
-                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+        <div class="d-flex align-items-center justify-content-between mb-3 position-relative">
+            <!-- Título perfectamente centrado -->
+            <h3 class="centered-title m-0 w-100 text-center position-absolute start-50 translate-middle-x">
+                <b>Registro de combustible</b>
+            </h3>
+            
+            <!-- Contenedor de botones (se mantiene a la derecha) -->
+            <div class="d-flex gap-2 ms-auto" style="z-index: 1;">
+                <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
@@ -136,29 +178,37 @@
                 </button>
             </div>
         </div>
-
+        <div class="mb-4"></div> <!-- Puedes ajustar mb-4 a mb-3, mb-5, etc. -->
         <!-- Primera fila (3 campos) -->
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="fecha">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control" required>
-            </div>
+                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror">
+                    @error('fecha')
+                    <div class="invalid-feedback d-block">
+                        <i class="fas fa-exclamation-circle"></i> {{ $message }}
+                    </div>
+                    @enderror
+                </div>
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="vehiculo">Seleccionar vehículo:</label>
-                <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control" required>
-                    <option value="">Seleccione un vehículo</option>
-                    @foreach($vehiculos as $vehiculo)
-                        <option value="{{ $vehiculo->id }}"
-                            data-equipo="{{ $vehiculo->equipo }}"
-                            data-placa="{{ $vehiculo->placa }}"
-                            data-marca="{{ $vehiculo->marca }}"
-                            data-asignado="{{ $vehiculo->asignado }}">
-                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+                <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control @error('id_registro_vehicular') is-invalid @enderror">
+                <option value="">Seleccione un vehículo</option>
+                @foreach($vehiculos as $vehiculo)
+                    <option value="{{ $vehiculo->id }}"
+                        data-equipo="{{ $vehiculo->equipo }}"
+                        data-placa="{{ $vehiculo->placa }}"
+                        data-marca="{{ $vehiculo->marca }}"
+                        data-asignado="{{ $vehiculo->asignado }}">
+                        {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
+                    </option>
+                @endforeach
+            </select>
+            @error('id_registro_vehicular')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="equipo">Equipo:</label>
@@ -187,8 +237,11 @@
         <!-- Tercera fila (4 campos) -->
         <div class="row">
             <div class="col-md-3 mb-3">
-                <label class="form-label" for="num_factura">Número de factura:</label>
-                <input type="text" id="num_factura" name="num_factura" class="form-control" required oninput="validarNumeroEntero(this)">
+                <label class="form-label" for="num_factura">Número de factura:</label>  
+                <input type="text" id="num_factura" name="num_factura" class="form-control @error('num_factura') is-invalid @enderror" oninput="validarNumeroEntero(this)">
+                @error('num_factura')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="col-md-3 mb-3">
@@ -203,17 +256,18 @@
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="precio">Precio por galón:</label>
-                <input type="text" id="precio" name="precio" class="form-control" required oninput="validarNumeroDecimal(this)">
+                <input type="text" id="precio" name="precio" class="form-control @error('precio') is-invalid @enderror" oninput="validarNumeroDecimal(this)">
+                @error('precio')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
-            <label for="observacion" class="form-label">Observación</label>
-            <textarea class="form-control" id="observacion" name="observacion"></textarea>
-</div>
+                <label for="observacion" class="form-label">Observación</label>
+                <textarea class="form-control" id="observacion" name="observacion"></textarea>
+            </div>
         </div>
     </form>
 </div>
-
-
 
 
 <script>

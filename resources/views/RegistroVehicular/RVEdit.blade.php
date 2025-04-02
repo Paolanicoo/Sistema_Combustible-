@@ -32,9 +32,9 @@
         color: #000; /* Cambiado a negro */
     }
     
-    .card-title { 
-        color: #344767; /* Color azul */
-        font-weight: 600;
+    .card-header { 
+        color: #344767;
+        font-weight: 530;
         margin-bottom: 0;
     }
     
@@ -60,16 +60,16 @@
     
     .form-label {
         display: block;
-        margin-bottom: 4px;
-        font-weight: 500;
-        color: #344767; /* Color azul */
-        font-size: 0.875rem;
+        margin-bottom: 6px;
+        font-weight: 600; /* Más negrita */
+        color: #344767; /* Color más oscuro */
+        font-size: 1rem !important; /* 16px - Tamaño aumentado */
+        letter-spacing: 0.3px;
     }
     
     .form-control {
         width: 100%;
         padding: 8px 12px;
-        border: 1px solid #e2e8f0;
         border-radius: 8px;
         font-size: 0.875rem;
         transition: all 0.3s ease;
@@ -155,15 +155,18 @@
 
 <div class="container">
     <div class="vehicle-form-card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title">
+        <div class="card-header position-relative d-flex justify-content-end" style="min-height: 60px;">
+            <!-- Título perfectamente centrado -->
+            <h3 class="centered-title m-0 position-absolute start-50 translate-middle-x" style="transform: translateX(-50%); white-space: nowrap;">
                 <b>Editar registro de vehículo</b>
             </h3>
+            
+            <!-- Botones alineados a la derecha -->
             <div class="action-buttons d-flex gap-2">
-                <a href="javascript:window.history.back();" class="btn btn-secondary btn-icon">
+                <a href="{{ route('registrovehicular.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <button type="submit" form="vehicle-form" class="btn btn-info btn-icon">
+                <button type="submit" form="vehicle-form" class="btn btn-info d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                     <i class="fas fa-sync-alt"></i>
                 </button>
             </div>

@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
     Route::get('registrovehicular/table', [RegistroVehicularController::class, 'getTableData'])->name('registrovehicular.table');
+    Route::get('registrovehicular', [RegistroCombustibleController::class, 'index'])->name('registrovehicular.index');
     Route::get('/vehiculo_create', [RegistroVehicularController::class, 'create'])->name('registrovehicular.create');
     Route::post('/vehiculo_store', [RegistroVehicularController::class, 'store'])->name('registrovehicular.store');
     Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 'edit'])->name('registrovehicular.RVEdit');
