@@ -164,7 +164,7 @@
                     <i class="fas fa-arrow-left"></i>
                 </a>
                 <button type="submit" form="vehicle-form" class="btn btn-info btn-icon">
-                    <i class="fas fa-save"></i>
+                    <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
         </div>
@@ -179,7 +179,7 @@
                         <label class="form-label fw-bold fs-6" for="equipo">Equipo <span class="text-danger"> *</span></label>
                         <input type="text" id="equipo" name="equipo" 
                                class="form-control form-control-lg @error('equipo') is-invalid @enderror" 
-                               value="{{ old('equipo', $registro->equipo) }}" maxlength="20" required>
+                               value="{{ old('equipo', $registro->equipo) }}" maxlength="20">
                         @error('equipo')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -203,9 +203,6 @@
                         <input type="text" id="motor" name="motor" 
                                class="form-control form-control-lg @error('motor') is-invalid @enderror" 
                                value="{{ old('motor', $registro->motor) }}" maxlength="35">
-                        @error('motor')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
 
                     <div class="form-group flex-grow-1">
@@ -213,9 +210,6 @@
                         <input type="text" id="marca" name="marca" 
                                class="form-control form-control-lg @error('marca') is-invalid @enderror" 
                                value="{{ old('marca', $registro->marca) }}" maxlength="25">
-                        @error('marca')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
 
@@ -225,9 +219,6 @@
                         <input type="text" id="modelo" name="modelo" 
                                class="form-control form-control-lg @error('modelo') is-invalid @enderror" 
                                value="{{ old('modelo', $registro->modelo) }}" maxlength="30">
-                        @error('modelo')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
 
                     <div class="form-group flex-grow-1">
@@ -235,9 +226,6 @@
                         <input type="text" id="serie" name="serie" 
                                class="form-control form-control-lg @error('serie') is-invalid @enderror" 
                                value="{{ old('serie', $registro->serie) }}" maxlength="25">
-                        @error('serie')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
 
@@ -246,7 +234,7 @@
                         <label class="form-label fw-bold fs-6" for="asignado">Asignado <span class="text-danger"> *</span></label>
                         <input type="text" id="asignado" name="asignado" 
                                class="form-control form-control-lg @error('asignado') is-invalid @enderror" 
-                               value="{{ old('asignado', $registro->asignado) }}" maxlength="30" required>
+                               value="{{ old('asignado', $registro->asignado) }}" maxlength="30">
                         @error('asignado')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -256,9 +244,6 @@
                         <textarea id="observacion" name="observacion" 
                                   class="form-control form-control-lg @error('observacion') is-invalid @enderror" 
                                   rows="3" maxlength="40">{{ old('observacion', $registro->observacion) }}</textarea>
-                        @error('observacion')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
             </form>
@@ -297,6 +282,35 @@
 
         input.value = value.trim(); // Elimina espacios extra al final
     }
+    
+
+    // Deshabilita el boton de actualizar, solo se habilita si hay cambios
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("vehicle-form");
+        const submitButton = document.querySelector("button[form='vehicle-form']");
+
+        // Deshabilitar el botón al inicio
+        submitButton.disabled = true;
+
+        // Guardar valores originales
+        const initialFormData = new FormData(form);
+        
+        form.addEventListener("input", function () {
+            const currentFormData = new FormData(form);
+            let hasChanges = false;
+
+            // Comparar los valores actuales con los originales
+            for (let [key, value] of currentFormData.entries()) {
+                if (value !== initialFormData.get(key)) {
+                    hasChanges = true;
+                    break;
+                }
+            }
+
+            // Habilitar o deshabilitar el botón según haya cambios
+            submitButton.disabled = !hasChanges;
+        });
+    });
 </script>
 
 @endsection

@@ -14,8 +14,6 @@
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <!-- Para el paquete de SweetAlert configurado -->
-<script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
@@ -160,7 +158,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="card-title mb-0">
                 </i><b>Registro vehicular</b>
-            </h3>
+            </h2>
            
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registrovehicular.create') }}" class="btn btn-info btn-sm">

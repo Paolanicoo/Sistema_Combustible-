@@ -179,7 +179,7 @@
                         <label class="form-label fw-bold fs-6" for="equipo">Equipo <span class="text-danger"> *</span></label>
                         <input type="text" id="equipo" name="equipo" 
                                class="form-control form-control-lg @error('equipo') is-invalid @enderror" 
-                               value="{{ old('equipo') }}" maxlength="20" required>
+                               value="{{ old('equipo') }}" maxlength="20">
                         @error('equipo')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -203,9 +203,6 @@
                         <input type="text" id="motor" name="motor" 
                                class="form-control form-control-lg @error('motor') is-invalid @enderror" 
                                value="{{ old('motor') }}" maxlength="35">
-                        @error('motor')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
 
                     <div class="form-group flex-grow-1">
@@ -213,9 +210,6 @@
                         <input type="text" id="marca" name="marca" 
                                class="form-control form-control-lg @error('marca') is-invalid @enderror" 
                                value="{{ old('marca') }}" maxlength="25">
-                        @error('marca')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
                 
@@ -225,9 +219,6 @@
                         <input type="text" id="modelo" name="modelo" 
                                class="form-control form-control-lg @error('modelo') is-invalid @enderror" 
                                value="{{ old('modelo') }}" maxlength="30">
-                        @error('modelo')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
 
                     <div class="form-group flex-grow-1">
@@ -235,7 +226,7 @@
                         <input type="text" id="serie" name="serie" 
                                class="form-control form-control-lg @error('serie') is-invalid @enderror" 
                                value="{{ old('serie') }}" maxlength="25">
-                        @error('serie')
+                        @error('observacion')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -246,19 +237,13 @@
                         <label class="form-label fw-bold fs-6" for="asignado">Asignado <span class="text-danger"> *</span></label>
                         <input type="text" id="asignado" name="asignado" 
                                class="form-control form-control-lg @error('asignado') is-invalid @enderror" 
-                               value="{{ old('asignado') }}" maxlength="30" required>
-                        @error('asignado')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                               value="{{ old('asignado') }}" maxlength="30">
                     </div>
                     <div class="form-group flex-grow-1">
                         <label class="form-label fw-bold fs-6" for="observacion">Observación</label>
                         <textarea id="observacion" name="observacion" 
                                   class="form-control form-control-lg @error('observacion') is-invalid @enderror" 
                                   rows="3" maxlength="40">{{ old('observacion') }}</textarea>
-                        @error('observacion')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
             </form>

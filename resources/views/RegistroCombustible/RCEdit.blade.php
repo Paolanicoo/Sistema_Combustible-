@@ -130,11 +130,11 @@
         <div class="d-flex align-items-center justify-content-between mb-3">
             <h4 class="centered-title m-0">Editar registro de combustible</h4>
             <div class="d-flex gap-2">
-                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                <a href="javascript:window.history.back();" class="btn btn-secondary btn-icon">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                <i class="fas fa-sync-alt"></i>
+                <button type="submit" form="vehicle-form" class="btn btn-info btn-icon">
+                    <i class="fas fa-sync-alt"></i>
                 </button>
             </div>
         </div>
@@ -278,5 +278,34 @@
         // Calcular el total al cargar la página si ya hay valores
         calcularTotal();
     });
+
+    // Deshabilita el boton de actualizar, solo se habilita si hay cambios
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("vehicle-form");
+        const submitButton = document.querySelector("button[form='vehicle-form']");
+
+        // Deshabilitar el botón al inicio
+        submitButton.disabled = true;
+
+        // Guardar valores originales
+        const initialFormData = new FormData(form);
+        
+        form.addEventListener("input", function () {
+            const currentFormData = new FormData(form);
+            let hasChanges = false;
+
+            // Comparar los valores actuales con los originales
+            for (let [key, value] of currentFormData.entries()) {
+                if (value !== initialFormData.get(key)) {
+                    hasChanges = true;
+                    break;
+                }
+            }
+
+            // Habilitar o deshabilitar el botón según haya cambios
+            submitButton.disabled = !hasChanges;
+        });
+    });
+
 </script>
 @endsection
