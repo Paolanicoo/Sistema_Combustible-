@@ -3,6 +3,7 @@
 <i class="fas fa-eye"></i>
         </a>
     @if(Auth::user()->role !== 'Visualizador')
+        <!-- Botón de editar -->
         <a href="{{ route('registrovehicular.RVEdit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
             <i class="fas fa-edit"></i>
         </a>

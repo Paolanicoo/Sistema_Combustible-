@@ -16,14 +16,104 @@
 <!-- Para el paquete de SweetAlert configurado -->
 <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <style>
-     .dataTables_filter {
-    margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
-}
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+    
+    .container {
+        max-width: 1240px;
+    }
+    
+    .dataTables_filter {
+        margin-bottom: 20px;
+    }
+    
+    .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        width: 250px;
+    }
+    
+    .dataTables_filter input:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+    
+    /* Estilos para la tarjeta principal */
+    .card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        color: #344767;
+        font-weight: 600;
+    }
+    
+    /* Estilos para los botones */
+    .btn-info {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-info:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    /* Estilos para la tabla */
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .table thead th {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+    }
+    
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+        color: #334155;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+    
     /* Reducir ancho de la columna "Acciones" */
     .acciones-columna {
-        width: 40px; /* Aumenté el tamaño para permitir más espacio para los botones */
+        width: 120px;
         text-align: center;
     }
 
@@ -33,38 +123,71 @@
         justify-content: center;
         gap: 5px;
     }
+    
+    /* Botones de acción */
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+    }
+    
+    /* Paginación */
+    .dataTables_paginate .paginate_button {
+        border-radius: 6px !important;
+        margin: 0 2px !important;
+    }
+    
+    .dataTables_paginate .paginate_button.current {
+        background: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+        color: white !important;
+    }
+    
+    .dataTables_paginate .paginate_button:hover {
+        background: #e2e8f0 !important;
+        border-color: #e2e8f0 !important;
+        color: #334155 !important;
+    }
+    
+    .dataTables_info {
+        color: #64748b;
+        padding-top: 1rem;
+    }
 </style>
 
 <div class="container mt-5">
-    <div class="card p-4"> <!-- Aumenté el padding aquí para la separación -->
+    <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Registro vehicular</b></h3>
+            <h2 class="card-title mb-0">
+                </i><b>Registro vehicular</b>
+            </h3>
            
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registrovehicular.create') }}" class="btn btn-info btn-sm">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
-                
             @endif
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped w-100" id="vehiculos-table">
-                <thead>
-                    <tr>
-                        <th>Equipo</th>
-                        <th>Marca</th>
-                        <th>Placa</th>
-                        <th>Modelo</th>
-                        <th>Motor</th>
-                        <th>Serie</th>
-                        <th>Asignado</th>
-                        <th>Observación</th>
-                        <th class="acciones-columna text-center">Acciones</th> <!-- Centrado y ancho ajustado -->
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="card-body p-4">
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-striped w-100" id="vehiculos-table">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Marca</th>
+                            <th>Placa</th>
+                            <th>Modelo</th>
+                            <th>Motor</th>
+                            <th>Serie</th>
+                            <th>Asignado</th>
+                            <th>Observación</th>
+                            <th class="acciones-columna text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -116,4 +239,3 @@
 </script>
 
 @endsection
-

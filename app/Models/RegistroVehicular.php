@@ -21,7 +21,7 @@ class RegistroVehicular extends Model
         'observacion',
     ];
 
-    public function combustible() {
+    public function combsutible() {
         return $this->hasMany(RegistroCombustible::class,'id_registro_combustible', 'id');
     }
 

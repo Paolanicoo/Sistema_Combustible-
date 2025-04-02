@@ -21,8 +21,6 @@ class RegistroVehicularController extends Controller
         
         $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
         return view('RegistroVehicular.RVIndex', compact('registros'));
-
-
     }
 
     // Método para obtener los registros en formato JSON

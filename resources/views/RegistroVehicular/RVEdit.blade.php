@@ -1,177 +1,271 @@
-
 @extends('Layouts.app')
 
 @section('titulo', 'Editar Vehículo')
 
 @section('contenido')
+@include('sweetalert::alert')
 
-<style>
-        /* Estilos generales */
+<style>  
+    /* Estilos adaptados al diseño principal */
     body {
-        background-color: #f9f9f9;
-        font-family: 'Arial', sans-serif;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        color: #000; /* Cambiado a negro para todo el texto en el body */
     }
-
-    .card {
-        border-radius: 10px;
-        max-width: 700px;
-        margin-top: 30px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: #f9f9f9;
-        padding: 20px; /* Espacio interior */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    }
-
-    .centered-title {
-        text-align: center;
-        font-weight: bold;
-        margin-top: 20px;
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-control, .btn {
-        border-radius: 8px;
-        border: 1px solid #ccc; /* Borde sutil */
-        padding: 10px;
-        width: 100%;
-    }
-
-    .form-control:focus {
-        background-color: #fff; /* Fondo blanco al hacer foco */
-        border-color: #66afe9; /* Borde azul claro al hacer foco */
-        outline: none; /* Eliminar el borde del foco por defecto */
-    }
-
-    .btn-custom {
-        background-color: rgb(53, 192, 88); /* Verde para el botón */
-        color: white;
-        padding: 10px 20px;
-        border-radius: 10px;
-        width: 100%;
+    
+    .vehicle-form-card {
+        border-radius: 12px;
         border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin: 50px auto;
+        max-width: 900px;
     }
-
-    .btn-custom:hover {
-        background-color: rgb(40, 160, 70); /* Verde más oscuro al pasar el mouse */
-        transition: 0.3s ease-in-out;
-        color: black; /* Cambia el color del texto a negro */
+    
+    .card-header {
+        background-color: #fff;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #000; /* Cambiado a negro */
     }
-
-    .text-danger {
-        color: red;
-        font-size: 14px;
+    
+    .card-title { 
+        color: #344767; /* Color azul */
+        font-weight: 600;
+        margin-bottom: 0;
     }
-
-    /* Contenedor del formulario */
-    .form-container {
-        max-width: 800px;
-        margin: 30px auto;
-        padding: 30px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+    .card-body {
+        padding: 1.5rem;
+        background-color: #fff;
+        color: #000; /* Cambiado a negro */
     }
-
-    .row {
+    
+    /* Form layout - más compacto */
+    .form-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        margin: -8px;
     }
-
-    .col-md-6 {
-        flex: 1 1 48%;
+    
+    .form-group {
+        flex: 1 1 calc(50% - 16px);
+        min-width: 250px;
+        padding: 8px;
+        margin-bottom: 5px;
     }
-
-    .mb-3 {
-        margin-bottom: 1rem;
+    
+    .form-label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 500;
+        color: #344767; /* Color azul */
+        font-size: 0.875rem;
     }
-
+    
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        transition: all 0.3s ease;
+        color: #344767; /* Color azul en los textos */
+    }
+    
+    .form-control:focus {
+        border-color: #0ea5e9;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+    }
+    
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+    
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.75rem;
+        margin-top: 3px;
+        display: block;
+    }
+    
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 15px;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-icon {
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-secondary {
+        background-color: #f1f5f9;
+        color: #000; /* Cambiado a negro */
+        border: none;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
+    }
+    
+    .btn-info {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+    }
+    
+    .btn-info:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    /* Reduzca el tamaño de textarea */
     textarea.form-control {
-        resize: vertical; /* Permite redimensionar el área de texto solo verticalmente */
+        height: 80px;
+        resize: vertical;
+    }
+    
+    /* Ajuste móvil */
+    @media (max-width: 768px) {
+        .form-group {
+            flex: 1 1 100%;
+        }
     }
 </style>
 
-<div class="card p-4">
-    <form method="post" action="{{ route('registrovehicular.update', $registro->id) }}">
-        @csrf 
-        @method('PUT')
-        <!-- Contenedor para el título y los botones alineados -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0">Editar registro de vehículo</h4>
-            <div class="d-flex gap-2">
-                <a href="javascript:window.history.back();" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+<div class="container">
+    <div class="vehicle-form-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title">
+                <b>Editar registro de vehículo</b>
+            </h3>
+            <div class="action-buttons d-flex gap-2">
+                <a href="javascript:window.history.back();" class="btn btn-secondary btn-icon">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <!-- Botón de guardar dentro del formulario -->
-                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                <i class="fas fa-sync-alt"></i>
+                <button type="submit" form="vehicle-form" class="btn btn-info btn-icon">
+                    <i class="fas fa-save"></i>
                 </button>
             </div>
         </div>
 
+        <div class="card-body">
+            <form method="post" action="{{ route('registrovehicular.update', $registro->id) }}" id="vehicle-form">
+                @csrf 
+                @method('PUT')
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="equipo">Equipo:</label>
-                <input type="text" id="equipo" name="equipo" class="form-control" value="{{ old('equipo', $registro->equipo) }}" maxlength="20" required>
-                @error('equipo')
-                     <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+                <div class="form-row d-flex flex-wrap gap-3">
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="equipo">Equipo <span class="text-danger"> *</span></label>
+                        <input type="text" id="equipo" name="equipo" 
+                               class="form-control form-control-lg @error('equipo') is-invalid @enderror" 
+                               value="{{ old('equipo', $registro->equipo) }}" maxlength="20" required>
+                        @error('equipo')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="placa">Placa:</label>
-                <input type="text" id="placa" name="placa" class="form-control" value="{{ old('placa', $registro->placa) }}" oninput="formatPlaca(this)">
-                @error('placa')
-                     <div class="text-danger">{{ $message }}</div>
-                 @enderror
-            </div>
-        </div>    
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="placa">Placa</label>
+                        <input type="text" id="placa" name="placa" 
+                               class="form-control form-control-lg @error('placa') is-invalid @enderror" 
+                               value="{{ old('placa', $registro->placa) }}" oninput="formatPlaca(this)" 
+                               placeholder="Ej: ABC 1234">
+                        @error('placa')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="motor">Motor:</label>
-                <input type="text" id="motor" name="motor" class="form-control" value="{{ old('motor', $registro->motor) }}" maxlength="35">
-            </div>
+                <div class="form-row d-flex flex-wrap gap-3">
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="motor">Motor</label>
+                        <input type="text" id="motor" name="motor" 
+                               class="form-control form-control-lg @error('motor') is-invalid @enderror" 
+                               value="{{ old('motor', $registro->motor) }}" maxlength="35">
+                        @error('motor')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="marca">Marca:</label>
-                <input type="text" id="marca" name="marca" class="form-control" value="{{ old('marca', $registro->marca) }}" maxlength="25">
-            </div>
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="marca">Marca</label>
+                        <input type="text" id="marca" name="marca" 
+                               class="form-control form-control-lg @error('marca') is-invalid @enderror" 
+                               value="{{ old('marca', $registro->marca) }}" maxlength="25">
+                        @error('marca')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row d-flex flex-wrap gap-3">
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo" 
+                               class="form-control form-control-lg @error('modelo') is-invalid @enderror" 
+                               value="{{ old('modelo', $registro->modelo) }}" maxlength="30">
+                        @error('modelo')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="serie">Serie</label>
+                        <input type="text" id="serie" name="serie" 
+                               class="form-control form-control-lg @error('serie') is-invalid @enderror" 
+                               value="{{ old('serie', $registro->serie) }}" maxlength="25">
+                        @error('serie')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-row d-flex flex-wrap gap-3">
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="asignado">Asignado <span class="text-danger"> *</span></label>
+                        <input type="text" id="asignado" name="asignado" 
+                               class="form-control form-control-lg @error('asignado') is-invalid @enderror" 
+                               value="{{ old('asignado', $registro->asignado) }}" maxlength="30" required>
+                        @error('asignado')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="form-group flex-grow-1">
+                        <label class="form-label fw-bold fs-6" for="observacion">Observación</label>
+                        <textarea id="observacion" name="observacion" 
+                                  class="form-control form-control-lg @error('observacion') is-invalid @enderror" 
+                                  rows="3" maxlength="40">{{ old('observacion', $registro->observacion) }}</textarea>
+                        @error('observacion')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="modelo">Modelo:</label>
-                <input type="text" id="modelo" name="modelo" class="form-control" value="{{ old('modelo', $registro->modelo) }}" maxlength="30">
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="serie">Serie:</label>
-                <input type="text" id="serie" name="serie" class="form-control" value="{{ old('serie', $registro->serie) }}" maxlength="25">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="asignado">Asignado:</label>
-                <input type="text" id="asignado" name="asignado" class="form-control" value="{{ old('asignado', $registro->asignado) }}" maxlength="30" required>
-                @error('asignado')
-                     <div class="text-danger">{{ $message }}</div>
-                 @enderror
-            </div>
-
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="observacion">Observación (opcional):</label>
-                <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="40">{{ old('observacion', $registro->observacion) }}</textarea>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
+
 
 <!-- Formateo de la placa -->
 <script>
