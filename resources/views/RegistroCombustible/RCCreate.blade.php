@@ -1,6 +1,6 @@
 @extends('Layouts.app')
 
-@section('titulo','Registro de Combustible')
+@section('titulo','creacion de registro Combustible')
 
 @section('contenido')
 

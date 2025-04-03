@@ -3,6 +3,7 @@
 @section('titulo', 'Editar Vehículo')
 
 @section('contenido')
+
 @include('sweetalert::alert')
 
 <style>  

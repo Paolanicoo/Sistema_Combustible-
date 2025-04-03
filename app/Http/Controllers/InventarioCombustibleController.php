@@ -10,6 +10,45 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class InventarioCombustibleController extends Controller
 {
+    public function getData()
+    {
+        $combustibles = Combustible::orderBy('created_at', 'desc')->get();
+
+        return datatables()->of($combustibles)
+            ->addColumn('acciones', function ($combustible) {
+                return '
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="'.route('combus.edit', $combustible->id).'" 
+                        class="btn btn-warning btn-sm"
+                        data-bs-toggle="tooltip"
+                        title="Registrar salida">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                        <a href="'.route('combus.show', $combustible->id).'" 
+                        class="btn btn-info btn-sm"
+                        data-bs-toggle="tooltip"
+                        title="Ver detalles">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <form action="'.route('combus.destroy', $combustible->id).'" method="POST" class="d-inline eliminar-registro">
+                            '.csrf_field().'
+                            '.method_field('DELETE').'
+                            <button type="submit" class="btn btn-danger btn-sm" 
+                                    data-bs-toggle="tooltip"
+                                    title="Eliminar registro"
+                                    data-entrada="'.$combustible->cantidad_entrada.'"
+                                    data-actual="'.$combustible->cantidad_actual.'"
+                                    data-descripcion="'.$combustible->descripcion.'">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                ';
+            })
+            ->rawColumns(['acciones']) // Permitir que las acciones se rendericen como HTML
+            ->make(true);
+    }
+
     public function create()
     {
         return view('InventarioCombustible.create');
@@ -53,37 +92,37 @@ class InventarioCombustibleController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'cantidad_retirada' => 'required|numeric|min:0.01',
-        'persona' => 'required|string|max:100',
-        'fecha' => 'required|date'
-    ]);
+    {
+        $request->validate([
+            'cantidad_retirada' => 'required|numeric|min:0.01',
+            'persona' => 'required|string|max:100',
+            'fecha' => 'required|date'
+        ]);
 
-    $combustible = Combustible::findOrFail($id);
-    
-    if($request->cantidad_retirada > $combustible->cantidad_actual) {
-        Alert::error('Error', 'No hay suficiente combustible disponible');
-        return back();
+        $combustible = Combustible::findOrFail($id);
+        
+        if($request->cantidad_retirada > $combustible->cantidad_actual) {
+            Alert::error('Error', 'No hay suficiente combustible disponible');
+            return back();
+        }
+
+        // Actualizar solo la cantidad actual
+        $nueva_cantidad = $combustible->cantidad_actual - $request->cantidad_retirada;
+        $combustible->update(['cantidad_actual' => $nueva_cantidad]);
+
+        // Registrar en historial
+        HistorialCombustible::create([
+            'combustible_id' => $id,
+            'cantidad_retirada' => $request->cantidad_retirada,
+            'cantidad_restante' => $nueva_cantidad,
+            'persona' => $request->persona,
+            'fecha' => $request->fecha,
+            'observacion' => $request->observacion
+        ]);
+
+        Alert::success('Éxito', 'Salida registrada y combustible actualizado');
+        return redirect()->route('combus.index');
     }
-
-    // Actualizar solo la cantidad actual
-    $nueva_cantidad = $combustible->cantidad_actual - $request->cantidad_retirada;
-    $combustible->update(['cantidad_actual' => $nueva_cantidad]);
-
-    // Registrar en historial
-    HistorialCombustible::create([
-        'combustible_id' => $id,
-        'cantidad_retirada' => $request->cantidad_retirada,
-        'cantidad_restante' => $nueva_cantidad,
-        'persona' => $request->persona,
-        'fecha' => $request->fecha,
-        'observacion' => $request->observacion
-    ]);
-
-    Alert::success('Éxito', 'Salida registrada y combustible actualizado');
-    return redirect()->route('combus.index');
-}
 
     public function show($id)
     {
@@ -92,36 +131,36 @@ class InventarioCombustibleController extends Controller
     }
 
     public function index()
-{
-    // Ordena los registros de combustible por la columna created_at en orden descendente
-    $combustibles = Combustible::orderBy('created_at', 'desc')->paginate(10);
-    
-    return view('InventarioCombustible.index', compact('combustibles'));
-}
+    {
+        // Ordena los registros de combustible por la columna created_at en orden descendente
+        $combustibles = Combustible::orderBy('created_at', 'desc')->paginate(10);
+        
+        return view('InventarioCombustible.index', compact('combustibles'));
+    }
 
 
     public function destroy($id)
-{
-    try {
-        DB::beginTransaction();
-        
-        // 1. Eliminar primero el historial relacionado
-        HistorialCombustible::where('combustible_id', $id)->delete();
-        
-        // 2. Eliminar el registro principal
-        Combustible::findOrFail($id)->delete();
-        
-        DB::commit();
-        
-        Alert::success('Éxito', 'Registro de combustible eliminado correctamente');
-        return redirect()->route('combus.index');
-        
-    } catch (\Exception $e) {
-        DB::rollBack();
-        Alert::error('Error', 'No se pudo eliminar: ' . $e->getMessage());
-        return back();
+    {
+        try {
+            DB::beginTransaction();
+            
+            // 1. Eliminar primero el historial relacionado
+            HistorialCombustible::where('combustible_id', $id)->delete();
+            
+            // 2. Eliminar el registro principal
+            Combustible::findOrFail($id)->delete();
+            
+            DB::commit();
+            
+            Alert::success('Éxito', 'Registro de combustible eliminado correctamente');
+            return redirect()->route('combus.index');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error('Error', 'No se pudo eliminar: ' . $e->getMessage());
+            return back();
+        }
     }
-}
 
     
 }

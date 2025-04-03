@@ -57,31 +57,29 @@ Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::cl
     Route::post('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
     Route::put('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
     Route::get('/roles/data', [RegistroRolController::class, 'getData'])->name('registrorol.table');
-Route::post('/roles/toggleEstado', [RegistroRolController::class, 'toggleEstado'])->name('roles.toggleEstado');
+    Route::post('/roles/toggleEstado', [RegistroRolController::class, 'toggleEstado'])->name('roles.toggleEstado');
 
 
 
     //Rutas de user
     Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/create', [UserController::class, 'create'])->name('user.create'); // Nueva ruta para formulario de creación
-Route::post('/user', [UserController::class, 'store'])->name('user.store');
-Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
-Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::get('/user/create', [UserController::class, 'create'])->name('user.create'); // Nueva ruta para formulario de creación
+    Route::post('/user', [UserController::class, 'store'])->name('user.store');
+    Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
-
-
- //Rutas de inventario combustible
-// Rutas de Inventario de Combustible
-Route::get('/InventarioCombustible/index', [InventarioCombustibleController::class, 'index'])->name('combus.index');
-Route::get('/InventarioCombustible/create', [InventarioCombustibleController::class, 'create'])->name('combus.create');
-Route::post('/InventarioCombustible/create', [InventarioCombustibleController::class, 'store'])->name('combustible.store');
-Route::get('/InventarioCombustible/{inventario}/edit', [InventarioCombustibleController::class, 'edit'])->name('combus.edit');
-Route::put('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'update'])->name('combus.update');
-Route::get('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'show'])->name('combus.show');
-Route::delete('/InventarioCombustible/{id}', [InventarioCombustibleController::class, 'destroy'])->name('combus.destroy');
+    // Rutas de Inventario de Combustible
+    Route::get('/combustible/data', [InventarioCombustibleController::class, 'getData'])->name('combus.data');
+    Route::get('/InventarioCombustible/index', [InventarioCombustibleController::class, 'index'])->name('combus.index');
+    Route::get('/InventarioCombustible/create', [InventarioCombustibleController::class, 'create'])->name('combus.create');
+    Route::post('/InventarioCombustible/create', [InventarioCombustibleController::class, 'store'])->name('combustible.store');
+    Route::get('/InventarioCombustible/{inventario}/edit', [InventarioCombustibleController::class, 'edit'])->name('combus.edit');
+    Route::put('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'update'])->name('combus.update');
+    Route::get('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'show'])->name('combus.show');
+    Route::delete('/InventarioCombustible/{id}', [InventarioCombustibleController::class, 'destroy'])->name('combus.destroy');
 
 
 
