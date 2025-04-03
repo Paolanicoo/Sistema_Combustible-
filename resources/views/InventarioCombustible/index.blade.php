@@ -200,10 +200,10 @@
                 <table id="combustible-table" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Cantidad Entrada</th>
-                            <th>Cantidad Actual</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
+                            <th class="text-center">Cantidad Entrada</th>
+                            <th class="text-center">Cantidad Actual</th>
+                            <th class="text-center">Descripción</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                 </table>
@@ -247,71 +247,44 @@
     });
 </script>
 
-
-@endsection
-
-@section('scripts')
-
-<!-- Bootstrap JS (necesario para los tooltips) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-        // Evento delegado para los formularios de eliminación
-        $(document).on('submit', '.eliminar-registro', function(e) {
-            e.preventDefault();
-            const form = $(this);
-            const boton = form.find('button');
-            
-            Swal.fire({
-                title: '¿Eliminar registro?',
-                html: `
-                    <div class="text-start">
-                        <p>Estás a punto de eliminar permanentemente:</p>
-                        <ul>
-                            <li>Entrada inicial: <strong>${boton.data('entrada')} galones</strong></li>
-                            <li>Cantidad actual: <strong>${boton.data('actual')} galones</strong></li>
-                            <li>Descripción: <strong>${boton.data('descripcion')}</strong></li>
-                        </ul>
-                        <p class="text-danger"><i class="fas fa-exclamation-triangle"></i> ¡Esta acción no se puede deshacer!</p>
-                    </div>
-                `,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar',
-                customClass: {
-                    htmlContainer: 'text-start'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Mostrar carga mientras se procesa
-                    Swal.fire({
-                        title: 'Eliminando...',
-                        html: 'Por favor espere',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
+   $(document).on('click', '.delete-btn', function () {
+        var registroId = $(this).data('id');
+        var deleteUrl = $(this).data('url');  // Obtener la URL de data-url
+        
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡Este registro será eliminado permanentemente!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: deleteUrl, 
+                    type: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Eliminado!', response.message, 'success');
+                            $('#combustible-table').DataTable().ajax.reload();
+                        } else {
+                            Swal.fire('Error!', response.message, 'error');
                         }
-                    });
-                    
-                    // Enviar formulario
-                    form[0].submit();
-                }
-            });
+                    },
+                    error: function(xhr) {
+                        console.error("Error en AJAX:", xhr.responseText);
+                        Swal.fire('Error!', 'Hubo un problema al eliminar el registro.', 'error');
+                    }
+                });
+            }
         });
-
-        // Mostrar mensaje de éxito si existe
-        @if(session('deleted'))
-            Swal.fire({
-                icon: 'success',
-                title: '¡Eliminado!',
-                text: '{{ session('deleted') }}',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        @endif
     });
 </script>
+
+@endsection
+@section('scripts')
 @endsection

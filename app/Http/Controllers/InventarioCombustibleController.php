@@ -30,24 +30,20 @@ class InventarioCombustibleController extends Controller
                         title="Ver detalles">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <form action="'.route('combus.destroy', $combustible->id).'" method="POST" class="d-inline eliminar-registro">
-                            '.csrf_field().'
-                            '.method_field('DELETE').'
-                            <button type="submit" class="btn btn-danger btn-sm" 
-                                    data-bs-toggle="tooltip"
-                                    title="Eliminar registro"
-                                    data-entrada="'.$combustible->cantidad_entrada.'"
-                                    data-actual="'.$combustible->cantidad_actual.'"
-                                    data-descripcion="'.$combustible->descripcion.'">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
+                        <button class="btn btn-danger btn-sm delete-btn" 
+                                data-id="'.$combustible->id.'" 
+                                data-url="'.route('combus.destroy', $combustible->id).'"
+                                data-bs-toggle="tooltip"
+                                title="Eliminar registro">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
                     </div>
                 ';
             })
             ->rawColumns(['acciones']) // Permitir que las acciones se rendericen como HTML
             ->make(true);
     }
+
 
     public function create()
     {
@@ -60,7 +56,7 @@ class InventarioCombustibleController extends Controller
         // Validación de los campos
         $request->validate([
             'cantidad_entrada' => 'required|numeric|min:0',
-            'descripcion' => 'required|string|max:255'
+            'descripcion' => 'required|string|max:60'
         ]);
 
         try {
@@ -73,8 +69,8 @@ class InventarioCombustibleController extends Controller
 
             // SweetAlert para éxito
             Alert::success('Éxito', 'Entrada de combustible creada');
-
             return redirect()->route('combus.index');
+
         } catch (\Exception $e) {
             // Manejo de errores y SweetAlert para fallos
             \Log::error('Error al crear entrada de combustible: ' . $e->getMessage());
@@ -83,7 +79,6 @@ class InventarioCombustibleController extends Controller
             return back();
         }
     }
-
 
     public function edit($id)
     {
@@ -144,23 +139,38 @@ class InventarioCombustibleController extends Controller
         try {
             DB::beginTransaction();
             
+            // Verificar si el registro existe antes de intentar eliminarlo
+            $combustible = Combustible::find($id);
+            if (!$combustible) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El registro no existe o ya fue eliminado'
+                ], 404);
+            }
+
             // 1. Eliminar primero el historial relacionado
             HistorialCombustible::where('combustible_id', $id)->delete();
             
             // 2. Eliminar el registro principal
-            Combustible::findOrFail($id)->delete();
+            $combustible->delete();
             
             DB::commit();
-            
-            Alert::success('Éxito', 'Registro de combustible eliminado correctamente');
-            return redirect()->route('combus.index');
-            
+
+            // Respuesta de éxito
+            return response()->json([
+                'success' => true,
+                'message' => 'Registro eliminado correctamente'
+            ]);
         } catch (\Exception $e) {
-            DB::rollBack();
-            Alert::error('Error', 'No se pudo eliminar: ' . $e->getMessage());
-            return back();
+            DB::rollBack(); // Revertir la transacción en caso de error
+            
+            // Respuesta de error
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el registro: ' . $e->getMessage()
+            ], 500);
         }
     }
 
-    
+
 }

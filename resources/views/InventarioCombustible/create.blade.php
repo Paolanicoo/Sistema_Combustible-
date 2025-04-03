@@ -3,6 +3,10 @@
 @section('titulo', 'Registro de Combustible')
 
 @section('contenido')
+
+<!--asegura que los mensajes de SweetAlert se muestren -->
+@include('sweetalert::alert')
+
 <style>
     /* Estilos generales */
     body {
@@ -109,7 +113,6 @@
                 </button>
             </div>
         </div>
-
         <!-- Campo de cantidad inicial -->
         <div class="form-group-expanded mb-4">
             <label class="form-label" for="cantidad_entrada">Cantidad inicial (galones):</label>
@@ -135,72 +138,4 @@
         </div>
     </form>
 </div>
-
-<!-- SweetAlert JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    // Validación de número decimal
-    function validarNumeroDecimal(input) {
-        input.value = input.value.replace(/[^0-9.]/g, '');
-        if ((input.value.match(/\./g) || []).length > 1) {
-            input.value = input.value.replace(/\.+$/, "");
-        }
-    }
-
-    // Manejo del formulario con SweetAlert
-    document.getElementById('combustibleForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const cantidad = document.getElementById('cantidad_entrada').value;
-        const descripcion = document.getElementById('descripcion').value;
-        
-        if (!cantidad || !descripcion) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Campos incompletos',
-                text: 'Por favor complete todos los campos requeridos',
-                confirmButtonColor: '#3085d6'
-            });
-            return;
-        }
-        
-        Swal.fire({
-            title: '¿Confirmar registro?',
-            text: `Va a registrar ${cantidad} galones de combustible`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, registrar',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si confirma, enviar el formulario
-                e.target.submit();
-                
-                // Mostrar mensaje de éxito
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Registro exitoso',
-                    text: 'El combustible ha sido registrado correctamente',
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            }
-        });
-    });
-
-    // Establecer fecha actual si hay campo de fecha
-    window.onload = function() {
-        if(document.getElementById('fecha')) {
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var yyyy = today.getFullYear();
-            document.getElementById('fecha').value = yyyy + '-' + mm + '-' + dd;
-        }
-    }
-</script>
-
 @endsection

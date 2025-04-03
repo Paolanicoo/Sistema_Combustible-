@@ -20,11 +20,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/registrovehicular/{id}/edit', [RegistroVehicularController::class, 'edit'])->name('registrovehicular.RVEdit');
     Route::put('/registrovehicular/{id}', [RegistroVehicularController::class, 'update'])->name('registrovehicular.update');
     Route::delete('/registrovehicular/{id}', [RegistroVehicularController::class, 'destroy'])->name('registrovehicular.destroy');
-// Mostrar detalles de un vehículo
-Route::get('registrovehicular/{id}', [RegistroVehicularController::class, 'show'])->name('registrovehicular.show');
+    // Mostrar detalles de un vehículo
+    Route::get('registrovehicular/{id}', [RegistroVehicularController::class, 'show'])->name('registrovehicular.show');
 
 
-Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::class, 'getHistorialAsignaciones'])->name('historialasignaciones.data');
+    Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::class, 'getHistorialAsignaciones'])->name('historialasignaciones.data');
 
     // RUTAS DE COMBUSTIBLE
     Route::get('registrocombustible/data', [RegistroCombustibleController::class, 'getTableData'])->name('registrocombustible.getTableData');
@@ -44,22 +44,17 @@ Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::cl
     Route::put('/registroimporte/{id}', [ResumenImporteController::class, 'update'])->name('registroimporte.update');
     Route::delete('/registroimporte/{id}', [ResumenImporteController::class, 'destroy'])->name('registroimporte.destroy');
 
-
     Route::get('/vehiculo', [RegistroVehicularController::class, 'index'])->name('registrovehicular.index');
     Route::get('/combustible', [RegistroCombustibleController::class, 'index'])->name('registrocombustible.index');
     Route::get('/importe', [ResumenImporteController::class, 'index'])->name('registroimporte.index');
        
-        // RUTAS DE ROL
-        Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
-
-    // Editar rol (Formulario de edición)
+    // RUTAS DE ROL
+    Route::get('rol_table', [RegistroRolController::class, 'getData'])->name('registrorol.table');
     Route::get('/roles/{id}/editar', [RegistroRolController::class, 'edit'])->name('roles.edit');
     Route::post('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
     Route::put('/roles/{id}/editar', [RegistroRolController::class, 'update'])->name('roles.update');
     Route::get('/roles/data', [RegistroRolController::class, 'getData'])->name('registrorol.table');
     Route::post('/roles/toggleEstado', [RegistroRolController::class, 'toggleEstado'])->name('roles.toggleEstado');
-
-
 
     //Rutas de user
     Route::get('/user_table', [UserController::class, 'getTableData'])->name('user.table');
