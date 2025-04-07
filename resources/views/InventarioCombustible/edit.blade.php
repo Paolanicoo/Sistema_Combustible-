@@ -3,118 +3,135 @@
 @section('titulo', 'Registro de Salida de Combustible')
 
 @section('contenido')
-<style>
-    /* Estilos generales */
-    body {
-        background-color: #f9f9f9;
-        font-family: 'Arial', sans-serif;
-    }
 
-    /* Estilos para los campos deshabilitados */
-    .form-control[readonly], .form-control[disabled] {
-        background-color: #f0f0f0;
-        color: #888;
-        cursor: not-allowed;
+<!--asegura que los mensajes de SweetAlert se muestren -->
+@include('sweetalert::alert')
+
+<style>  
+    /* Estilos base */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        color: #000;
+        font-size: 15px;
     }
 
     .card {
-        border-radius: 10px;
-        max-width: 900px;
-        margin-top: 50px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: #f9f9f9;
-        padding: 50px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        min-height: 450px;
-        height: auto;
-    }
-
-    .card-header {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        font-size: 24px;
-        font-weight: bold;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-
-    .form-control, .btn {
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        width: 100%;
-    }
-
-    .form-control:focus {
-        background-color: #fff;
-        border-color: #66afe9;
-        outline: none;
-    }
-
-    .btn-custom {
-        background-color: rgb(53, 192, 88);
-        color: white;
-        padding: 10px 20px;
-        border-radius: 10px;
-        width: 100%;
+        border-radius: 12px;
         border: none;
-    }
-
-    .btn-custom:hover {
-        background-color: rgb(40, 160, 70);
-        transition: 0.3s ease-in-out;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        margin: 50px auto;
+        max-width: 700px;
+        min-height: 500px;
     }
 
     .centered-title {
+        color: #344767;
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin-bottom: 0;
         text-align: center;
-        font-weight: bold;
-        margin-top: 20px;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+        background-color: #fff;
+    }
+
+    /* LABELS - Tamaño aumentado y más visibles */
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #344767;
+        font-size: 1.05rem !important;
+        letter-spacing: 0.3px;
+    }
+
+    /* INPUTS - Tamaño consistente */
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.9375rem;
+        transition: all 0.3s ease;
+        color: #344767;
+    }
+
+    .form-control:focus {
+        border-color: #0ea5e9;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25);
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
     }
 
     .text-danger {
-        color: red;
-        font-size: 14px;
+        color: #dc3545;
+        font-size: 0.8125rem;
+        margin-top: 4px;
+        display: block;
     }
 
-    /* Estilo de los campos de formulario */
-    .form-container {
-        max-width: 900px;
-        margin: 30px auto;
-        padding: 30px;
-        background-color: #f9f9f9;
+    /* Botones */
+    .btn {
+        padding: 0.6rem 1.2rem;
         border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .row {
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
         display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 20px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
 
-    .col-md-6 {
-        flex: 1 1 48%;
+    .btn-secondary {
+        background-color: #f1f5f9;
+        color: #344767;
+        border: none;
     }
 
-    .col-md-3 {
-        flex: 1 1 23%;
+    .btn-secondary:hover {
+        background-color: #e2e8f0;
+        transform: translateY(-2px);
     }
 
-    .mb-3 {
-        margin-bottom: 1rem;
+    .btn-custom {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: #344767; /* Mismo color que el de Regresar */
     }
 
+    .btn-custom:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        color: white; /* Texto blanco al pasar el mouse */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Área de texto más pequeña para la descripción */
     textarea.form-control {
+        height: 120px;
         resize: vertical;
+    }
+
+    /* Footer para botones */
+    .form-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        padding: 0 1.5rem 1.5rem;
+    }
+
+    /* Espacio entre campos */
+    .form-group-expanded {
+        margin-bottom: 1.5rem;
     }
 </style>
 
@@ -123,26 +140,20 @@
         @csrf
         @method('PUT')
 
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <h4 class="centered-title m-0"><i class="fas fa-gas-pump mr-2"></i> Registro de salida de combustible</h4>
-            <div class="d-flex gap-2">
-                <a href="{{ route('combus.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <button type="submit" class="btn btn-custom d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="fas fa-save"></i>
-                </button>
-            </div>
+        <!-- Título centrado con fondo gris claro -->
+        <div class="text-center mb-5" style="background-color: #f0f0f0; color: #344767; padding: 15px; border-radius: 8px;">
+            <h4 class="m-0">Registro de salida de combustible</h4>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="cantidad_actual">Cantidad actual (galones):</label>
+        <!-- Primera fila -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <label for="cantidad_actual" class="form-label">Cantidad actual (galones):</label>
                 <input type="number" id="cantidad_actual" value="{{ $combustible->cantidad_actual }}" class="form-control" disabled>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="cantidad_retirada">Cantidad a retirar:</label>
+            <div class="col-md-6 mb-4">
+                <label for="cantidad_retirada" class="form-label">Cantidad a retirar:</label>
                 <input type="number" step="0.01" name="cantidad_retirada" id="cantidad_retirada" class="form-control" required oninput="validarNumeroDecimal(this)">
                 @error('cantidad_retirada')
                     <div class="text-danger">{{ $message }}</div>
@@ -150,28 +161,36 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="persona">Persona que retira:</label>
+        <!-- Segunda fila -->
+        <div class="row mb-5">
+            <div class="col-md-6 mb-4">
+                <label for="persona" class="form-label">Persona que retira:</label>
                 <input type="text" name="persona" id="persona" class="form-control" required>
                 @error('persona')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="fecha">Fecha:</label>
+            <div class="col-md-6 mb-4">
+                <label for="fecha" class="form-label">Fecha:</label>
                 <input type="date" name="fecha" id="fecha" class="form-control" required>
                 @error('fecha')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
         </div>
+
+        <!-- Botones alineados a la derecha -->
+        <div class="d-flex justify-content-end gap-3">
+            <a href="{{ route('combus.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Volver
+            </a>
+            <button type="submit" class="btn btn-custom">
+                <i class="fas fa-save me-1"></i> Guardar
+            </button>
+        </div>
     </form>
 </div>
-
-<!-- SweetAlert JS -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function validarNumeroDecimal(input) {
@@ -235,18 +254,8 @@
             if (result.isConfirmed) {
                 // Si confirma, enviar el formulario
                 e.target.submit();
-                
-                // Mostrar mensaje de éxito
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Salida registrada',
-                    text: 'El registro de salida se ha completado correctamente',
-                    showConfirmButton: false,
-                    timer: 2000
-                });
             }
         });
     });
 </script>
-
 @endsection
