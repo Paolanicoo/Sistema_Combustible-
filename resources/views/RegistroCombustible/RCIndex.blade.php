@@ -148,6 +148,26 @@
         color: #64748b;
         padding-top: 1rem;
     }
+
+    .btn-nuevo-registro {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 0.75rem 1rem; /* Tamaño un poco más grande que el de guardar */
+        font-size: 0.80rem;
+        border-radius: 8px;
+        min-width: 160px;
+        text-align: center;
+    }
+
+    .btn-nuevo-registro:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
 </style>
 
 <div class="container mt-5">
@@ -157,7 +177,7 @@
                 <b>Registro de combustible</b>
             </h2>
             @if(Auth::user()->role !== 'Visualizador')
-                <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm">
+                <a href="{{ route('registrocombustible.create') }}" class="btn btn-info btn-sm btn-nuevo-registro">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif

@@ -58,6 +58,26 @@
     table.dataTable thead th {
         white-space: nowrap; /* Evita el ajuste de texto en las cabeceras */
     }
+
+    .btn-nuevo-registro {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+        font-weight: 2300;
+        transition: all 0.3s ease;
+        padding: 0.75rem 1rem; /* Aumento del tamaño del botón */
+        font-size: 0.80rem; /* Aumento del tamaño del texto */
+        border-radius: 8px; /* Bordes suaves */
+        min-width: 20px; /* Aumento del ancho mínimo */
+        text-align: center; /* Asegura que el texto esté centrado */
+    }
+    
+    .btn-nuevo-registro:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
 </style>
 
 <div class="container mt-5">
@@ -65,7 +85,7 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title mb-0"><b>Resumen de importes</b></h3>
             @if(Auth::user()->role !== 'Visualizador')
-                <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm">
+                <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm btn-nuevo-registro">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif
