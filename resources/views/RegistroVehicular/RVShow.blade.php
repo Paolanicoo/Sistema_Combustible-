@@ -25,7 +25,7 @@
                     <i class="fas fa-car me-2"></i><b>Detalles del vehículo</b>
                 </h3>
                 <a href="javascript:window.history.back();" class="btn btn-secondary btn-icon">
-                    <i class="fas fa-arrow-left"></i>
+                    <i class="fas fa-arrow-left"></i> 
                 </a>
             </div>
             <div class="card-body bg-light">

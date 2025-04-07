@@ -3,48 +3,49 @@
 @section('titulo', 'Detalles de Combustible')
 
 @section('contenido')
+
+@include('sweetalert::alert')
 <style>
-    /* Estilos modernos y profesionales */
+    /* Estilos modernos y profesionales alineados con el diseño principal */
     .card-detail {
         border-radius: 12px;
         border: none;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        transition: transform 0.3s ease;
-    }
-
-    .card-detail:hover {
-        transform: translateY(-5px);
     }
 
     .card-header-detail {
-        background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
-        color: white;
+        background-color: rgb(226, 228, 230);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         padding: 1.5rem;
-        border-bottom: none;
+        color: #344767;
     }
 
     .card-body-detail {
-        padding: 2rem;
+        padding: 1.5rem;
     }
 
     .info-badge {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         padding: 0.5rem 1rem;
-        border-radius: 20px;
+        border-radius: 8px;
+        background-color: #0ea5e9;
+        color: white;
     }
 
     .table-custom {
-        border-radius: 10px;
-        overflow: hidden;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
     }
 
     .table-custom thead th {
-        background-color: #f8f9fa;
+        color: #64748b;
         font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
+        font-size: 0.875rem;
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: #f8fafc;
     }
 
     .table-custom tbody tr {
@@ -52,25 +53,31 @@
     }
 
     .table-custom tbody tr:hover {
-        background-color: #f8f9fa;
-        transform: scale(1.01);
+        background-color: #f1f5f9;
+    }
+    
+    .table-custom tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+        color: #334155;
     }
 
     .btn-back {
-        border-radius: 30px;
-        padding: 0.5rem 1.5rem;
+        background-color: transparent;
+        border-color: #0ea5e9;
+        color: #0ea5e9;
         font-weight: 500;
-        transition: all 0.3s;
-        border: 2px solid #3a7bd5;
-        color: #3a7bd5;
-        background: transparent;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
     }
 
     .btn-back:hover {
-        background: #3a7bd5;
+        background-color: #0ea5e9;
         color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(58, 123, 213, 0.2);
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
     }
 
     .status-card {
@@ -78,11 +85,11 @@
         padding: 1.5rem;
         margin-bottom: 2rem;
         background: #f8f9fa;
-        border-left: 4px solid #3a7bd5;
+        border-left: 4px solid #0ea5e9;
     }
 
     .progress-container {
-        height: 10px;
+        height: 8px;
         background: #e9ecef;
         border-radius: 5px;
         margin: 1rem 0;
@@ -91,28 +98,48 @@
     .progress-bar-custom {
         height: 100%;
         border-radius: 5px;
-        background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+        background: #0ea5e9;
+    }
+    
+    .badge {
+        padding: 0.35em 0.65em;
+        font-size: 0.75em;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+    
+    .bg-danger {
+        background-color: #ef4444 !important;
+        color: white;
+    }
+    
+    .bg-success {
+        background-color: #10b981 !important;
+        color: white;
+    }
+    
+    .bg-info {
+        background-color: #0ea5e9 !important;
+        color: white;
     }
 </style>
 
-<div class="container py-4">
-    <!-- Botón de regreso -->
-    <div class="mb-4">
-        <a href="{{ route('combus.index') }}" class="btn btn-back">
-            <i class="fas fa-arrow-left mr-2"></i> Volver al Inventario
-        </a>
-    </div>
-
+<div class="container mt-5">
     <!-- Tarjeta principal -->
     <div class="card card-detail mb-4">
         <div class="card-header card-header-detail">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h2 class="mb-1"><i class="fas fa-gas-pump mr-2"></i> Detalles de Combustible</h2>
-                    <p class="mb-0"><i class="far fa-calendar-alt mr-2"></i> Registrado el: {{ $combustible->created_at->format('d/m/Y H:i') }}</p>
+                    <div class="d-flex align-items-center">
+                        <a href="{{ route('combus.index') }}" class="btn btn-back me-3">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                        <h2 class="mb-1"> Detalles de Combustible</h2>
+                    </div>
+                    <p class="mb-0 mt-2"><i class="far fa-calendar-alt me-2"></i> Registrado el: {{ $combustible->created_at->format('d/m/Y H:i') }}</p>
                 </div>
-                <span class="info-badge bg-white text-primary">
-                    <i class="fas fa-tint mr-1"></i> {{ $combustible->cantidad_actual }} galones
+                <span class="info-badge">
+                    <i class="fas fa-tint me-1"></i> {{ $combustible->cantidad_actual }} galones
                 </span>
             </div>
         </div>
@@ -122,18 +149,18 @@
             <div class="status-card">
                 <div class="row">
                     <div class="col-md-4">
-                        <h5><i class="fas fa-box-open text-primary mr-2"></i> Entrada Inicial</h5>
+                        <h5><i class="fas fa-box-open text-primary me-2"></i> Entrada Inicial</h5>
                         <h3 class="text-primary">{{ $combustible->cantidad_entrada }} galones</h3>
                     </div>
                     <div class="col-md-4">
-                        <h5><i class="fas fa-percentage text-info mr-2"></i> Porcentaje Disponible</h5>
+                        <h5><i class="fas fa-percentage text-info me-2"></i> Porcentaje Disponible</h5>
                         @php
                             $porcentaje = ($combustible->cantidad_actual / $combustible->cantidad_entrada) * 100;
                         @endphp
                         <h3 class="text-info">{{ number_format($porcentaje, 2) }}%</h3>
                     </div>
                     <div class="col-md-4">
-                        <h5><i class="fas fa-exchange-alt text-success mr-2"></i> Movimientos</h5>
+                        <h5><i class="fas fa-exchange-alt text-success me-2"></i> Movimientos</h5>
                         <h3 class="text-success">{{ $combustible->historial->count() }}</h3>
                     </div>
                 </div>
@@ -143,21 +170,21 @@
             </div>
 
             <!-- Historial de salidas -->
-            <h4 class="mb-3"><i class="fas fa-history text-secondary mr-2"></i> Historial de Salidas</h4>
+            <h4 class="mb-3"><i class="fas fa-history text-secondary me-2"></i> Historial de Salidas</h4>
             
             @if($combustible->historial->isEmpty())
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle mr-2"></i> No hay registros de salida para este combustible.
+                    <i class="fas fa-info-circle me-2"></i> No hay registros de salida para este combustible.
                 </div>
             @else
                 <div class="table-responsive">
                     <table class="table table-custom table-hover">
                         <thead>
                             <tr>
-                                <th><i class="far fa-calendar mr-1"></i> Fecha</th>
-                                <th><i class="fas fa-minus-circle mr-1"></i> Retirado</th>
-                                <th><i class="fas fa-tint mr-1"></i> Saldo Restante</th>
-                                <th><i class="fas fa-user mr-1"></i> Responsable</th>
+                                <th><i class="far fa-calendar me-1"></i> Fecha</th>
+                                <th><i class="fas fa-minus-circle me-1"></i> Retirado</th>
+                                <th><i class="fas fa-tint me-1"></i> Saldo Restante</th>
+                                <th><i class="fas fa-user me-1"></i> Responsable</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -178,7 +205,7 @@
 </div>
 
 <!-- SweetAlert -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     // Efecto hover mejorado para filas de tabla
     document.querySelectorAll('.table-custom tbody tr').forEach(row => {
