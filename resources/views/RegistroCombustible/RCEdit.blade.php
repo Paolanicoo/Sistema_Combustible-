@@ -86,30 +86,36 @@
     .btn {
         padding: 0.5rem 1rem;
         border-radius: 8px;
-        font-weight: 700;
-        font-size: 0.9375rem; /* 15px */
+        font-weight: 600;
+        font-size: 0.9rem;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
-    
+
     .btn-secondary {
         background-color: #f1f5f9;
-        color: #000;
+        color: #344767;
         border: none;
     }
-    
+
     .btn-secondary:hover {
         background-color: #e2e8f0;
+        transform: translateY(-2px);
     }
-    
+
     .btn-custom {
         background-color: #0ea5e9;
         border-color: #0ea5e9;
-        color: white;
+        color: #344767;  /* Azul oscuro como el de "Regresar" */
     }
-    
+
     .btn-custom:hover {
         background-color: #0284c7;
         border-color: #0284c7;
+        color: white;  /* Letras blancas al pasar el cursor */
         box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
         transform: translateY(-2px);
     }
@@ -155,6 +161,16 @@
         margin-top: 3px;
         display: block;
     } 
+
+    .encabezado-seccion {
+        background-color: #f0f0f0;
+        color: #344767;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+        width: 100%;  /* Asegura que el fondo ocupe todo el ancho */
+    }
 </style>
 
 <div class="card p-4">
@@ -163,18 +179,8 @@
         @method('PUT')
         <div class="d-flex align-items-center justify-content-between mb-3 position-relative">
             <!-- Título perfectamente centrado -->
-            <h3 class="centered-title m-0 w-100 text-center position-absolute start-50 translate-middle-x">
-                <b>Editar registro de combustible</b>
-            </h3>
-            
-            <!-- Contenedor de botones (se mantiene a la derecha) -->
-            <div class="d-flex gap-2 ms-auto" style="z-index: 1;">
-                <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <button type="submit" form="vehicle-form" class="btn btn-info  d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+            <div class="encabezado-seccion">
+                <h3 class="m-0">Editar registro de combustible</h3>
             </div>
         </div>
         <div class="mb-4"></div> <!-- Espacio adicional como en el original -->
@@ -269,6 +275,15 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+        </div>
+        <!-- Botones alineados a la derecha -->
+        <div class="d-flex justify-content-end gap-3">
+            <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-1"></i> Regresar
+            </a>
+            <button type="submit" class="btn btn-custom">
+                <i class="fas fa-save me-1"></i> Guardar
+            </button>
         </div>
     </form>
 </div>

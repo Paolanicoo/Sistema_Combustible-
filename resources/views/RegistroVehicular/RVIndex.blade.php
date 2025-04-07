@@ -42,12 +42,6 @@
         overflow: hidden;
     }
     
-    .card-header {
-        background-color: #fff;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 1.5rem;
-    }
-    
     .card-title {
         color: #344767;
         font-weight: 600;
@@ -59,7 +53,6 @@
         padding: 1.5rem;
     }
 
-    
     /* Estilos para los botones */
     .btn-info {
         background-color: #0ea5e9;
