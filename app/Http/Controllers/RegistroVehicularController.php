@@ -111,40 +111,84 @@ class RegistroVehicularController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validación de los campos con la regla unique para la placa
+        $registro = RegistroVehicular::findOrFail($id);
+        
         $request->validate([
-            'equipo'    => 'required|max:20',
-            'placa'     => 'required|max:10|unique:registro_vehiculars,placa,' . $id, // Evita que se valide la placa del propio registro
-            'motor'     => 'required|max:35',
-            'marca'     => 'required|max:25',
-            'modelo'    => 'required|max:30',
-            'serie'     => 'required|max:25',
+            'equipo'    => ['required', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
+            'placa'     => 'nullable|max:10|unique:registro_vehiculars,placa,' . $id,
+            'motor'     => 'nullable|max:35',
+            'marca'     => 'nullable|max:25',
+            'modelo'    => 'nullable|max:30',
+            'serie'     => 'nullable|max:25',
             'asignado'  => 'required|max:30',
             'observacion' => 'nullable|max:40',
         ], [
             'placa.unique' => 'La placa ya está registrada.',
-            'required' => 'El campo :attribute es obligatorio.',
-            'max' => 'El campo :attribute no puede superar los :max caracteres.',
+            'equipo.required' => 'El equipo es obligatorio.',
+            'asignado.required' => 'El asignado es obligatorio.',
         ]);
-
-        try {
-            // Buscar el registro por ID
-            $registro = RegistroVehicular::findOrFail($id);
-
-            // Actualizar los datos del registro
-            $registro->update($request->all());
-
-            // Mostrar mensaje de éxito con SweetAlert
-            Alert::success('Éxito', '¡Registro actualizado correctamente!');
-
-        } catch (\Exception $e) {
-            // Mostrar mensaje de error con SweetAlert si ocurre un problema
-            Alert::error('Error', 'Hubo un problema al actualizar el registro.');
+        
+        // Guardar el valor original de asignado antes de actualizar
+        $asignadoOriginal = $registro->asignado;
+        
+        // Comparar los datos existentes con los nuevos
+        $datosOriginales = $registro->getOriginal();
+        $datosNuevos = $request->all();
+        
+        // Filtrar para quitar campos nulos o vacíos y campos no relevantes
+        $datosNuevos = array_filter($datosNuevos, function($value, $key) {
+            return ($value !== null && $value !== '' && $key != '_token' && $key != '_method');
+        }, ARRAY_FILTER_USE_BOTH);
+        
+        // Verificar si hay cambios
+        $hayCambios = false;
+        foreach ($datosNuevos as $key => $value) {
+            if (isset($datosOriginales[$key]) && $datosOriginales[$key] != $value) {
+                $hayCambios = true;
+                break;
+            }
         }
-
-        // Redirigir a la vista de lista de registros
-        return redirect()->route('registrovehicular.index');
+        
+        // Si no hay cambios, redirigir sin actualizar
+        if (!$hayCambios) {
+            Alert::info('Sin cambios', 'No se detectaron modificaciones.');
+            return redirect()->route('registrovehicular.index');
+        }
+        
+        try {
+            // Actualizar el registro
+            $registro->update($datosNuevos);
+            
+            // Verificar si el asignado cambió
+            if ($asignadoOriginal !== $registro->asignado) {
+                // 1. Cerrar el historial anterior
+                $historialAnterior = HistorialAsignacion::where('registro_vehicular_id', $registro->id)
+                    ->whereNull('fecha_cambio')
+                    ->latest()
+                    ->first();
+                    
+                if ($historialAnterior) {
+                    $historialAnterior->update([
+                        'fecha_cambio' => now() // Fecha de cambio = ahora
+                    ]);
+                }
+                
+                // 2. Crear nuevo registro en el historial
+                HistorialAsignacion::create([
+                    'registro_vehicular_id' => $registro->id,
+                    'asignado' => $registro->asignado // Nuevo valor
+                ]);
+            }
+            
+            Alert::success('Éxito', '¡Registro actualizado correctamente!');
+            return redirect()->route('registrovehicular.index');
+        } catch (\Exception $e) {
+            \Log::error('Error en update: ' . $e->getMessage());
+            Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
+            return back();
+        }
     }
+
 
     public function destroy($id)
     {

@@ -148,9 +148,9 @@
 </style>
 
 <div class="card p-4">
-    <form method="post" action="{{ route('registrovehicular.store') }}" id="vehicle-form">
+    <form method="post" action="{{ route('registrovehicular.update', $registro->id) }}" id="vehicle-form">
         @csrf
-
+        @method('PUT')
         <!-- Título centrado con fondo gris claro -->
         <div class="text-center mb-5" style="background-color: #f0f0f0; color: #344767; padding: 15px; border-radius: 8px;">
             <h3 class="m-0">Editar registro de vehículo</h3>
@@ -260,8 +260,9 @@
     </form>
 </div>
 
-   <!-- Formateo de la placa -->
+   
 <script>
+    //Formateo de la placa
     function formatPlaca(input) {
         let value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); // Solo letras y números
 
