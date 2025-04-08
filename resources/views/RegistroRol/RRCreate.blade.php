@@ -4,7 +4,109 @@
 
 @section('contenido')
 
+<!--asegura que los mensajes de SweetAlert se muestren -->
+@include('sweetalert::alert')
+
 <style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+    
+    .container {
+        max-width: 1240px;
+    }
+    
+    .dataTables_filter {
+        margin-bottom: 20px;
+    }
+    
+    .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        width: 250px;
+    }
+    
+    .dataTables_filter input:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+    
+    /* Estilos para la tarjeta principal */
+    .card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+    
+    .card-title {
+        color: #344767;
+        font-weight: 600;
+    }
+
+    .card-header {
+        background-color: rgb(226, 228, 230); /* Color gris claro */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+
+    /* Botones de acción */
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+    }
+    
+    /* Estilos para los botones */
+    .btn-info {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 0.1rem 0.2rem; /* Ajuste moderado en el tamaño */
+        font-size: 0.95rem; /* Ligera mejora en el tamaño del texto */
+        border-radius: 8px; /* Mantiene bordes suaves */
+    }
+    
+    .btn-info:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+    
+    /* Estilos para la tabla */
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .table thead th {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+    }
+    
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+        color: #334155;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+    
     /* Ajustar el ancho de la columna "Acciones" */
     .acciones-columna {
         width: 120px;
@@ -18,33 +120,58 @@
         gap: 5px;
     }
     
-
+    /* Paginación */
+    .dataTables_paginate .paginate_button {
+        border-radius: 6px !important;
+        margin: 0 2px !important;
+    }
+    
+    .dataTables_paginate .paginate_button.current {
+        background: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+        color: white !important;
+    }
+    
+    .dataTables_paginate .paginate_button:hover {
+        background: #e2e8f0 !important;
+        border-color: #e2e8f0 !important;
+        color: #334155 !important;
+    }
+    
+    .dataTables_info {
+        color: #64748b;
+        padding-top: 1rem;
+    }
+    
+    /* Estilo específico para las columnas de rol y estado */
+    .rol-columna, .estado-columna {
+        text-align: center;
+    }
 </style>
 
-<!-- Ajustamos el margen superior para que suba un poco -->
 <div class="container mt-5">
-    <div class="card p-4">
+    <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Registro de roles</b></h3>
+            <h2 class="card-title mb-0">
+                <b>Registro de roles</b>
+            </h2>
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped w-100" id="roles-table">
-                <thead>
-                    <tr>
-                        <th class="rol-columna text-center">Rol</th>  
-                        <th class="estado-columna text-center">Estado</th>
-                        <th class="acciones-columna text-center">Acciones</th>        
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <div class="card-body p-4">
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-striped w-100" id="roles-table">
+                    <thead>
+                        <tr>
+                            <th>Rol</th>  
+                            <th>Estado</th>
+                            <th class="acciones-columna text-center">Acciones</th>        
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> 
-<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
 <script>
 $(document).ready(function () {
@@ -58,7 +185,7 @@ $(document).ready(function () {
             {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
         ],
         searching: false, // Desactiva la barra de búsqueda
-        paging: false, // Desactiva la paginación
+        paging: true, // Desactiva la paginación
         language: {
             "processing": "Procesando...",
             "zeroRecords": "No se encontraron resultados",
