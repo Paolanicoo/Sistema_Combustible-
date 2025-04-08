@@ -171,6 +171,13 @@
         margin-bottom: 20px;
         width: 100%;  /* Asegura que el fondo ocupe todo el ancho */
     }
+
+    .form-control[readonly] {
+        background-color: #f0f0f0;
+        color: #344767; /* mismo color del texto del título */
+        cursor: not-allowed; /* opcional, para mostrar que no se puede editar */
+    }
+    
 </style>
 
 <div class="card p-4">
@@ -355,9 +362,10 @@
         calcularTotal();
     });
 
+    // Deshabilitar de actualizar
     document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("vehicle-form");
-    const submitButton = document.querySelector("button[type='submit']"); // Corregido aquí
+    const submitButton = document.querySelector("button[type='submit']"); 
 
     // Deshabilitar el botón al inicio
     submitButton.disabled = true;

@@ -4,8 +4,6 @@
 
 @section('contenido')
 
-@include('sweetalert::alert')
-
 <style>
     /* Estilos base */
     body {
@@ -173,8 +171,14 @@
         text-align: center;
         margin-bottom: 20px;
     }
-</style>
+    
+    .form-control[readonly] {
+        background-color: #f0f0f0;
+        color: #344767; /* mismo color del texto del título */
+        cursor: not-allowed; /* opcional, para mostrar que no se puede editar */
+    }
 
+</style>
 
 <div class="card p-4">
     <form method="post" action="{{ route('registrocombustible.store') }}">
