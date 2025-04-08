@@ -281,8 +281,8 @@
             <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left me-1"></i> Regresar
             </a>
-            <button type="submit" class="btn btn-custom">
-                <i class="fas fa-save me-1"></i> Guardar
+            <button type="submit" class="btn btn-info">
+                <i class="fas fa-sync-alt me-1"></i> Actualizar
             </button>
         </div>
     </form>
@@ -355,33 +355,32 @@
         calcularTotal();
     });
 
-    // Deshabilita el boton de actualizar, solo se habilita si hay cambios
     document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("vehicle-form");
-        const submitButton = document.querySelector("button[form='vehicle-form']");
+    const form = document.getElementById("vehicle-form");
+    const submitButton = document.querySelector("button[type='submit']"); // Corregido aquí
 
-        // Deshabilitar el botón al inicio
-        submitButton.disabled = true;
+    // Deshabilitar el botón al inicio
+    submitButton.disabled = true;
 
-        // Guardar valores originales
-        const initialFormData = new FormData(form);
-        
-        form.addEventListener("input", function () {
-            const currentFormData = new FormData(form);
-            let hasChanges = false;
+    // Guardar valores originales
+    const initialFormData = new FormData(form);
 
-            // Comparar los valores actuales con los originales
-            for (let [key, value] of currentFormData.entries()) {
-                if (value !== initialFormData.get(key)) {
-                    hasChanges = true;
-                    break;
-                }
+    form.addEventListener("input", function () {
+        const currentFormData = new FormData(form);
+        let hasChanges = false;
+
+        // Comparar los valores actuales con los originales
+        for (let [key, value] of currentFormData.entries()) {
+            if (value !== initialFormData.get(key)) {
+                hasChanges = true;
+                break;
             }
+        }
 
-            // Habilitar o deshabilitar el botón según haya cambios
-            submitButton.disabled = !hasChanges;
-        });
+        // Habilitar o deshabilitar el botón según haya cambios
+        submitButton.disabled = !hasChanges;
     });
+});
 
 
 

@@ -155,7 +155,7 @@
         color: white;
         font-weight: 600;
         transition: all 0.3s ease;
-        padding: 0.75rem 1rem; /* Tamaño un poco más grande que el de guardar */
+        padding: 0.75rem 1rem;
         font-size: 0.80rem;
         border-radius: 8px;
         min-width: 160px;

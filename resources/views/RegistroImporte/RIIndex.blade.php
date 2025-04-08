@@ -7,32 +7,105 @@
 <!--asegura que los mensajes de SweetAlert se muestren -->
 @include('sweetalert::alert')
 
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-<!-- Para el paquete de SweetAlert configurado -->
-<script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
 <style>
-    .dataTables_filter {
-    margin-bottom: 20px; /* Ajusta este valor para separar más el buscador de la tabla */
-}
-
-    /* Ajustar el tamaño del contenedor */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+    }
+    
     .container {
-        width: 100%; /* Ahora el contenedor usa el 100% del ancho */
-        max-width: 100%; /* Se elimina el máximo ancho para que no se limite */
+        max-width: 1240px;
+        width: 100%;
         margin: 0 auto;
     }
-
-    /* Ajustar el ancho de la columna "Acciones" */
+    
+    .dataTables_filter {
+        margin-bottom: 20px;
+    }
+    
+    .dataTables_filter input {
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        width: 250px;
+    }
+    
+    .dataTables_filter input:focus {
+        border-color: #3b82f6;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+    
+    /* Estilos para la tarjeta principal */
+    .card {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+    
+    .card-header {
+        background-color: rgb(226, 228, 230);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+    }
+    
+    .card-title {
+        color: #344767;
+        font-weight: 600;
+    }
+    
+    /* Estilos para los botones */
+    .btn-info, .btn-nuevo-registro {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: white;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-info:hover, .btn-nuevo-registro:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+        color: white;
+    }
+    
+    /* Estilos para la tabla */
+    .table {
+        width: 100% !important;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .table thead th {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.875rem;
+        padding: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+        white-space: nowrap;
+    }
+    
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.875rem;
+        color: #334155;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+    
+    /* Reducir ancho de la columna "Acciones" */
     .acciones-columna {
-        width: 120px; /* Ajusta el tamaño según sea necesario */
+        width: 120px;
         text-align: center;
     }
 
@@ -42,36 +115,50 @@
         justify-content: center;
         gap: 5px;
     }
-
-    /* Evitar el scroll horizontal */
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
+    
+    /* Botones de acción */
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
     }
-
-    /* Asegurarse de que la tabla ocupe todo el espacio disponible */
-    .table {
-        width: 100% !important;
+    
+    /* Paginación */
+    .dataTables_paginate .paginate_button {
+        border-radius: 6px !important;
+        margin: 0 2px !important;
     }
-
-    /* Ajustar las columnas */
-    table.dataTable thead th {
-        white-space: nowrap; /* Evita el ajuste de texto en las cabeceras */
+    
+    .dataTables_paginate .paginate_button.current {
+        background: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+        color: white !important;
+    }
+    
+    .dataTables_paginate .paginate_button:hover {
+        background: #e2e8f0 !important;
+        border-color: #e2e8f0 !important;
+        color: #334155 !important;
+    }
+    
+    .dataTables_info {
+        color: #64748b;
+        padding-top: 1rem;
     }
 
     .btn-nuevo-registro {
         background-color: #0ea5e9;
         border-color: #0ea5e9;
         color: white;
-        font-weight: 2300;
+        font-weight: 600;
         transition: all 0.3s ease;
-        padding: 0.75rem 1rem; /* Aumento del tamaño del botón */
-        font-size: 0.80rem; /* Aumento del tamaño del texto */
-        border-radius: 8px; /* Bordes suaves */
-        min-width: 20px; /* Aumento del ancho mínimo */
-        text-align: center; /* Asegura que el texto esté centrado */
+        padding: 0.75rem 1rem;
+        font-size: 0.80rem;
+        border-radius: 8px;
+        min-width: 160px;
+        text-align: center;
     }
-    
+
     .btn-nuevo-registro:hover {
         background-color: #0284c7;
         border-color: #0284c7;
@@ -81,37 +168,48 @@
 </style>
 
 <div class="container mt-5">
-    <div class="card p-4">
+    <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0"><b>Resumen de importes</b></h3>
+            <h2 class="card-title mb-0">
+                <b>Resumen de importes</b>
+            </h2>
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registroimporte.create') }}" class="btn btn-info btn-sm btn-nuevo-registro">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif
         </div>
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped" id="importes-table">
-                <thead>
-                    <tr>
-                        <th>Mes</th>
-                        <th>Fecha</th>
-                        <th>Equipo</th>
-                        <th>Marca</th>
-                        <th>Placa</th>
-                        <th>Asignado</th>
-                        <th>N° de factura</th>
-                        <th>Consumo</th>
-                        <th>Precio</th>
-                        <th>Importe</th>
-                        <th>Empresa</th>
-                        <th>Tipo</th>
-                        <th class="acciones-columna text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="card-body p-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="table-responsive mt-3">
+                <table class="table table-bordered table-striped w-100" id="importes-table">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Fecha</th>
+                            <th>Equipo</th>
+                            <th>Marca</th>
+                            <th>Placa</th>
+                            <th>Asignado</th>
+                            <th>N° de factura</th>
+                            <th>Consumo</th>
+                            <th>Precio</th>
+                            <th>Importe</th>
+                            <th>Empresa</th>
+                            <th>Tipo</th>
+                            <th class="acciones-columna">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

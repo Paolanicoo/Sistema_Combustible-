@@ -53,6 +53,12 @@
         padding: 1.5rem;
     }
 
+    /* Botones de acción */
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+    }
     /* Estilos para los botones */
     .btn-info {
         background-color: #0ea5e9;
@@ -147,15 +153,15 @@
         background-color: #0ea5e9;
         border-color: #0ea5e9;
         color: white;
-        font-weight: 2300;
+        font-weight: 600;
         transition: all 0.3s ease;
-        padding: 0.75rem 1rem; /* Aumento del tamaño del botón */
-        font-size: 0.80rem; /* Aumento del tamaño del texto */
-        border-radius: 8px; /* Bordes suaves */
-        min-width: 20px; /* Aumento del ancho mínimo */
-        text-align: center; /* Asegura que el texto esté centrado */
+        padding: 0.75rem 1rem;
+        font-size: 0.80rem;
+        border-radius: 8px;
+        min-width: 160px;
+        text-align: center;
     }
-    
+
     .btn-nuevo-registro:hover {
         background-color: #0284c7;
         border-color: #0284c7;
