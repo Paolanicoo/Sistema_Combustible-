@@ -165,6 +165,28 @@
         box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
         transform: translateY(-2px);
     }
+
+    /* Efecto al pasar el cursor sobre los botones */
+    .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+        color: #000000; /* El texto se pondrá negro */
+        transform: translateY(-2px); /* Los botones se moverán ligeramente hacia arriba */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Agrega una sombra para resaltar */
+    }
+
+    /* Estilos para el botón de "editar" */
+    .btn-warning {
+        background-color: #f59e0b;
+        border-color: #f59e0b;
+        color: white;
+    }
+
+    /* Estilos para el botón de "eliminar" */
+    .btn-danger {
+        background-color: #ef4444;
+        border-color: #ef4444;
+        color: white;
+    }
+
 </style>
 
 <div class="container mt-5">

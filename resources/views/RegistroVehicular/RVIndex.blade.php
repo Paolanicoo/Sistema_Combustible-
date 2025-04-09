@@ -169,6 +169,36 @@
         transform: translateY(-2px);
     }
 
+    /* Estilos para los botones de ver, editar y eliminar */
+    .btn-info, .btn-warning, .btn-danger {
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    /* Efecto al pasar el cursor sobre los botones */
+    .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+        color: #000000; /* El texto se pondrá negro */
+        transform: translateY(-2px); /* Los botones se moverán ligeramente hacia arriba */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Agrega una sombra para resaltar */
+    }
+
+    /* Estilos para el botón de "editar" */
+    .btn-warning {
+        background-color: #f59e0b;
+        border-color: #f59e0b;
+        color: white;
+    }
+
+    /* Estilos para el botón de "eliminar" */
+    .btn-danger {
+        background-color: #ef4444;
+        border-color: #ef4444;
+        color: white;
+    }
+
 </style>
 
 <div class="container mt-5">
