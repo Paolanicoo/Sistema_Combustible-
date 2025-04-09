@@ -2,10 +2,8 @@
     @if(Auth::user()->role !== 'Visualizador')
         <!-- Botón de edición -->
         <a href="{{ route('user.edit', $usuario->id) }}" class="btn btn-warning btn-sm" title="Editar">
-    <i class="fas fa-edit"></i>
-</a>
-
-
+            <i class="fas fa-edit"></i>
+        </a>
         <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $usuario->id }}" title="Eliminar">
             <i class="fas fa-trash"></i>
         </button>

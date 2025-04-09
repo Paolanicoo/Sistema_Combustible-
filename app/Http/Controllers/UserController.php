@@ -163,11 +163,28 @@ class UserController extends Controller
         }
     }
     
-    public function destroy($id){
+    public function destroy($id)
+    {
         try {
             $user = User::findOrFail($id);
+
+            // Verifica si el usuario tiene rol de administrador
+            if ($user->role === 'Administrador') {
+                // Cuenta cuántos administradores hay
+                $totalAdmins = User::where('role', 'Administrador')->count();
+
+                // Si solo hay un administrador, no permitir eliminarlo
+                if ($totalAdmins <= 1) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No se puede eliminar al último administrador.'
+                    ]);
+                }
+            }
+
+            // Elimina el usuario si no es el último administrador
             $user->delete();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario eliminado correctamente'
