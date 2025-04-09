@@ -181,7 +181,10 @@
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label" for="nombreUsuario">Nombre:</label>
-                    <input type="text" id="nombreUsuario" name="nombre" class="form-control" required>
+                    <input type="text" id="nombreUsuario" name="nombre" class="form-control" 
+                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" 
+                    title="Solo se permiten letras y espacios"
+                    maxlength="15">
                 </div>
             </div>
 

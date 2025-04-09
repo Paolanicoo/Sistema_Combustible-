@@ -203,13 +203,13 @@ class RegistroCombustibleController extends Controller
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
-            'observacion' => 'nullable|string|max:40', // Nueva validación
+            'observacion' => 'nullable|string|max:60', // Nueva validación
         ], [
             'fecha.required' => 'El campo "Fecha" es obligatorio.',
             'id_registro_vehicular.required' => 'El campo "vehículo" es obligatorio.',
             'num_factura.required' => 'El campo "Número de factura" es obligatorio.',
             'precio.required' => 'El campo "Precio" es obligatorio.',
-            'observacion.max' => 'La observación no puede tener más de 40 caracteres.', // Nuevo mensaje de error
+            'observacion.max' => 'La observación no puede tener más de 60 caracteres.', // Nuevo mensaje de error
         ]);
 
         // Buscar el registro en la base de datos

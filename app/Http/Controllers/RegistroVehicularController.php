@@ -50,7 +50,7 @@ class RegistroVehicularController extends Controller
             'modelo'    => ['nullable', 'string', 'max:30'],
             'serie'     => ['nullable', 'string', 'max:25'],
             'asignado'  => ['required', 'string', 'max:30'],
-            'observacion' => ['nullable', 'string', 'max:40'],
+            'observacion' => ['nullable', 'string', 'max:60'],
         ], [
             'equipo.required' => 'El campo "Equipo" es obligatorio.',
             'asignado.required' => 'El campo "Asignado" es obligatorio.',
@@ -121,7 +121,7 @@ class RegistroVehicularController extends Controller
             'modelo'    => 'nullable|max:30',
             'serie'     => 'nullable|max:25',
             'asignado'  => 'required|max:30',
-            'observacion' => 'nullable|max:40',
+            'observacion' => 'nullable|max:60',
         ], [
             'placa.unique' => 'La placa ya está registrada.',
             'equipo.required' => 'El equipo es obligatorio.',

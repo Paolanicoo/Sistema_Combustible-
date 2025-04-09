@@ -193,7 +193,7 @@
         <div class="row">
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="fecha">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror">
+                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" maxlength="30">
                 @error('fecha')
                 <div class="invalid-feedback d-block">
                     <i class="fas fa-exclamation-circle"></i> {{ $message }}
@@ -274,7 +274,7 @@
 
             <div class="mb-3">
                 <label for="observacion" class="form-label">Observación (opcional):</label>
-                <textarea class="form-control" id="observacion" name="observacion"></textarea>
+                <textarea class="form-control" id="observacion" name="observacion" maxlength="60"></textarea>
             </div>
         </div>
         <!-- Botones alineados a la derecha -->

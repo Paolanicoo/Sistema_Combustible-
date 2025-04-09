@@ -154,7 +154,7 @@
 
             <div class="col-md-6 mb-4">
                 <label for="cantidad_retirada" class="form-label">Cantidad a retirar:</label>
-                <input type="number" step="0.01" name="cantidad_retirada" id="cantidad_retirada" class="form-control" required oninput="validarNumeroDecimal(this)">
+                <input type="number" step="0.01" name="cantidad_retirada" id="cantidad_retirada" class="form-control"  oninput="validarNumeroDecimal(this)">
                 @error('cantidad_retirada')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -165,7 +165,7 @@
         <div class="row mb-5">
             <div class="col-md-6 mb-4">
                 <label for="persona" class="form-label">Persona que retira:</label>
-                <input type="text" name="persona" id="persona" class="form-control" required>
+                <input type="text" name="persona" id="persona" class="form-control" maxlength="30">
                 @error('persona')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -183,7 +183,7 @@
         <!-- Botones alineados a la derecha -->
         <div class="d-flex justify-content-end gap-3">
             <a href="{{ route('combus.index') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-1"></i> Volver
+                <i class="fas fa-arrow-left me-1"></i> Regresar
             </a>
             <button type="submit" class="btn btn-custom">
                 <i class="fas fa-save me-1"></i> Guardar

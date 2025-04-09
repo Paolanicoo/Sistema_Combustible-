@@ -243,7 +243,7 @@
                     <label class="form-label" for="observacion">Observación</label>
                     <textarea id="observacion" name="observacion" 
                               class="form-control @error('observacion') is-invalid @enderror" 
-                              maxlength="40">{{ old('observacion') }}</textarea>
+                              maxlength="60">{{ old('observacion') }}</textarea>
                     @error('observacion')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

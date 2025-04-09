@@ -194,7 +194,7 @@
                 <textarea id="descripcion" name="descripcion" 
                         class="form-control form-control-expanded" 
                         required rows="6"
-                        placeholder="Detalles como tipo de combustible, proveedor, ubicación, etc."></textarea>
+                        placeholder="Detalles como tipo de combustible, proveedor, ubicación, etc." maxlength="100"></textarea>
                 @error('descripcion')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

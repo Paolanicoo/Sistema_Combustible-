@@ -56,7 +56,7 @@ class InventarioCombustibleController extends Controller
         // Validación de los campos
         $request->validate([
             'cantidad_entrada' => 'required|numeric|min:0',
-            'descripcion' => 'required|string|max:60'
+            'descripcion' => 'required|string|max:100'
         ]);
 
         try {
@@ -90,10 +90,21 @@ class InventarioCombustibleController extends Controller
     {
         $request->validate([
             'cantidad_retirada' => 'required|numeric|min:0.01',
-            'persona' => 'required|string|max:100',
-            'fecha' => 'required|date'
+            'persona' => 'required|string|max:30|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
+            'fecha' => 'required|date',
+        ], [
+            'cantidad_retirada.required' => 'El campo cantidad a retirar es obligatorio.',
+            'cantidad_retirada.numeric' => 'Debe ingresar un número válido.',
+            'cantidad_retirada.min' => 'Debe ser al menos 0.01 galones.',
+        
+            'persona.required' => 'El campo persona es obligatorio.',
+            'persona.regex' => 'El campo persona solo debe contener letras y espacios.',
+            'persona.max' => 'El campo persona no debe exceder los 30 caracteres.',
+        
+            'fecha.required' => 'El campo fecha es obligatorio.',
+            'fecha.date' => 'Debe ingresar una fecha válida.',
         ]);
-
+        
         $combustible = Combustible::findOrFail($id);
         
         if($request->cantidad_retirada > $combustible->cantidad_actual) {
