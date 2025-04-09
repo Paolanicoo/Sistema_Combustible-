@@ -273,7 +273,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="observacion" class="form-label">Observación</label>
+                <label for="observacion" class="form-label">Observación (opcional):</label>
                 <textarea class="form-control" id="observacion" name="observacion"></textarea>
             </div>
         </div>

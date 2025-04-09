@@ -119,33 +119,44 @@
         justify-content: center;
         gap: 5px;
     }
-    
+
+    /* Centrar texto en las columnas de "Estado" y "Acciones" (aplicado tanto en th como td) */
+    #roles-table tr td:nth-child(2), 
+    #roles-table tr th:nth-child(2) {
+        text-align: center !important;
+    }
+
+    #roles-table th.acciones-columna, 
+    #roles-table td.acciones-columna {
+        text-align: center !important;
+    }
+
     /* Paginación */
     .dataTables_paginate .paginate_button {
         border-radius: 6px !important;
         margin: 0 2px !important;
     }
-    
+
     .dataTables_paginate .paginate_button.current {
         background: #0ea5e9 !important;
         border-color: #0ea5e9 !important;
         color: white !important;
     }
-    
+
     .dataTables_paginate .paginate_button:hover {
         background: #e2e8f0 !important;
         border-color: #e2e8f0 !important;
         color: #334155 !important;
     }
-    
+
     .dataTables_info {
         color: #64748b;
         padding-top: 1rem;
     }
-    
-    /* Estilo específico para las columnas de rol y estado */
-    .rol-columna, .estado-columna {
-        text-align: center;
+
+    /* Estilo específico para la columna "Rol" */
+    .rol-columna {
+        text-align: left !important; /* No centrar la columna "Rol" */
     }
 </style>
 
@@ -161,9 +172,9 @@
                 <table class="table table-bordered table-striped w-100" id="roles-table">
                     <thead>
                         <tr>
-                            <th>Rol</th>  
-                            <th>Estado</th>
-                            <th class="acciones-columna text-center">Acciones</th>        
+                            <th class="rol-columna">Rol</th>  
+                            <th class="estado-columna">Estado</th>
+                            <th class="acciones-columna">Acciones</th>     
                         </tr>
                     </thead>
                     <tbody></tbody>

@@ -196,6 +196,12 @@
         box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
         transform: translateY(-2px);
     }
+
+    /* Centrar las columnas "Cantidad de entrada" y "Cantidad actual" */
+    #roles-table th.text-center,
+    #roles-table td.text-center {
+        text-align: center !important;
+    }
 </style>
 
 <div class="container mt-5">
@@ -220,8 +226,8 @@
                 <table id="combustible-table" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
-                            <th class="text-center">Cantidad Entrada</th>
-                            <th class="text-center">Cantidad Actual</th>
+                            <th class="text-center">Cantidad de entrada</th>
+                            <th class="text-center">Cantidad actual</th>
                             <th class="text-center">Descripción</th>
                             <th class="text-center">Acciones</th>
                         </tr>
@@ -239,8 +245,16 @@
             serverSide: true,
             ajax: "{{ route('combus.data') }}",
             columns: [
-                { data: 'cantidad_entrada', name: 'cantidad_entrada' },
-                { data: 'cantidad_actual', name: 'cantidad_actual' },
+                { 
+                    data: 'cantidad_entrada', 
+                    name: 'cantidad_entrada',
+                    className: 'text-center'
+                },
+                { 
+                    data: 'cantidad_actual', 
+                    name: 'cantidad_actual',
+                    className: 'text-center'
+                },
                 { data: 'descripcion', name: 'descripcion' },
                 { data: 'acciones', name: 'acciones', orderable: false, searchable: false }
             ],

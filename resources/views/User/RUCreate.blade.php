@@ -214,7 +214,7 @@
             <!-- Campo Confirmar Contraseña -->
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label" for="passwordConfirmUsuario">Confirmar Contraseña:</label>
+                    <label class="form-label" for="passwordConfirmUsuario">Confirmar contraseña:</label>
                     <div class="input-group">
                         <input type="password" id="passwordConfirmUsuario" name="password_confirmation" class="form-control" required>
                         <button type="button" class="btn toggle-password" data-target="passwordConfirmUsuario">

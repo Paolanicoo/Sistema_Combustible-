@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('contenido')
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+
 <div class="container mt-5">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
@@ -12,7 +17,7 @@
             <!-- Filtro para seleccionar reporte -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label for="tipoReporte" class="form-label fw-bold" style="color: #344767;">Seleccionar Reporte:</label>
+                    <label for="tipoReporte" class="form-label fw-bold" style="color: #344767;">Seleccionar reporte:</label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #f8fafc;"><i class="fas fa-filter"></i></span>
                         <select id="tipoReporte" class="form-select" style="border-color: #e2e8f0;">
@@ -46,7 +51,7 @@
             <!-- Contenedor de gráfica y tabla para reporte anual -->
             <div class="card shadow-sm mb-4" id="seccionReporteAnual" style="display: none; border-radius: 12px; border: none; box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);">
                 <div class="card-header py-3" style="background-color: #f8fafc; border-radius: 12px 12px 0 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
-                    <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-chart-bar me-2"></i>Comparativo Anual</h5>
+                    <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-chart-bar me-2"></i>Comparativo anual</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -68,7 +73,7 @@
             <!-- Contenedor para reportes de mes, equipo y asignado -->
             <div class="card shadow-sm" id="seccionOtrosReportes" style="display: none; border-radius: 12px; border: none; box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);">
                 <div class="card-header py-3" id="otrosReportesTitulo" style="background-color: #f8fafc; border-radius: 12px 12px 0 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
-                    <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-table me-2"></i><span id="tituloReporte">Detalle de Consumo</span></h5>
+                    <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-table me-2"></i><span id="tituloReporte">Detalle de consumo</span></h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
