@@ -225,6 +225,9 @@
                 <input type="text" id="equipo" name="equipo" class="form-control" readonly>
             </div>
         </div>
+        @error('equipo')
+                    <span class="text-danger">{{ $message }}</span>
+        @enderror
 
         <!-- Segunda fila (3 campos) -->
         <div class="row">
@@ -232,16 +235,25 @@
                 <label class="form-label" for="placa">Placa:</label>
                 <input type="text" id="placa" name="placa" class="form-control" readonly>
             </div>
+            @error('placa')
+                    <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="marca">Marca:</label>
                 <input type="text" id="marca" name="marca" class="form-control" readonly>
             </div>
+            @error('marca')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="asignado">Asignado:</label>
                 <input type="text" id="asignado" name="asignado" class="form-control" readonly>
             </div>
+            @error('asignado')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Tercera fila (4 campos) -->
@@ -256,13 +268,19 @@
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="entradas">Entrada (litros):</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
+                <input type="text" id="entradas" name="entradas" class="form-control">
             </div>
+            @error('entradas')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="salidas">Salida (galones):</label>
                 <input type="text" id="salidas" name="salidas" class="form-control" oninput="validarNumeroDecimal(this)">
             </div>
+            @error('salidas')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="precio">Precio por galón:</label>
@@ -276,6 +294,9 @@
                 <label for="observacion" class="form-label">Observación (opcional):</label>
                 <textarea class="form-control" id="observacion" name="observacion" maxlength="60"></textarea>
             </div>
+            @error('observacion')
+                    <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
         <!-- Botones alineados a la derecha -->
         <div class="d-flex justify-content-end gap-3">
@@ -357,6 +378,36 @@
             calcularTotal();
         }
     }
+
+    const entradasInput = document.getElementById('entradas');
+
+    entradasInput.addEventListener('input', function () {
+        // Reemplaza cualquier carácter que no sea número o punto
+        this.value = this.value.replace(/[^0-9.]/g, '');
+
+        // Evita múltiples puntos decimales
+        const parts = this.value.split('.');
+        if (parts.length > 2) {
+            this.value = parts[0] + '.' + parts[1]; // Solo conserva el primer punto
+        }
+    });
+
+    entradasInput.addEventListener('keydown', function (e) {
+        // Bloquea las teclas que podrían generar letras como la "e", "E", "-", "+"
+        if (['e', 'E', '+', '-'].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    entradasInput.addEventListener('blur', function () {
+        // Al salir del input, formatea el número a 3 decimales si es válido
+        if (this.value !== '') {
+            let num = parseFloat(this.value);
+            if (!isNaN(num)) {
+                this.value = num.toFixed(3);
+            }
+        }
+    });
 
 </script>
 @endsection

@@ -159,7 +159,7 @@
         /* Botón de ocultar - Revertido a posición original */
         #toggleSidebar {
             position: fixed;
-            top: 30px; /* Separado un poco más del borde superior */
+            top: 28px; /* Separado un poco más del borde superior */
             left: 230px;
             z-index: 1000;
             background:  #0ea5e9;
