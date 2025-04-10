@@ -202,6 +202,46 @@
     #roles-table td.text-center {
         text-align: center !important;
     }
+
+    /* Botones personalizados para salida y eliminar */
+    .btn-warning, .btn-danger {
+        border-radius: 8px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Efecto al pasar el cursor sobre los botones */
+    .btn-warning:hover, .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Botón salida (editar/salida) */
+    .btn-warning {
+        background-color: #f59e0b;
+        border-color: #f59e0b;
+        color: white;
+    }
+
+    .btn-warning:hover i {
+        color: #1e3a8a; /* Azul oscuro en el ícono */
+    }
+
+    /* Botón eliminar */
+    .btn-danger {
+        background-color: #ef4444;
+        border-color: #ef4444;
+        color: white;
+    }
+
+    .btn-danger:hover i {
+        color: #1e3a8a; /* Azul oscuro en el ícono */
+    }
 </style>
 
 <div class="container mt-5">

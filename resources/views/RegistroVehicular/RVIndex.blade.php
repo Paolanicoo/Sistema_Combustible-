@@ -170,7 +170,7 @@
     }
 
     /* Estilos para los botones de ver, editar y eliminar */
-    .btn-info, .btn-warning, .btn-danger {
+    .btn-warning, .btn-danger {
         border-radius: 8px;
         padding: 0.25rem 0.5rem;
         font-size: 0.85rem;
@@ -179,7 +179,7 @@
     }
 
     /* Efecto al pasar el cursor sobre los botones */
-    .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+    .btn-warning:hover, .btn-danger:hover {
         color: #000000; /* El texto se pondrá negro */
         transform: translateY(-2px); /* Los botones se moverán ligeramente hacia arriba */
         box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Agrega una sombra para resaltar */
@@ -207,7 +207,6 @@
             <h2 class="card-title mb-0">
                 </i><b>Registro vehicular</b>
             </h2>
-           
             @if(Auth::user()->role !== 'Visualizador')
                 <a href="{{ route('registrovehicular.create') }}" class="btn btn-info btn-sm btn-nuevo-registro">
                     <i class="fas fa-plus"></i> Nuevo registro
