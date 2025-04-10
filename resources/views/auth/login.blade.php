@@ -108,5 +108,9 @@
 
     </div>
 
+    <script>
+        // Este script debe ejecutarse después de un inicio de sesión exitoso
+        sessionStorage.setItem('isPostLogin', 'true');
+    </script>
 </body>
 </html>

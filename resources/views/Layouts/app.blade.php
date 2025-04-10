@@ -37,6 +37,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
+    @if(session('isPostLogin'))
+        <script>
+            sessionStorage.setItem('isPostLogin', 'true');
+        </script>
+    @endif
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -327,17 +332,92 @@
 
     <!-- Scripts -->
     <script>
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            const mobileToggle = document.getElementById('mobileToggle');
+            const content = document.querySelector('.content');
+            const links = document.querySelectorAll('.nav-link');
+
+            // FORZAR MENÚ OCULTO DESPUÉS DE INICIAR SESIÓN
+            // Verificar si venimos directamente del login
+            const isPostLogin = sessionStorage.getItem('isPostLogin') === 'true';
+            const pathname = window.location.pathname;
+            
+            // Si acabamos de iniciar sesión O estamos en la página principal después del login
+            if (isPostLogin || pathname === '/home' || pathname === '/' || pathname === '/menu') {
+                // Forzar menú oculto
+                sidebar.classList.add('hidden');
+                content.classList.add('full-width');
+                toggleBtn.classList.add('hidden');
+                localStorage.setItem('sidebarHidden', 'true');
+                
+                // Limpiar bandera de post-login
+                sessionStorage.removeItem('isPostLogin');
+            } else {
+                // Para otras navegaciones, usar la preferencia guardada
+                const shouldHideSidebar = localStorage.getItem('sidebarHidden') === 'true';
+                
+                if (shouldHideSidebar) {
+                    sidebar.classList.add('hidden');
+                    content.classList.add('full-width');
+                    toggleBtn.classList.add('hidden');
+                } else {
+                    sidebar.classList.remove('hidden');
+                    content.classList.remove('full-width');
+                    toggleBtn.classList.remove('hidden');
+                }
+            }
+
+            // Mostrar u ocultar el menú lateral (y guardar el estado)
+            toggleBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('hidden');
+                content.classList.toggle('full-width');
+                toggleBtn.classList.toggle('hidden');
+                
+                // Guardar el estado actual
+                const isNowHidden = sidebar.classList.contains('hidden');
+                localStorage.setItem('sidebarHidden', isNowHidden ? 'true' : 'false');
+            });
+            
+            // Botón móvil para mostrar el menú
+            mobileToggle.addEventListener('click', function() {
+                sidebar.classList.remove('hidden');
+                content.classList.remove('full-width');
+                toggleBtn.classList.remove('hidden');
+                localStorage.setItem('sidebarHidden', 'false');
+            });
+
+            // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
+            links.forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        sidebar.classList.add('hidden');
+                        content.classList.add('full-width');
+                        toggleBtn.classList.add('hidden');
+                        localStorage.setItem('sidebarHidden', 'true');
+                    }
+                });
+            });
+
+            // Ajustes especiales para móviles
+            if (window.innerWidth <= 768) {
+                sidebar.classList.add('hidden');
+                content.classList.add('full-width');
+                toggleBtn.classList.add('hidden');
+                localStorage.setItem('sidebarHidden', 'true');
+            }
+            
             // Marcar el enlace activo según la URL actual
             const currentUrl = window.location.href;
             $('.nav-link').each(function() {
                 const linkUrl = $(this).attr('href');
-                if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route('menu') }}') {
+                if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route("menu") }}') {
                     $(this).addClass('active');
                 }
             });
             
-            // Cerrar sesión cuando se hace clic en el perfil de usuario
+            // Cerrar sesión y resetear preferencias
             $('#user-profile').on('click', function(e) {
                 e.preventDefault();
                 
@@ -352,108 +432,14 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        // Establecer bandera para la próxima sesión
+                        localStorage.removeItem('sidebarHidden');
                         // Enviar formulario de logout
                         document.getElementById('logout-form').submit();
                     }
                 });
             });
         });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const sidebar = document.querySelector('.sidebar');
-        const toggleBtn = document.getElementById('toggleSidebar');
-        const mobileToggle = document.getElementById('mobileToggle');
-        const content = document.querySelector('.content');
-        const links = document.querySelectorAll('.nav-link');
-
-        // Verificar si el menú estaba oculto anteriormente (o configurar por defecto)
-        // El "false" al final significa que por defecto, mostraremos el menú (no oculto)
-        const shouldHideSidebar = localStorage.getItem('sidebarHidden') === 'true';
-        
-        // Aplicar el estado guardado inmediatamente al cargar
-        if (shouldHideSidebar) {
-            sidebar.classList.add('hidden');
-            content.classList.add('full-width');
-            toggleBtn.classList.add('hidden');
-        } else {
-            // Asegurarse de que esté visible si estaba guardado como "mostrado"
-            sidebar.classList.remove('hidden');
-            content.classList.remove('full-width');
-            toggleBtn.classList.remove('hidden');
-        }
-
-        // Mostrar u ocultar el menú lateral (y guardar el estado)
-        toggleBtn.addEventListener('click', function () {
-            sidebar.classList.toggle('hidden');
-            content.classList.toggle('full-width');
-            toggleBtn.classList.toggle('hidden');
-            
-            // Guardar el estado actual explícitamente como string
-            const isNowHidden = sidebar.classList.contains('hidden');
-            localStorage.setItem('sidebarHidden', isNowHidden ? 'true' : 'false');
-        });
-        
-        // Botón móvil para mostrar el menú
-        mobileToggle.addEventListener('click', function() {
-            sidebar.classList.remove('hidden');
-            content.classList.remove('full-width');
-            toggleBtn.classList.remove('hidden');
-            
-            // Actualizar estado guardado explícitamente
-            localStorage.setItem('sidebarHidden', 'false');
-        });
-
-        // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
-        links.forEach(link => {
-            link.addEventListener('click', function () {
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.add('hidden');
-                    content.classList.add('full-width');
-                    toggleBtn.classList.add('hidden');
-                    localStorage.setItem('sidebarHidden', 'true');
-                }
-            });
-        });
-
-        // Ajustes especiales para móviles, respetando la config guardada
-        if (window.innerWidth <= 768 && localStorage.getItem('sidebarHidden') === null) {
-            sidebar.classList.add('hidden');
-            content.classList.add('full-width');
-            toggleBtn.classList.add('hidden');
-            localStorage.setItem('sidebarHidden', 'true');
-        }
-        
-        // Marcar el enlace activo según la URL actual
-        const currentUrl = window.location.href;
-        $('.nav-link').each(function() {
-            const linkUrl = $(this).attr('href');
-            if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route("menu") }}') {
-                $(this).addClass('active');
-            }
-        });
-        
-        // Cerrar sesión cuando se hace clic en el perfil de usuario
-        $('#user-profile').on('click', function(e) {
-            e.preventDefault();
-            
-            Swal.fire({
-                title: '¿Cerrar sesión?',
-                text: '¿Estás seguro que deseas cerrar tu sesión?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#0ea5e9',
-                confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Enviar formulario de logout
-                    document.getElementById('logout-form').submit();
-                }
-            });
-        });
-    });
     </script>
 </body>
 </html>
