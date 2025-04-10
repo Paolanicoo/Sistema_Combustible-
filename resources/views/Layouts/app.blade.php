@@ -38,60 +38,126 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
         /* Estilo del sidebar */
         .sidebar {
-            width: 250px;
+            width: 280px;
             height: 100vh;
             position: fixed;
             left: 0;
             top: 0;
-            background: rgba(52, 58, 64, 0.9);
-            padding: 15px;
-            color: white;
+            background: white;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            padding: 0 0 20px 0;
+            color: #344767;
             transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar .brand-container {
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: transparent; /* Quitado el fondo gris */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sidebar .brand {
+            color: #344767;
+            font-weight: 600;
+            font-size: 1.4rem; /* Aumentado el tamaño de fuente */
+            text-align: center;
+            display: block;
+            width: 75%;
+        }
+
+        .sidebar .user-info {
+            padding: 15px;
+            background-color: #f8f9fa;
+            margin: 0 15px 20px 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .user-info:hover {
+            background-color: #e2e8f0;
+        }
+
+        .sidebar .user-info i.user-icon {
+            background-color: #0ea5e9;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar .user-info .user-details {
+            flex: 1;
+        }
+
+        .sidebar .user-info h5 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .sidebar .user-info .logout-icon {
+            color: #ef4444;
+            margin-left: auto;
         }
 
         .sidebar .nav-link {
-            color: white;
-            font-weight: bold;
-            padding: 10px;
-            display: block;
-            border-radius: 5px;
+            color: #64748b;
+            font-weight: 500;
+            padding: 12px 15px;
+            margin: 0 15px 5px 15px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
         }
 
         .sidebar .nav-link:hover {
-            background: #17a2b8;
-            color: white;
+            background: #f1f5f9;
+            color: #0ea5e9;
+            transform: translateX(5px);
         }
 
         .sidebar .nav-link.active {
-            background: #1c7430;
-            font-weight: 900;
+            background: #0ea5e9;
+            color: white;
+            font-weight: 600;
         }
 
         /* Contenido principal */
         .content {
-            margin-left: 260px;
-            padding: 20px;
+            margin-left: 280px;
+            padding: 30px;
             transition: margin-left 0.3s;
         }
 
-        /* Navbar */
-        .navbar {
-            background: rgba(0, 0, 0, 0.7) !important;
-        }
-
-        .navbar .navbar-brand {
-            color: white !important;
-        }
-
-        /* Botón de ocultar */
+        /* Botón de ocultar - Revertido a posición original */
         #toggleSidebar {
             position: fixed;
-            top: 15px;
-            left: 260px;
+            top: 30px; /* Separado un poco más del borde superior */
+            left: 230px;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.8);
+            background:  #0ea5e9;
             border: none;
             padding: 10px 15px;
             color: white;
@@ -102,7 +168,7 @@
 
         /* Estilos cuando el menú está oculto */
         .sidebar.hidden {
-            left: -250px;
+            left: -380px;
         }
 
         .content.full-width {
@@ -110,13 +176,13 @@
         }
 
         #toggleSidebar.hidden {
-            left: 10px;
+            left: 5px;
         }
 
         /* Ajuste para móviles */
         @media (max-width: 768px) {
             .sidebar {
-                left: -250px;
+                left: -280px;
             }
 
             .content {
@@ -127,32 +193,97 @@
                 left: 10px;
             }
         }
+
+        /* Divider */
+        .sidebar-divider {
+            border-top: 1px solid #e2e8f0;
+            margin: 15px;
+        }
+
+        /* Estilos para secciones */
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 600;
+            padding: 0 15px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        /* Botón flotante para mostrar menú en móviles */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1002;
+            background: #0ea5e9;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: flex;
+            }
+        }
+
+        .circle-letter {
+            display: inline-block;
+            background-color: #0ea5e9;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            line-height: 35px; /* igual al height para centrar verticalmente */
+            margin-right: 8px;
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 <body>
-
-    <!-- Botón para mostrar/ocultar el menú -->
-    <button id="toggleSidebar">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="{{ route('menu') }}" class="nav-link text-center">
-            <h4>Gestión de Combustible</h4>
-        </a>
-        <hr>
-            <h5 class="text-center">
-                <i class="fas fa-user"></i> {{ Auth::user()->name }}
-            </h5>
-            <hr>
+
+        <!-- Botón para mostrar/ocultar el menú -->
+        <button id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="brand-container">
+            <a href="{{ route('menu') }}" class="brand text-decoration-none">
+                <span class="circle-letter">P</span> Gestión de Combustible
+            </a>
+        </div>
 
 
+        <!-- Usuario con función de logout -->
+        <div class="user-info" id="user-profile">
+            <i class="fas fa-user user-icon"></i>
+            <div class="user-details">
+                <h5>{{ Auth::user()->name }}</h5>
+                <small>{{ Auth::user()->role }}</small>
+            </div>
+            <i class="fas fa-sign-out-alt logout-icon"></i>
+        </div>
+
+        <div class="sidebar-section-title">ADMINISTRACIÓN DE REGISTROS</div>
+        
         <a href="{{ route('registrovehicular.index') }}" class="nav-link">
             <i class="fas fa-car"></i> Registro vehicular
         </a>
         <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-        <i class="fa fa-id-card"></i> Registro combustible
+            <i class="fa fa-id-card"></i> Registro combustible
         </a>
         <a href="{{ route('combus.index') }}" class="nav-link">
             <i class="fas fa-gas-pump"></i> Inventario combustible
@@ -161,31 +292,31 @@
             <i class="fas fa-dollar-sign"></i> Importe
         </a>
         <a href="{{ route('RIndex') }}" class="nav-link">
-            <i class="fas fa-signal"></i> Reportes
+            <i class="fas fa-chart-line"></i> Reportes
         </a>
 
-        </a>
-
-        @if( Auth::user()->role === 'Administrador')
+        @if(Auth::user()->role === 'Administrador')
+        <div class="sidebar-section-title">ADMINISTRACIÓN DE USUARIO</div>
         <a href="{{ route('user.index') }}" class="nav-link">
-        <i class="fas fa-user"></i> Registro de usuario
+            <i class="fas fa-user"></i> Registro de usuario
         </a>
-
-         <a href="{{ route('registrorol.table') }}" class="nav-link">
-        <i class="fas fa-users"></i> Gestor de roles
+        <a href="{{ route('registrorol.table') }}" class="nav-link">
+            <i class="fas fa-users"></i> Gestor de roles
         </a>
         @endif
         
-
+        <!-- Formulario oculto para logout -->
         @auth
-        <form method="POST" action="{{ route('logout') }}" id="logout-form" class="mt-3">
+        <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
             @csrf
-            <button type="button" id="logout-button" class="btn btn-danger w-100">
-                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
-            </button>
         </form>
         @endauth
     </div>
+
+    <!-- Botón flotante para móviles -->
+    <button class="mobile-toggle" id="mobileToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Contenido principal -->
     <div class="content">
@@ -197,7 +328,17 @@
     <!-- Scripts -->
     <script>
         $(document).ready(function() {
-            $('#logout-button').on('click', function(e) {
+            // Marcar el enlace activo según la URL actual
+            const currentUrl = window.location.href;
+            $('.nav-link').each(function() {
+                const linkUrl = $(this).attr('href');
+                if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route('menu') }}') {
+                    $(this).addClass('active');
+                }
+            });
+            
+            // Cerrar sesión cuando se hace clic en el perfil de usuario
+            $('#user-profile').on('click', function(e) {
                 e.preventDefault();
                 
                 Swal.fire({
@@ -205,8 +346,8 @@
                     text: '¿Estás seguro que deseas cerrar tu sesión?',
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
+                    confirmButtonColor: '#ef4444',
+                    cancelButtonColor: '#0ea5e9',
                     confirmButtonText: 'Sí, cerrar sesión',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
@@ -218,44 +359,101 @@
             });
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const sidebar = document.querySelector('.sidebar');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const content = document.querySelector('.content');
-            const links = document.querySelectorAll('.nav-link');
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const mobileToggle = document.getElementById('mobileToggle');
+        const content = document.querySelector('.content');
+        const links = document.querySelectorAll('.nav-link');
 
+        // Verificar si el menú estaba oculto anteriormente (o configurar por defecto)
+        // El "false" al final significa que por defecto, mostraremos el menú (no oculto)
+        const shouldHideSidebar = localStorage.getItem('sidebarHidden') === 'true';
+        
+        // Aplicar el estado guardado inmediatamente al cargar
+        if (shouldHideSidebar) {
+            sidebar.classList.add('hidden');
+            content.classList.add('full-width');
+            toggleBtn.classList.add('hidden');
+        } else {
+            // Asegurarse de que esté visible si estaba guardado como "mostrado"
+            sidebar.classList.remove('hidden');
+            content.classList.remove('full-width');
+            toggleBtn.classList.remove('hidden');
+        }
+
+        // Mostrar u ocultar el menú lateral (y guardar el estado)
+        toggleBtn.addEventListener('click', function () {
+            sidebar.classList.toggle('hidden');
+            content.classList.toggle('full-width');
+            toggleBtn.classList.toggle('hidden');
             
+            // Guardar el estado actual explícitamente como string
+            const isNowHidden = sidebar.classList.contains('hidden');
+            localStorage.setItem('sidebarHidden', isNowHidden ? 'true' : 'false');
+        });
+        
+        // Botón móvil para mostrar el menú
+        mobileToggle.addEventListener('click', function() {
+            sidebar.classList.remove('hidden');
+            content.classList.remove('full-width');
+            toggleBtn.classList.remove('hidden');
+            
+            // Actualizar estado guardado explícitamente
+            localStorage.setItem('sidebarHidden', 'false');
+        });
 
-            // Mostrar u ocultar el menú lateral
-            toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('hidden');
-                content.classList.toggle('full-width');
-                toggleBtn.classList.toggle('hidden');
-            });
-
-            // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
-            links.forEach(link => {
-                link.addEventListener('click', function () {
-                    if (window.innerWidth <= 768) {
-                        sidebar.classList.add('hidden');
-                        content.classList.add('full-width');
-                        toggleBtn.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Mostrar el botón cuando el menú esté oculto en pantallas pequeñas
-            window.addEventListener('resize', function () {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.remove('hidden');
-                    content.classList.remove('full-width');
-                    toggleBtn.classList.remove('hidden');
+        // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
+        links.forEach(link => {
+            link.addEventListener('click', function () {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('hidden');
+                    content.classList.add('full-width');
+                    toggleBtn.classList.add('hidden');
+                    localStorage.setItem('sidebarHidden', 'true');
                 }
             });
         });
-    </script>
 
+        // Ajustes especiales para móviles, respetando la config guardada
+        if (window.innerWidth <= 768 && localStorage.getItem('sidebarHidden') === null) {
+            sidebar.classList.add('hidden');
+            content.classList.add('full-width');
+            toggleBtn.classList.add('hidden');
+            localStorage.setItem('sidebarHidden', 'true');
+        }
+        
+        // Marcar el enlace activo según la URL actual
+        const currentUrl = window.location.href;
+        $('.nav-link').each(function() {
+            const linkUrl = $(this).attr('href');
+            if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route("menu") }}') {
+                $(this).addClass('active');
+            }
+        });
+        
+        // Cerrar sesión cuando se hace clic en el perfil de usuario
+        $('#user-profile').on('click', function(e) {
+            e.preventDefault();
+            
+            Swal.fire({
+                title: '¿Cerrar sesión?',
+                text: '¿Estás seguro que deseas cerrar tu sesión?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#0ea5e9',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar formulario de logout
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>

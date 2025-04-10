@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="card-title mb-0">
-                <b><i class="fas fa-gas-pump me-2"></i>Reportes de consumo de combustible</b>
+                <b>Reportes de consumo de combustible</b>
             </h2>
         </div>
         <div class="card-body p-4">
