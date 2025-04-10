@@ -52,33 +52,7 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         padding: 1.5rem;
     }
-
-    /* Botones de acción */
-    .btn-sm {
-        padding: 0.25rem 0.5rem;
-        border-radius: 6px;
-        font-size: 0.75rem;
-    }
-    
-    /* Estilos para los botones */
-    .btn-info {
-        background-color: #0ea5e9;
-        border-color: #0ea5e9;
-        color: white;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        padding: 0.1rem 0.2rem; /* Ajuste moderado en el tamaño */
-        font-size: 0.95rem; /* Ligera mejora en el tamaño del texto */
-        border-radius: 8px; /* Mantiene bordes suaves */
-    }
-    
-    .btn-info:hover {
-        background-color: #0284c7;
-        border-color: #0284c7;
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
-        transform: translateY(-2px);
-    }
-    
+        
     /* Estilos para la tabla */
     .table {
         width: 100%;
@@ -158,6 +132,17 @@
     .rol-columna {
         text-align: left !important; /* No centrar la columna "Rol" */
     }
+
+    .toggleEstado {
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .toggleEstado:hover {
+        color: #000000; /* El texto se pondrá negro */
+        transform: translateY(-2px); /* Los botones se moverán ligeramente hacia arriba */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Agrega una sombra para resaltar */
+    }
 </style>
 
 <div class="container mt-5">
@@ -195,8 +180,8 @@ $(document).ready(function () {
             {data: 'estado_texto', name: 'estado_texto', orderable: false, searchable: false},
             {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
         ],
-        searching: false, // Desactiva la barra de búsqueda
-        paging: true, // Desactiva la paginación
+        searching: true,
+        paging: true,
         language: {
             "processing": "Procesando...",
             "zeroRecords": "No se encontraron resultados",
@@ -208,7 +193,7 @@ $(document).ready(function () {
             }
             
         },
-        lengthChange: false // Oculta la opción de cambiar el número de registros mostrados
+        lengthChange: true 
     });
 
    // Evento para cambiar el estado con AJAX

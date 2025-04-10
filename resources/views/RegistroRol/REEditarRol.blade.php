@@ -3,6 +3,7 @@
 @section('titulo', 'Editar Rol')
 
 @section('contenido')
+
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
@@ -11,12 +12,12 @@
         <div class="card-body text-center">
             <h4>{{ $role->rol }}</h4>
 
-            <button id="toggleEstado" class="btn {{ $role->estado ? 'btn-success' : 'btn-danger' }}" 
+            <button id="toggleEstado"
+                class="btn {{ $role->estado ? 'btn-success' : 'btn-danger' }} toggleEstado"
                 data-id="{{ $role->id }}" data-estado="{{ $role->estado }}">
                 {{ $role->estado ? 'Activo' : 'Inactivo' }}
             </button>
 
-            <a href="{{ route('registrorol.table') }}" class="btn btn-secondary mt-3">Volver</a>
         </div>
     </div>
 </div>
