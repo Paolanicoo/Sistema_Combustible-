@@ -250,11 +250,17 @@
                 <label class="form-label" for="numfac">N° de Factura:</label>
                 <input type="number" id="numfac" name="numfac" class="form-control read-only" readonly>
             </div>
+            @error('number')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="consumo">Consumo:</label>
                 <input type="number" id="consumo" name="consumo" class="form-control read-only" readonly step="0.01">
             </div>
+            @error('consumo')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <div class="row">
@@ -262,11 +268,17 @@
                 <label class="form-label" for="precio">Precio:</label>
                 <input type="number" id="precio" name="precio" class="form-control read-only" readonly step="0.01">
             </div>
+            @error('precio')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="total">Total:</label>
                 <input type="number" id="total" name="total" class="form-control read-only" readonly step="0.01">
             </div>
+            @error('total')
+                    <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="empresa">Empresa:</label>

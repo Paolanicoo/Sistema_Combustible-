@@ -189,6 +189,18 @@
         text-align: center;
         margin-bottom: 20px;
     }
+
+    /* === NUEVO: Estilo para cuando el botón está deshabilitado === */
+    .btn-custom:disabled,
+    .btn-custom[disabled] {
+        background-color: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+        color: #344767 !important;
+        opacity: 1 !important;        /* Asegura que no se vea opaco */
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
 </style>
 
 <div class="card p-4">

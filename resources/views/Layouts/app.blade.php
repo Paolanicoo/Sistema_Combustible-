@@ -42,6 +42,7 @@
             sessionStorage.setItem('isPostLogin', 'true');
         </script>
     @endif
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -78,7 +79,7 @@
             font-size: 1.4rem; /* Aumentado el tamaño de fuente */
             text-align: center;
             display: block;
-            width: 75%;
+            width: 100%;
         }
 
         .sidebar .user-info {
@@ -156,19 +157,38 @@
             transition: margin-left 0.3s;
         }
 
-        /* Botón de ocultar - Revertido a posición original */
+        /* Botón P para toggle del sidebar */
         #toggleSidebar {
-            position: fixed;
-            top: 28px; /* Separado un poco más del borde superior */
-            left: 230px;
-            z-index: 1000;
-            background:  #0ea5e9;
-            border: none;
-            padding: 10px 15px;
-            color: white;
             cursor: pointer;
-            border-radius: 5px;
-            transition: left 0.3s;
+            font-size: 1.8rem; /* Letra P más grande */
+            color: #0ea5e9; /* Color azul para la P */
+            font-weight: 700; /* Negrita */
+            background-color: #f8fafc;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 15px;
+            right: -20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        #toggleSidebar:hover {
+            transform: scale(1.1); /* Efecto al pasar el cursor */
+            background-color: #e2e8f0;
+        }
+
+        /* Estilos para el botón P cuando el sidebar está oculto */
+        #toggleSidebar.hidden {
+            right: auto;
+            left: 20px;
+            background-color: #0ea5e9;
+            color: white;
         }
 
         /* Estilos cuando el menú está oculto */
@@ -178,10 +198,6 @@
 
         .content.full-width {
             margin-left: 0;
-        }
-
-        #toggleSidebar.hidden {
-            left: 5px;
         }
 
         /* Ajuste para móviles */
@@ -194,7 +210,7 @@
                 margin-left: 0;
             }
 
-            #toggleSidebar {
+            #toggleSidebar.hidden {
                 left: 10px;
             }
         }
@@ -241,205 +257,255 @@
             }
         }
 
-        .circle-letter {
-            display: inline-block;
+        /* Estilos adicionales para el botón flotante */
+        .floating-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
             background-color: #0ea5e9;
             color: white;
-            font-weight: bold;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            text-align: center;
-            line-height: 35px; /* igual al height para centrar verticalmente */
-            margin-right: 8px;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1100;
+            font-weight: 700;
             font-size: 1.5rem;
+            transition: transform 0.3s ease;
         }
+        
+        .floating-toggle:hover {
+            transform: scale(1.1);
+        }
+        
     </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Botón P para mostrar/ocultar el menú -->
+            <div id="toggleSidebar">≡</div>
 
-        <!-- Botón para mostrar/ocultar el menú -->
-        <button id="toggleSidebar">
-            <i class="fas fa-bars"></i>
+            <div class="brand-container">
+                <a href="{{ route('menu') }}" class="brand text-decoration-none">
+                    Gestión de Combustible
+                </a>
+            </div>
+
+            <!-- Usuario con función de logout -->
+            @if(Auth::check())
+            <div class="user-info" id="user-profile">
+                <i class="fas fa-user user-icon"></i>
+                <div class="user-details">
+                    <h5>{{ Auth::user()->name }}</h5>
+                    <small>{{ Auth::user()->role }}</small>
+                </div>
+                <i class="fas fa-sign-out-alt logout-icon"></i>
+            </div>
+
+            <div class="sidebar-section-title">ADMINISTRACIÓN DE REGISTROS</div>
+            
+            <a href="{{ route('registrovehicular.index') }}" class="nav-link">
+                <i class="fas fa-car"></i> Registro vehicular
+            </a>
+            <a href="{{ route('registrocombustible.index') }}" class="nav-link">
+                <i class="fa fa-id-card"></i> Registro combustible
+            </a>
+            @if(Auth::user()->role === 'Administrador')
+            <a href="{{ route('combus.index') }}" class="nav-link">
+                <i class="fas fa-gas-pump"></i> Inventario combustible
+            </a>
+            @endif
+            <a href="{{ route('registroimporte.index') }}" class="nav-link">
+                <i class="fas fa-dollar-sign"></i> Importe
+            </a>
+            <a href="{{ route('RIndex') }}" class="nav-link">
+                <i class="fas fa-chart-line"></i> Reportes
+            </a>
+
+            @if(Auth::user()->role === 'Administrador')
+            <div class="sidebar-section-title">ADMINISTRACIÓN DE USUARIO</div>
+            <a href="{{ route('user.index') }}" class="nav-link">
+                <i class="fas fa-user"></i> Registro de usuario
+            </a>
+            <a href="{{ route('registrorol.table') }}" class="nav-link">
+                <i class="fas fa-users"></i> Gestor de roles
+            </a>
+            @endif
+            
+            <!-- Formulario oculto para logout -->
+            <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
+                @csrf
+            </form>
+            @else
+            <!-- Mostrar opción de login para usuarios no autenticados -->
+            <div class="user-info" onclick="window.location.href='{{ route('login') }}'">
+                <i class="fas fa-sign-in-alt user-icon"></i>
+                <div class="user-details">
+                    <h5>Iniciar sesión</h5>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <!-- Botón P flotante cuando el sidebar está oculto -->
+        <div id="floatingToggle" class="floating-toggle">≡</div>
+
+        <!-- Botón flotante para móviles -->
+        <button class="mobile-toggle" id="mobileToggle">
+            <span>≡</span>
         </button>
 
-        <div class="brand-container">
-            <a href="{{ route('menu') }}" class="brand text-decoration-none">
-                <span class="circle-letter">P</span> Gestión de Combustible
-            </a>
-        </div>
-
-
-        <!-- Usuario con función de logout -->
-        <div class="user-info" id="user-profile">
-            <i class="fas fa-user user-icon"></i>
-            <div class="user-details">
-                <h5>{{ Auth::user()->name }}</h5>
-                <small>{{ Auth::user()->role }}</small>
+        <!-- Contenido principal -->
+        <div class="content">
+            <div class="container mt-4">
+                @yield('contenido')
             </div>
-            <i class="fas fa-sign-out-alt logout-icon"></i>
         </div>
 
-        <div class="sidebar-section-title">ADMINISTRACIÓN DE REGISTROS</div>
-        
-        <a href="{{ route('registrovehicular.index') }}" class="nav-link">
-            <i class="fas fa-car"></i> Registro vehicular
-        </a>
-        <a href="{{ route('registrocombustible.index') }}" class="nav-link">
-            <i class="fa fa-id-card"></i> Registro combustible
-        </a>
-        <a href="{{ route('combus.index') }}" class="nav-link">
-            <i class="fas fa-gas-pump"></i> Inventario combustible
-        </a>
-        <a href="{{ route('registroimporte.index') }}" class="nav-link">
-            <i class="fas fa-dollar-sign"></i> Importe
-        </a>
-        <a href="{{ route('RIndex') }}" class="nav-link">
-            <i class="fas fa-chart-line"></i> Reportes
-        </a>
+        <!-- Scripts -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const sidebar = document.querySelector('.sidebar');
+                const toggleBtn = document.getElementById('toggleSidebar');
+                const floatingToggle = document.getElementById('floatingToggle');
+                const mobileToggle = document.getElementById('mobileToggle');
+                const content = document.querySelector('.content');
+                const links = document.querySelectorAll('.nav-link');
 
-        @if(Auth::user()->role === 'Administrador')
-        <div class="sidebar-section-title">ADMINISTRACIÓN DE USUARIO</div>
-        <a href="{{ route('user.index') }}" class="nav-link">
-            <i class="fas fa-user"></i> Registro de usuario
-        </a>
-        <a href="{{ route('registrorol.table') }}" class="nav-link">
-            <i class="fas fa-users"></i> Gestor de roles
-        </a>
-        @endif
-        
-        <!-- Formulario oculto para logout -->
-        @auth
-        <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
-            @csrf
-        </form>
-        @endauth
-    </div>
+                // Función para actualizar la visibilidad de los botones de toggle
+                function updateToggleVisibility(isSidebarHidden) {
+                    if (isSidebarHidden) {
+                        toggleBtn.classList.add('hidden');
+                        floatingToggle.style.display = 'flex';
+                    } else {
+                        toggleBtn.classList.remove('hidden');
+                        floatingToggle.style.display = 'none';
+                    }
+                }
 
-    <!-- Botón flotante para móviles -->
-    <button class="mobile-toggle" id="mobileToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Contenido principal -->
-    <div class="content">
-        <div class="container mt-4">
-            @yield('contenido')
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const sidebar = document.querySelector('.sidebar');
-            const toggleBtn = document.getElementById('toggleSidebar');
-            const mobileToggle = document.getElementById('mobileToggle');
-            const content = document.querySelector('.content');
-            const links = document.querySelectorAll('.nav-link');
-
-            // FORZAR MENÚ OCULTO DESPUÉS DE INICIAR SESIÓN
-            // Verificar si venimos directamente del login
-            const isPostLogin = sessionStorage.getItem('isPostLogin') === 'true';
-            const pathname = window.location.pathname;
-            
-            // Si acabamos de iniciar sesión O estamos en la página principal después del login
-            if (isPostLogin || pathname === '/home' || pathname === '/' || pathname === '/menu') {
-                // Forzar menú oculto
-                sidebar.classList.add('hidden');
-                content.classList.add('full-width');
-                toggleBtn.classList.add('hidden');
-                localStorage.setItem('sidebarHidden', 'true');
+                // FORZAR MENÚ OCULTO DESPUÉS DE INICIAR SESIÓN
+                // Verificar si venimos directamente del login
+                const isPostLogin = sessionStorage.getItem('isPostLogin') === 'true';
+                const pathname = window.location.pathname;
                 
-                // Limpiar bandera de post-login
-                sessionStorage.removeItem('isPostLogin');
-            } else {
-                // Para otras navegaciones, usar la preferencia guardada
-                const shouldHideSidebar = localStorage.getItem('sidebarHidden') === 'true';
-                
-                if (shouldHideSidebar) {
+                // Si acabamos de iniciar sesión O estamos en la página principal después del login
+                if (isPostLogin || pathname === '/home' || pathname === '/' || pathname === '/menu') {
+                    // Forzar menú oculto
                     sidebar.classList.add('hidden');
                     content.classList.add('full-width');
-                    toggleBtn.classList.add('hidden');
+                    localStorage.setItem('sidebarHidden', 'true');
+                    updateToggleVisibility(true);
+                    
+                    // Limpiar bandera de post-login
+                    sessionStorage.removeItem('isPostLogin');
                 } else {
-                    sidebar.classList.remove('hidden');
-                    content.classList.remove('full-width');
-                    toggleBtn.classList.remove('hidden');
-                }
-            }
-
-            // Mostrar u ocultar el menú lateral (y guardar el estado)
-            toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('hidden');
-                content.classList.toggle('full-width');
-                toggleBtn.classList.toggle('hidden');
-                
-                // Guardar el estado actual
-                const isNowHidden = sidebar.classList.contains('hidden');
-                localStorage.setItem('sidebarHidden', isNowHidden ? 'true' : 'false');
-            });
-            
-            // Botón móvil para mostrar el menú
-            mobileToggle.addEventListener('click', function() {
-                sidebar.classList.remove('hidden');
-                content.classList.remove('full-width');
-                toggleBtn.classList.remove('hidden');
-                localStorage.setItem('sidebarHidden', 'false');
-            });
-
-            // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
-            links.forEach(link => {
-                link.addEventListener('click', function () {
-                    if (window.innerWidth <= 768) {
+                    // Para otras navegaciones, usar la preferencia guardada
+                    const shouldHideSidebar = localStorage.getItem('sidebarHidden') === 'true';
+                    
+                    if (shouldHideSidebar) {
                         sidebar.classList.add('hidden');
                         content.classList.add('full-width');
-                        toggleBtn.classList.add('hidden');
-                        localStorage.setItem('sidebarHidden', 'true');
+                        updateToggleVisibility(true);
+                    } else {
+                        sidebar.classList.remove('hidden');
+                        content.classList.remove('full-width');
+                        updateToggleVisibility(false);
                     }
-                });
-            });
+                }
 
-            // Ajustes especiales para móviles
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add('hidden');
-                content.classList.add('full-width');
-                toggleBtn.classList.add('hidden');
-                localStorage.setItem('sidebarHidden', 'true');
-            }
-            
-            // Marcar el enlace activo según la URL actual
-            const currentUrl = window.location.href;
-            $('.nav-link').each(function() {
-                const linkUrl = $(this).attr('href');
-                if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route("menu") }}') {
-                    $(this).addClass('active');
+                // Mostrar u ocultar el menú lateral (y guardar el estado)
+                toggleBtn.addEventListener('click', function () {
+                    sidebar.classList.add('hidden');
+                    content.classList.add('full-width');
+                    
+                    // Guardar el estado actual
+                    localStorage.setItem('sidebarHidden', 'true');
+                    updateToggleVisibility(true);
+                });
+                
+                // Botón flotante para mostrar el menú cuando está oculto
+                floatingToggle.addEventListener('click', function() {
+                    sidebar.classList.remove('hidden');
+                    content.classList.remove('full-width');
+                    
+                    localStorage.setItem('sidebarHidden', 'false');
+                    updateToggleVisibility(false);
+                });
+                
+                // Botón móvil para mostrar el menú
+                mobileToggle.addEventListener('click', function() {
+                    sidebar.classList.remove('hidden');
+                    content.classList.remove('full-width');
+                    localStorage.setItem('sidebarHidden', 'false');
+                    updateToggleVisibility(false);
+                });
+
+                // Ocultar el menú cuando se selecciona una opción en pantallas pequeñas
+                links.forEach(link => {
+                    link.addEventListener('click', function () {
+                        if (window.innerWidth <= 768) {
+                            sidebar.classList.add('hidden');
+                            content.classList.add('full-width');
+                            localStorage.setItem('sidebarHidden', 'true');
+                            updateToggleVisibility(true);
+                        }
+                    });
+                });
+
+                // Ajustes especiales para móviles
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.add('hidden');
+                    content.classList.add('full-width');
+                    localStorage.setItem('sidebarHidden', 'true');
+                    updateToggleVisibility(true);
+                }
+                
+                // Marcar el enlace activo según la URL actual
+                if (typeof $ !== 'undefined') {
+                    const currentUrl = window.location.href;
+                    $('.nav-link').each(function() {
+                        const linkUrl = $(this).attr('href');
+                        if (currentUrl.includes(linkUrl) && linkUrl !== '{{ route("menu") }}') {
+                            $(this).addClass('active');
+                        }
+                    });
+                    
+                    // Cerrar sesión y resetear preferencias
+                    $('#user-profile').on('click', function(e) {
+                        e.preventDefault();
+                        
+                        if (typeof Swal !== 'undefined') {
+                            Swal.fire({
+                                title: '¿Cerrar sesión?',
+                                text: '¿Estás seguro que deseas cerrar tu sesión?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#ef4444',
+                                cancelButtonColor: '#0ea5e9',
+                                confirmButtonText: 'Sí, cerrar sesión',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Establecer bandera para la próxima sesión
+                                    localStorage.removeItem('sidebarHidden');
+                                    // Enviar formulario de logout
+                                    document.getElementById('logout-form').submit();
+                                }
+                            });
+                        } else {
+                            if (confirm('¿Estás seguro que deseas cerrar tu sesión?')) {
+                                localStorage.removeItem('sidebarHidden');
+                                document.getElementById('logout-form').submit();
+                            }
+                        }
+                    });
                 }
             });
-            
-            // Cerrar sesión y resetear preferencias
-            $('#user-profile').on('click', function(e) {
-                e.preventDefault();
-                
-                Swal.fire({
-                    title: '¿Cerrar sesión?',
-                    text: '¿Estás seguro que deseas cerrar tu sesión?',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#ef4444',
-                    cancelButtonColor: '#0ea5e9',
-                    confirmButtonText: 'Sí, cerrar sesión',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Establecer bandera para la próxima sesión
-                        localStorage.removeItem('sidebarHidden');
-                        // Enviar formulario de logout
-                        document.getElementById('logout-form').submit();
-                    }
-                });
-            });
-        });
-    </script>
-</body>
+        </script>
+    </body>
 </html>

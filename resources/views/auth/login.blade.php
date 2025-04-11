@@ -2,18 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-     
-    <title>@yield('titulo')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Gestión de Combustible</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+   
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
+        /* Título principal */
+        .title-panel {
+            font-family: 'Cinzel', serif;
+            font-size: 26px; /* Menor que el tamaño del título de inicio de sesión */
+            font-weight: 700;
+            color: #000;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.57); /* Fondo blanco semitransparente */
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+        }
+
+        /* Icono de usuario más pequeño y sin fondo */
+        .input-icon i {
+            font-size: 18px;
+            color: #333;
+            background: none; /* Sin fondo */
+        }
+
         /* Imagen de fondo */
         body {
+            font-family: 'Poppins', sans-serif;
             background: url("{{ asset('img/fondo_inicio.jpg') }}") no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
@@ -34,18 +64,19 @@
             letter-spacing: 1.5px;
             margin-bottom: 30px;
             padding: 10px 20px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: rgba(255, 255, 255, 0.57); /* Fondo blanco semitransparente */
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
         }
 
         /* Contenedor del login */
         .login-container {
             width: 100%;
             max-width: 400px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
         /* Imagen dentro del login */
@@ -54,23 +85,108 @@
             display: block;
             margin: 0 auto 15px;
         }
+        
+        /* Header del formulario */
+        .login-header {
+            background-color: rgb(226, 228, 230);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        h3 {
+            color: #344767;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        
+        /* Campos del formulario */
+        .form-label {
+            color: #334155;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+        }
+        
+        /* Botón de inicio de sesión */
+        .btn-primary {
+            background-color: #0ea5e9;
+            border-color: #0ea5e9;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Alertas */
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-success {
+            background-color: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+        
+        .alert-danger {
+            background-color: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+        
+        /* Campos de entrada con iconos */
+        .input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            z-index: 10;
+        }
+        
+        .input-with-icon {
+            padding-left: 40px;
+        }
     </style>
-
 </head>
 <body>
-
-    <!-- Título Principal -->
-    <div class="title-panel">
-        Gestión de Combustible<br>
-        Clasificadora y Exportadora de Tabaco S.A <br>
-        Grupo Plasencia
-    </div>
-
     <!-- Contenedor del Login -->
     <div class="login-container">
-        <div class="text-center">
-            <img src="{{ asset('img/logo.jpg') }}" alt="Logo">
-            <h3 class="fw-bold">Iniciar sesión</h3>
+        <div class="login-header">
+            <!-- Título en el mismo contenedor gris -->
+            <h2 class="fw-bold" style="font-size: 22px; color: #344767;">Gestión de Combustible<br>
+                Clasificadora y Exportadora de Tabaco S.A <br>
+                Grupo Plasencia
+            </h2>
         </div>
 
         @if (session('success'))
@@ -90,22 +206,31 @@
         @endif
 
         <form method="POST" action="{{ route('login') }}">
-    @csrf
+            @csrf
 
-    <div class="mb-3">
-        <label for="nombre" class="form-label fw-semibold">Nombre de usuario</label>
-        <input type="text" id="nombre" name="nombre" class="form-control" required>
-    </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre de usuario</label>
+                <div class="input-group">
+                    <!-- Icono sin fondo y más pequeño -->
+                    <span class="input-icon">
+                        <i class="fas fa-user-circle" style="font-size: 18px; color: #333;"></i>
+                    </span>
+                    <input type="text" id="nombre" name="nombre" class="form-control input-with-icon" required placeholder="Ingrese su nombre de usuario">
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label for="password" class="form-label fw-semibold">Contraseña</label>
-        <input type="password" id="password" name="password" class="form-control" required>
-    </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input type="password" id="password" name="password" class="form-control input-with-icon" required placeholder="Ingrese su contraseña">
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
-</form>
-
-
+            <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+        </form>
     </div>
 
     <script>
@@ -113,4 +238,6 @@
         sessionStorage.setItem('isPostLogin', 'true');
     </script>
 </body>
+
+
 </html>

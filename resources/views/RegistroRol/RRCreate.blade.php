@@ -12,54 +12,52 @@
         font-family: 'Poppins', sans-serif;
         background-color: #f8f9fa;
     }
-    
+
     .container {
         max-width: 1240px;
     }
-    
+
     .dataTables_filter {
         margin-bottom: 20px;
     }
-    
+
     .dataTables_filter input {
         border: 1px solid #e2e8f0;
         border-radius: 6px;
         padding: 0.5rem 1rem;
         width: 250px;
     }
-    
+
     .dataTables_filter input:focus {
         border-color: #3b82f6;
         outline: none;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
     }
-    
-    /* Estilos para la tarjeta principal */
+
     .card {
         border-radius: 12px;
         border: none;
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
         overflow: hidden;
     }
-    
+
     .card-title {
         color: #344767;
         font-weight: 600;
     }
 
     .card-header {
-        background-color: rgb(226, 228, 230); /* Color gris claro */
+        background-color: rgb(226, 228, 230);
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         padding: 1.5rem;
     }
-        
-    /* Estilos para la tabla */
+
     .table {
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
     }
-    
+
     .table thead th {
         color: #64748b;
         font-weight: 600;
@@ -68,7 +66,7 @@
         border-bottom: 1px solid #e2e8f0;
         background-color: #f8fafc;
     }
-    
+
     .table tbody td {
         padding: 12px;
         vertical-align: middle;
@@ -76,36 +74,29 @@
         font-size: 0.875rem;
         color: #334155;
     }
-    
+
     .table tbody tr:hover {
         background-color: #f1f5f9;
     }
-    
-    /* Ajustar el ancho de la columna "Acciones" */
+
     .acciones-columna {
         width: 120px;
         text-align: center;
     }
 
-    /* Centrar los botones en la columna de acciones */
     .acciones-columna div {
         display: flex;
         justify-content: center;
         gap: 5px;
     }
 
-    /* Centrar texto en las columnas de "Estado" y "Acciones" (aplicado tanto en th como td) */
     #roles-table tr td:nth-child(2), 
-    #roles-table tr th:nth-child(2) {
-        text-align: center !important;
-    }
-
+    #roles-table tr th:nth-child(2),
     #roles-table th.acciones-columna, 
     #roles-table td.acciones-columna {
         text-align: center !important;
     }
 
-    /* Paginación */
     .dataTables_paginate .paginate_button {
         border-radius: 6px !important;
         margin: 0 2px !important;
@@ -128,9 +119,8 @@
         padding-top: 1rem;
     }
 
-    /* Estilo específico para la columna "Rol" */
     .rol-columna {
-        text-align: left !important; /* No centrar la columna "Rol" */
+        text-align: left !important;
     }
 
     .toggleEstado {
@@ -139,9 +129,17 @@
     }
 
     .toggleEstado:hover {
-        color: #000000; /* El texto se pondrá negro */
-        transform: translateY(-2px); /* Los botones se moverán ligeramente hacia arriba */
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Agrega una sombra para resaltar */
+        color: #000000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Nueva clase para botones más pequeños */
+    .btn {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        font-weight: 500;
     }
 </style>
 

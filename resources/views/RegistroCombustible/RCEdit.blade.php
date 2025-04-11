@@ -4,8 +4,6 @@
 
 @section('contenido')
 
-@include('sweetalert::alert')
-
 <style>  
     /* Estilos base */
     body {
@@ -119,6 +117,32 @@
         box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
         transform: translateY(-2px);
     }
+
+    .btn-info {
+        background-color: #0ea5e9;
+        border-color: #0ea5e9;
+        color: #344767;
+    }
+
+    .btn-info:hover {
+        background-color: #0284c7;
+        border-color: #0284c7;
+        color: white;
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* === NUEVO: Estilo para cuando el botón está deshabilitado === */
+    .btn-info:disabled,
+    .btn-info[disabled] {
+        background-color: #0ea5e9 !important;
+        border-color: #0ea5e9 !important;
+        color: #344767 !important;
+        opacity: 1 !important;        /* Asegura que no se vea opaco */
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+    }
     
     textarea.form-control {
         height: 80px;
@@ -228,6 +252,9 @@
                 <label class="form-label" for="equipo">Equipo:</label>
                 <input type="text" id="equipo" name="equipo" class="form-control" value="{{ $registro->equipo }}" readonly>
             </div>
+            @error('equipo')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Segunda fila (3 campos) -->
@@ -236,16 +263,25 @@
                 <label class="form-label" for="placa">Placa:</label>
                 <input type="text" id="placa" name="placa" class="form-control" value="{{ $registro->placa }}" readonly>
             </div>
+            @error('placa')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="marca">Marca:</label>
                 <input type="text" id="marca" name="marca" class="form-control" value="{{ $registro->marca }}" readonly>
             </div>
+            @error('marca')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-4 mb-3">
                 <label class="form-label" for="asignado">Asignado:</label>
                 <input type="text" id="asignado" name="asignado" class="form-control" value="{{ $registro->asignado }}" readonly>
             </div>
+            @error('asignado')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
         </div>
 
         <!-- Tercera fila (4 campos) -->
@@ -262,11 +298,17 @@
                 <label class="form-label" for="entradas">Entrada (litros):</label>
                 <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
             </div>
+            @error('entradas')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="salidas">Salida (galones):</label>
                 <input type="text" id="salidas" name="salidas" class="form-control" value="{{ $registro->salidas }}" oninput="validarNumeroDecimal(this)">
             </div>
+            @error('salidas')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="precio">Precio por galón:</label>
@@ -364,33 +406,30 @@
 
     // Deshabilitar de actualizar
     document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("vehicle-form");
-    const submitButton = document.querySelector("button[type='submit']"); 
+        const form = document.getElementById("vehicle-form");
+        const submitButton = document.querySelector("button[type='submit']"); 
 
-    // Deshabilitar el botón al inicio
-    submitButton.disabled = true;
+        // Deshabilitar el botón al inicio
+        submitButton.disabled = true;
 
-    // Guardar valores originales
-    const initialFormData = new FormData(form);
+        // Guardar valores originales
+        const initialFormData = new FormData(form);
 
-    form.addEventListener("input", function () {
-        const currentFormData = new FormData(form);
-        let hasChanges = false;
+        form.addEventListener("input", function () {
+            const currentFormData = new FormData(form);
+            let hasChanges = false;
 
-        // Comparar los valores actuales con los originales
-        for (let [key, value] of currentFormData.entries()) {
-            if (value !== initialFormData.get(key)) {
-                hasChanges = true;
-                break;
+            // Comparar los valores actuales con los originales
+            for (let [key, value] of currentFormData.entries()) {
+                if (value !== initialFormData.get(key)) {
+                    hasChanges = true;
+                    break;
+                }
             }
-        }
 
-        // Habilitar o deshabilitar el botón según haya cambios
-        submitButton.disabled = !hasChanges;
+            // Habilitar o deshabilitar el botón según haya cambios
+            submitButton.disabled = !hasChanges;
+        });
     });
-});
-
-
-
 </script>
 @endsection

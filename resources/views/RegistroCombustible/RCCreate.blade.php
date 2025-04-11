@@ -312,21 +312,30 @@
 
 
 <script>
-    document.getElementById('entradas').addEventListener('input', function () {
-        let value = parseFloat(this.value).toFixed(3);  // Limitar a 3 decimales
-        this.value = value; // Establece el valor con 3 decimales
+    const entradaInput = document.getElementById('entradas');
+
+    entradaInput.addEventListener('blur', function () {
+        // Al salir del input (blur), formateamos a 3 decimales si es válido
+        if (!isNaN(this.value) && this.value.trim() !== '') {
+            this.value = parseFloat(this.value).toFixed(3);
+        }
     });
+
     function validarNumeroEntero(input) {
         input.value = input.value.replace(/\D/g, ''); // Solo permite números enteros
     }
 
     function validarNumeroDecimal(input) {
-        input.value = input.value.replace(/[^0-9.]/g, ''); // Permite números y un solo punto
+        // Permite números y un solo punto
+        input.value = input.value.replace(/[^0-9.]/g, '');
+
+        // Evita más de un punto decimal
         if ((input.value.match(/\./g) || []).length > 1) {
-            input.value = input.value.replace(/\.+$/, ""); // Evita múltiples puntos decimales
+            input.value = input.value.replace(/\.+$/, '');
         }
     }
 </script>
+
 
 <script>
     function validarNumeroEntero(input) {
@@ -379,33 +388,10 @@
         }
     }
 
-    const entradasInput = document.getElementById('entradas');
-
-    entradasInput.addEventListener('input', function () {
-        // Reemplaza cualquier carácter que no sea número o punto
-        this.value = this.value.replace(/[^0-9.]/g, '');
-
-        // Evita múltiples puntos decimales
-        const parts = this.value.split('.');
-        if (parts.length > 2) {
-            this.value = parts[0] + '.' + parts[1]; // Solo conserva el primer punto
-        }
-    });
-
     entradasInput.addEventListener('keydown', function (e) {
         // Bloquea las teclas que podrían generar letras como la "e", "E", "-", "+"
         if (['e', 'E', '+', '-'].includes(e.key)) {
             e.preventDefault();
-        }
-    });
-
-    entradasInput.addEventListener('blur', function () {
-        // Al salir del input, formatea el número a 3 decimales si es válido
-        if (this.value !== '') {
-            let num = parseFloat(this.value);
-            if (!isNaN(num)) {
-                this.value = num.toFixed(3);
-            }
         }
     });
 
