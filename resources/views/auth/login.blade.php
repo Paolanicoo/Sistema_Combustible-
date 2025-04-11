@@ -176,17 +176,73 @@
         .input-with-icon {
             padding-left: 40px;
         }
+
+        .company-branding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-icon {
+            font-size: 42px;
+            color: #0ea5e9;
+            margin-bottom: 15px;
+        }
+
+        .company-title {
+            width: 100%;
+        }
+
+        .main-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #344767;
+            margin-bottom: 8px;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .company-group {
+            font-size: 16px;
+            font-weight: 500;
+            color: #64748b;
+            margin: 0;
+        }
+
+        /* Mejora en la apariencia del contenedor de login */
+        .login-container {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            background-color: white;
+        }
+
+        .login-header {
+            margin-bottom: 25px;
+        }
     </style>
 </head>
 <body>
     <!-- Contenedor del Login -->
     <div class="login-container">
         <div class="login-header">
-            <!-- Título en el mismo contenedor gris -->
-            <h2 class="fw-bold" style="font-size: 22px; color: #344767;">Gestión de Combustible<br>
-                Clasificadora y Exportadora de Tabaco S.A <br>
-                Grupo Plasencia
-            </h2>
+            <!-- Logo y título mejorado -->
+            <div class="company-branding">
+                <i class="fas fa-gas-pump brand-icon"></i>
+                <div class="company-title">
+                    <h2 class="main-title">Gestión de Combustible</h2>
+                    <h3 class="company-name">Clasificadora y Exportadora de Tabaco S.A</h3>
+                    <h4 class="company-group">Grupo Plasencia</h4>
+                </div>
+            </div>
         </div>
 
         @if (session('success'))
@@ -211,7 +267,6 @@
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre de usuario</label>
                 <div class="input-group">
-                    <!-- Icono sin fondo y más pequeño -->
                     <span class="input-icon">
                         <i class="fas fa-user-circle" style="font-size: 18px; color: #333;"></i>
                     </span>
