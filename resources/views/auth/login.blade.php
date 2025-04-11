@@ -157,25 +157,6 @@
             border-color: #fca5a5;
             color: #991b1b;
         }
-        
-        /* Campos de entrada con iconos */
-        .input-group {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-        
-        .input-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            z-index: 10;
-        }
-        
-        .input-with-icon {
-            padding-left: 40px;
-        }
 
         .company-branding {
             display: flex;
@@ -227,6 +208,38 @@
 
         .login-header {
             margin-bottom: 25px;
+        }
+
+        /* Asegurar que los inputs tengan bordes redondeados consistentes */
+        .input-with-icon {
+            border-radius: 8px !important; /* O el valor que prefieras */
+            padding-left: 35px; /* Espacio para el icono */
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            color: #64748b;
+        }
+
+        /* Eliminar cualquier estilo de borde del input-group que pueda estar causando el problema */
+        .input-group, .input-group-text {
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+        }
+
+        /* Asegurar que los inputs ocupen todo el ancho disponible */
+        .input-group .form-control {
+            width: 100%;
+            border-radius: 8px !important;
         }
     </style>
 </head>
