@@ -42,13 +42,24 @@ class ReporteConsumoController extends Controller
                     ->get();
                 break;
 
-            case 'asignado':
-                $consumoPorAsignado = RegistroCombustible::join('registro_vehiculars', 'registro_combustibles.id_registro_vehicular', '=', 'registro_vehiculars.id')
-                    ->selectRaw('registro_vehiculars.asignado, SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total')
-                    ->groupBy('registro_vehiculars.asignado')
-                    ->orderBy('total', 'DESC')
-                    ->get();
-                break;
+                case 'asignado':
+                    // Total global de galones de todos los registros
+                    $totalGalonesGlobal = RegistroCombustible::selectRaw('SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total')
+                        ->value('total');
+                
+                    // Consumo por asignado con porcentaje
+                    $consumoPorAsignado = RegistroCombustible::join('registro_vehiculars', 'registro_combustibles.id_registro_vehicular', '=', 'registro_vehiculars.id')
+                        ->selectRaw('
+                            registro_vehiculars.asignado,
+                            COUNT(*) as registros,
+                            SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) as total,
+                            ROUND((SUM(COALESCE(entradas, 0) * 3.785 + COALESCE(salidas, 0)) / ?) * 100, 2) as porcentaje
+                        ', [$totalGalonesGlobal])
+                        ->groupBy('registro_vehiculars.asignado')
+                        ->orderBy('total', 'DESC')
+                        ->get();
+                    break;
+                
         }
 
         return response()->json([
@@ -56,6 +67,7 @@ class ReporteConsumoController extends Controller
             'consumoPorAnio' => $consumoPorAnio,
             'consumoPorEquipo' => $consumoPorEquipo,
             'consumoPorAsignado' => $consumoPorAsignado,
+            
         ]);
     }
 }

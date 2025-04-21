@@ -130,11 +130,12 @@ class ResumenImporteController extends Controller
         // Formatear datos para DataTables
         $formattedData = $data->map(function ($registro) {
             // Calcular consumo y total
-            $consumo = optional($registro->combustible)->entradas > 0 
-                ? optional($registro->combustible)->entradas 
-                : optional($registro->combustible)->salidas;
-                
-            $total = $consumo * optional($registro->combustible)->precio;
+            $consumoBruto = optional($registro->combustible)->entradas > 0 
+            ? optional($registro->combustible)->entradas * 3.785 // Solo las entradas se convierten a galones
+            : optional($registro->combustible)->salidas; // Las salidas no se convierten
+        
+        $consumo = $consumoBruto; // Consumo convertido
+        $total = $consumo * optional($registro->combustible)->precio; // Total con precio
             
             return [
                 'mes' => \Carbon\Carbon::parse($registro->fecha)->locale('es')->translatedFormat('F'),

@@ -82,6 +82,9 @@
                                 <div id="tablaConsumoMes"></div>
                                 <div id="tablaConsumoEquipo"></div>
                                 <div id="tablaConsumoAsignado"></div>
+                                
+
+
                             </div>
                         </div>
                     </div>
@@ -302,6 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         
+        
         let tabla = `<table class='table table-striped table-hover'><thead><tr>`;
         columnas.forEach(col => {
             let titulo = col === 'anio' ? 'Año' : (col === 'total' ? 'Total galones' : col.charAt(0).toUpperCase() + col.slice(1));
@@ -410,14 +414,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     seccionOtrosReportes.classList.add('fade-in');
                     tituloReporte.textContent = 'Consumo por Equipo';
                 } else if (tipo === 'asignado' && data.consumoPorAsignado && data.consumoPorAsignado.length > 0) {
-                    hayDatos = true;
-                    datosParaMostrar = data.consumoPorAsignado;
-                    columnas = ['asignado', 'total'];
-                    
-                    seccionOtrosReportes.style.display = 'block';
-                    seccionOtrosReportes.classList.add('fade-in');
-                    tituloReporte.textContent = 'Consumo por Asignado';
-                }
+                hayDatos = true;
+                datosParaMostrar = data.consumoPorAsignado;
+                columnas = ['asignado', 'registros', 'total',  'porcentaje'];
+                
+                seccionOtrosReportes.style.display = 'block';
+                seccionOtrosReportes.classList.add('fade-in');
+                tituloReporte.textContent = 'Consumo por Asignado';
+}
+
 
                 if (hayDatos) {
                     crearTabla(tablaId, datosParaMostrar, columnas);
