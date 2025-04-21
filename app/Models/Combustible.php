@@ -12,6 +12,7 @@ class Combustible extends Model
     protected $table = 'combustible';
     
     protected $fillable = [
+        'fecha',
         'cantidad_entrada',
         'cantidad_actual',
         'descripcion'

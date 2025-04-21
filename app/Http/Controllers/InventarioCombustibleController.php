@@ -15,6 +15,9 @@ class InventarioCombustibleController extends Controller
         $combustibles = Combustible::orderBy('created_at', 'desc')->get();
 
         return datatables()->of($combustibles)
+            ->editColumn('fecha', function ($combustible) {
+                return date('d/m/Y', strtotime($combustible->fecha));
+            })
             ->addColumn('acciones', function ($combustible) {
                 return '
                     <div class="d-flex justify-content-center gap-2">
@@ -44,7 +47,6 @@ class InventarioCombustibleController extends Controller
             ->make(true);
     }
 
-
     public function create()
     {
         return view('InventarioCombustible.create');
@@ -53,15 +55,18 @@ class InventarioCombustibleController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los campos
+        // Validación de los campos, incluyendo la fecha
         $request->validate([
+            'fecha' => 'required|date',
             'cantidad_entrada' => 'required|numeric|min:0',
-            'descripcion' => 'required|string|max:100'
+            'descripcion' => 'nullable|string|max:100'
         ]);
 
         try {
             // Guardamos tanto la entrada como la cantidad actual (que al inicio son iguales)
+            // y ahora también la fecha seleccionada por el usuario
             Combustible::create([
+                'fecha' => $request->fecha,
                 'cantidad_entrada' => $request->cantidad_entrada,
                 'cantidad_actual' => $request->cantidad_entrada, // Mismo valor al crear
                 'descripcion' => $request->descripcion

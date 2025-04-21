@@ -157,15 +157,15 @@
             transition: margin-left 0.3s;
         }
 
-        /* Botón P para toggle del sidebar */
+        /* Botón para toggle del sidebar */
         #toggleSidebar {
             cursor: pointer;
-            font-size: 1.8rem; /* Letra P más grande */
-            color: #0ea5e9; /* Color azul para la P */
+            font-size: 2.2rem; 
+            color: #0ea5e9; 
             font-weight: 700; /* Negrita */
             background-color: #f8fafc;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -183,7 +183,7 @@
             background-color: #e2e8f0;
         }
 
-        /* Estilos para el botón P cuando el sidebar está oculto */
+        /* Estilos para el botón cuando el sidebar está oculto */
         #toggleSidebar.hidden {
             right: auto;
             left: 20px;
@@ -265,8 +265,8 @@
             left: 20px;
             background-color: #0ea5e9;
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             justify-content: center;
             align-items: center;
@@ -274,7 +274,7 @@
             cursor: pointer;
             z-index: 1100;
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             transition: transform 0.3s ease;
         }
         

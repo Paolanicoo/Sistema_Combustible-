@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('combustible', function (Blueprint $table) {
             $table->id();
+            $table->date('fecha'); // Nueva columna para la fecha
             $table->decimal('cantidad_entrada', 8, 2); // Nueva columna para cantidad inicial
             $table->decimal('cantidad_actual', 8, 2);  // Columna para cantidad actual
-            $table->string('descripcion');
+            $table->string('descripcion', 50)->nullable();
             $table->timestamps();
         });
     }

@@ -266,6 +266,7 @@
                 <table id="combustible-table" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                         <tr>
+                            <th class="text-center">Fecha de ingreso</th>
                             <th class="text-center">Cantidad de entrada</th>
                             <th class="text-center">Cantidad actual</th>
                             <th class="text-center">Descripción</th>
@@ -285,6 +286,10 @@
             serverSide: true,
             ajax: "{{ route('combus.data') }}",
             columns: [
+                {   data: 'fecha', 
+                    name: 'fecha',
+                    className: 'text-center' 
+                },
                 { 
                     data: 'cantidad_entrada', 
                     name: 'cantidad_entrada',
@@ -358,7 +363,6 @@
         });
     });
 </script>
-
 @endsection
 @section('scripts')
 @endsection

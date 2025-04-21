@@ -174,31 +174,41 @@
             <h3 class="m-0">Registro inicial de combustible</h3>
         </div>
 
-        <!-- Aquí empieza tu card-body y formulario -->
-        <div class="card-body">
-            <!-- Campo de cantidad inicial -->
-            <div class="form-group-expanded mb-4">
+        <div class="row mb-4">
+            <!-- Campo de fecha -->
+            <div class="col-md-6">
+                <label class="form-label" for="fecha">Fecha de entrada:</label>
+                <input type="date" id="fecha" name="fecha" 
+                    class="form-control" required 
+                    value="{{ old('fecha') ? old('fecha') : \Carbon\Carbon::now()->format('Y-m-d') }}">
+                @error('fecha')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <!-- Campo de cantidad -->
+            <div class="col-md-6">
                 <label class="form-label" for="cantidad_entrada">Cantidad inicial (galones):</label>
                 <input type="number" step="0.01" id="cantidad_entrada" name="cantidad_entrada" 
-                    class="form-control form-control-expanded" required 
+                    class="form-control" required 
                     oninput="validarNumeroDecimal(this)"
                     placeholder="Ej. 150.75">
                 @error('cantidad_entrada')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+        </div>
 
-            <!-- Campo de descripción expandido -->
-            <div class="form-group-expanded mb-4">
-                <label class="form-label" for="descripcion">Descripción detallada:</label>
-                <textarea id="descripcion" name="descripcion" 
-                        class="form-control form-control-expanded" 
-                        required rows="6"
-                        placeholder="Detalles como tipo de combustible, proveedor, ubicación, etc." maxlength="100"></textarea>
-                @error('descripcion')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
+        <!-- Campo de descripción expandido -->
+        <div class="form-group-expanded mb-4">
+            <label class="form-label" for="descripcion">Descripción detallada:</label>
+            <textarea id="descripcion" name="descripcion" 
+                    class="form-control form-control-expanded" 
+                    rows="6"
+                    placeholder="Detalles como tipo de combustible, proveedor, ubicación, etc." maxlength="100"></textarea>
+            @error('descripcion')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <!-- Botones alineados a la derecha -->
