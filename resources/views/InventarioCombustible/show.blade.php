@@ -136,7 +136,7 @@
                         </a>
                         <h2 class="mb-1"> Detalles de Combustible</h2>
                     </div>
-                    <p class="mb-0 mt-2"><i class="far fa-calendar-alt me-2"></i> Registrado el: {{ $combustible->created_at->format('d/m/Y H:i') }}</p>
+                    <p class="mb-0 mt-2"><i class="far fa-calendar-alt me-2"></i> Registrado el: {{ $combustible->created_at->format('d/m/Y') }}</p>
                 </div>
                 <span class="info-badge">
                     <i class="fas fa-tint me-1"></i> {{ $combustible->cantidad_actual }} galones
