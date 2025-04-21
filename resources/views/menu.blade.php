@@ -19,7 +19,7 @@
     <style>
 
             body {
-                background: url('img/PlasenciaSA.jpg') no-repeat center center fixed;
+                background: url('img/4.jpg') no-repeat center center fixed;
                 background-size: 1550px 780px; /* Ancho x Alto */
                 transition: background 2s ease-in-out; /* Transición suave */
             }
@@ -157,9 +157,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let images = [
-            "img/151.jpeg",
-            "img/finca.jpg",
-            "img/149.jpg"
+            "img/1.jpg",
+            "img/2.jpg",
+            "img/4.jpg",
+            "img/5.jpg",
         ];
         
         let index = 0;
@@ -172,7 +173,5 @@
         setInterval(changeBackground, 5000); // Cambia cada 5 segundos
     });
 </script>
-
-
 </body>
 </html>
