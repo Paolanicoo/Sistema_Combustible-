@@ -158,10 +158,12 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let images = [
-            "img/1.jpg",
-            "img/2.jpg",
-            "img/4.jpg",
-            "img/5.jpg",
+            "img/1-1.jpg",
+            "img/2-2.jpg",
+            "img/3-3.jpg",
+            "img/4-4.jpg",
+            "img/5-5.jpg",
+            "img/6-6.jpg",
         ];
         
         let index = 0;
