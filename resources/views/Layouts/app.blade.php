@@ -281,7 +281,36 @@
         .floating-toggle:hover {
             transform: scale(1.1);
         }
-        
+
+        /* Sticky footer que permanece abajo aunque no haya contenido suficiente */
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            flex: 1 0 auto; /* Esto hace que el contenido ocupe todo el espacio disponible */
+        }
+
+        .footer {
+            flex-shrink: 0; /* Evita que el footer se encoja */
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 0.10rem 0;
+            border-top: 1px solid #e2e8f0;
+            width: 100%;
+        }
+
+        .footer-content {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            color: #718096;
+        }
     </style>
     </head>
     <body>
@@ -366,6 +395,19 @@
                 @yield('contenido')
             </div>
         </div>
+
+        <div class="content-wrapper">
+            <!-- Todo el contenido de tus vistas irá aquí -->
+            @yield('content')
+        </div>
+        
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    © 2025 Todos los derechos reservados. Clasificadora y Exportadora de Tabaco S.A.
+                </div>
+            </div>
+        </footer>
 
         <!-- Scripts -->
         <script>
