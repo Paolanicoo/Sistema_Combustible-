@@ -130,9 +130,6 @@
             word-spacing: 5px; /* Espaciado entre palabras */
         }
 
-
-
-
         /* Ajuste para móviles */
         @media (max-width: 768px) {
             .sidebar {
