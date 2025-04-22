@@ -49,6 +49,7 @@
         </script>
     @endif
 
+    
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -73,19 +74,56 @@
         .sidebar .brand-container {
             padding: 15px;
             margin-bottom: 20px;
-            background-color: transparent; /* Quitado el fondo gris */
+            background-color: transparent;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         .sidebar .brand {
             color: #344767;
-            font-weight: 600;
-            font-size: 1.4rem; /* Aumentado el tamaño de fuente */
+            font-weight: 900;
+            font-size: 1.4rem;
             text-align: center;
             display: block;
             width: 100%;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 0 15px;
+            margin-left: -1px; /* Igual que el activo */
+            text-decoration: none;
+        }
+
+        .sidebar .brand.active {
+            background: #0ea5e9;
+            color: white;
+            font-weight: 900;
+            margin-left: -1px;
+        }
+
+        /* Estilos generales para todos los enlaces del menú (como estaban antes) */
+        .sidebar .nav-link {
+            color: #333;
+            background: transparent;
+            font-weight: 600;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            padding: 10px 15px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        /* Solo para el enlace del menú principal */
+        .sidebar .nav-link.menu-principal {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        /* Movimiento al pasar el mouse solo en el enlace del menú principal */
+        .sidebar .nav-link.menu-principal:hover {
+            transform: translateX(5px);
         }
 
         .sidebar .user-info {
@@ -168,7 +206,7 @@
             cursor: pointer;
             font-size: 2.2rem; 
             color: #0ea5e9; 
-            font-weight: 700; /* Negrita */
+            font-weight: 700;
             background-color: #f8fafc;
             width: 50px;
             height: 50px;
@@ -177,15 +215,15 @@
             justify-content: center;
             align-items: center;
             position: absolute;
-            top: 15px;
-            right: -20px;
+            top: 30px;
+            right: -24px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             z-index: 1001;
         }
 
         #toggleSidebar:hover {
-            transform: scale(1.1); /* Efecto al pasar el cursor */
+            transform: scale(1.1);
             background-color: #e2e8f0;
         }
 
@@ -300,11 +338,11 @@
         }
 
         .content-wrapper {
-            flex: 1 0 auto; /* Esto hace que el contenido ocupe todo el espacio disponible */
+            flex: 1 0 auto;
         }
 
         .footer {
-            flex-shrink: 0; /* Evita que el footer se encoja */
+            flex-shrink: 0;
             background-color: #f8f9fa;
             text-align: center;
             padding: 0.10rem 0;
@@ -318,15 +356,17 @@
             color: #718096;
         }
     </style>
+
+    @yield('styles')
     </head>
     <body>
         <!-- Sidebar -->
         <div class="sidebar">
-            <!-- Botón P para mostrar/ocultar el menú -->
+            <!-- Botón para mostrar/ocultar el menú -->
             <div id="toggleSidebar">≡</div>
 
             <div class="brand-container">
-                <a href="{{ route('menu') }}" class="brand text-decoration-none">
+                <a href="{{ route('menu') }}" class="brand {{ (request()->is('menu') || request()->is('/') || request()->is('home')) ? 'active' : '' }}" id="brandLink">
                     Gestión de Combustible
                 </a>
             </div>
@@ -344,30 +384,30 @@
 
             <div class="sidebar-section-title">ADMINISTRACIÓN DE REGISTROS</div>
             
-            <a href="{{ route('registrovehicular.index') }}" class="nav-link">
+            <a href="{{ route('registrovehicular.index') }}" class="nav-link {{ request()->routeIs('registrovehicular.*') ? 'active' : '' }}">
                 <i class="fas fa-car"></i> Registro vehicular
             </a>
-            <a href="{{ route('registrocombustible.index') }}" class="nav-link">
+            <a href="{{ route('registrocombustible.index') }}" class="nav-link {{ request()->routeIs('registrocombustible.*') ? 'active' : '' }}">
                 <i class="fa fa-id-card"></i> Registro combustible
             </a>
             @if(Auth::user()->role === 'Administrador')
-            <a href="{{ route('combus.index') }}" class="nav-link">
+            <a href="{{ route('combus.index') }}" class="nav-link {{ request()->routeIs('combus.*') ? 'active' : '' }}">
                 <i class="fas fa-gas-pump"></i> Inventario combustible
             </a>
             @endif
-            <a href="{{ route('registroimporte.index') }}" class="nav-link">
+            <a href="{{ route('registroimporte.index') }}" class="nav-link {{ request()->routeIs('registroimporte.*') ? 'active' : '' }}">
                 <i class="fas fa-dollar-sign"></i> Importe
             </a>
-            <a href="{{ route('RIndex') }}" class="nav-link">
+            <a href="{{ route('RIndex') }}" class="nav-link {{ request()->routeIs('RIndex') ? 'active' : '' }}">
                 <i class="fas fa-chart-line"></i> Reportes
             </a>
 
             @if(Auth::user()->role === 'Administrador')
             <div class="sidebar-section-title">ADMINISTRACIÓN DE USUARIO</div>
-            <a href="{{ route('user.index') }}" class="nav-link">
+            <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
                 <i class="fas fa-user"></i> Registro de usuario
             </a>
-            <a href="{{ route('registrorol.table') }}" class="nav-link">
+            <a href="{{ route('registrorol.table') }}" class="nav-link {{ request()->routeIs('registrorol.*') ? 'active' : '' }}">
                 <i class="fas fa-users"></i> Gestor de roles
             </a>
             @endif
