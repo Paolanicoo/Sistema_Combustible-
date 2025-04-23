@@ -17,7 +17,7 @@ class UserController extends Controller
 
     // Método para obtener los registros en formato JSON
     public function getTableData(){
-        $usuarios = User::select('id', 'name', 'role')->get();
+        $usuarios = User::select('id', 'name', 'role', 'is_protected')->get();
         return datatables()->of($usuarios)
             ->addColumn('acciones', function ($usuario) {
                 return view('User.actions', compact('usuario'));
@@ -41,6 +41,7 @@ class UserController extends Controller
                 'nombre' => 'required|string|max:15|unique:users,name', 
                 'rol' => 'required|string|in:Administrador,Usuario,Visualizador',
                 'password' => 'required|min:6|confirmed',
+                'is_protected' => 'boolean',
             ], [
                 'nombre.required' => 'El nombre es obligatorio',
                 'nombre.unique' => 'Este nombre ya está en uso, elige otro', 
@@ -62,6 +63,7 @@ class UserController extends Controller
             $user->name = $request->nombre;
             $user->role = $request->rol;
             $user->password = bcrypt($request->password);
+            $user->is_protected = $request->has('is_protected') ? $request->is_protected : false;
             $user->save();
     
             return response()->json(['success' => true, 'message' => 'Usuario creado correctamente']);
@@ -76,6 +78,11 @@ class UserController extends Controller
     {
         try {
             $usuario = User::findOrFail($id); // Buscar usuario por ID
+            
+            // Verificar si el usuario está protegido
+            if ($usuario->is_protected) {
+                return redirect()->route('user.index')->with('error', 'Este usuario administrador está protegido y no puede ser editado');
+            }
 
             return view('User.RUEdit', compact('usuario')); // Retornar la vista con el usuario
         } catch (\Exception $e) {
@@ -88,6 +95,14 @@ class UserController extends Controller
     public function update(Request $request, $id) {
         try {
             $usuario = User::findOrFail($id);
+            
+            // Verificar si el usuario está protegido
+            if ($usuario->is_protected) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este usuario administrador está protegido y no puede ser modificado'
+                ], 403);
+            }
     
             // Validación de datos
             $validator = Validator::make($request->all(), [
@@ -167,6 +182,14 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+            
+            // Verificar si el usuario está protegido
+            if ($user->is_protected) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Este usuario administrador está protegido y no puede ser eliminado'
+                ], 403);
+            }
 
             // Verifica si el usuario tiene rol de administrador
             if ($user->role === 'Administrador') {
