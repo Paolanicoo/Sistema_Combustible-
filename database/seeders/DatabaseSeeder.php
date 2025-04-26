@@ -22,12 +22,16 @@ class DatabaseSeeder extends Seeder
             ['rol' => 'Visualizador', 'estado' => true, 'created_at' => now(), 'updated_at' => now()],
         ]);
 
-        // Crear usuario administrador
-        User::factory()->create([
-            'name' => 'Admin',
-            'password' => Hash::make('holamundo1234'),
-            'role' => 'Administrador'
+
+        // Crear un administrador protegido que no podrá ser editado ni eliminado
+        User::create([
+            'name' => 'admin',
+            'password' => Hash::make('administrador'),
+            'role' => 'Administrador',
+            'is_protected' => true
         ]);
+
+        $this->command->info('Usuario administrador protegido creado exitosamente.');
 
     }
 }

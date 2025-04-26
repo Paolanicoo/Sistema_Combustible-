@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Usar 'name' en lugar de 'email'
+            $table->string('name'); 
             $table->string('password');
             $table->string('role');
+            $table->boolean('is_protected')->default(false); // Campo agregado para proteger usuarios
             $table->rememberToken();
             $table->timestamps();
         });

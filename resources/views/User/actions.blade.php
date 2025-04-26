@@ -1,12 +1,19 @@
 <div class="d-flex gap-2">
     @if(Auth::user()->role !== 'Visualizador')
-        <!-- Botón de edición -->
-        <a href="{{ route('user.edit', $usuario->id) }}" class="btn btn-warning btn-sm" title="Editar">
-            <i class="fas fa-edit"></i>
-        </a>
-        <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $usuario->id }}" title="Eliminar">
-            <i class="fas fa-trash"></i>
-        </button>
+        @if(!$usuario->is_protected)
+            <!-- Botón de edición -->
+            <a href="{{ route('user.edit', $usuario->id) }}" class="btn btn-warning btn-sm" title="Editar">
+                <i class="fas fa-edit"></i>
+            </a>
+            <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $usuario->id }}" title="Eliminar">
+                <i class="fas fa-trash"></i>
+            </button>
+        @else
+            <!-- Indicador de usuario protegido -->
+            <span class="badge bg-info fs-7">
+                <i class="fas fa-shield-alt"></i> Protegido
+            </span>
+        @endif
     @endif
 </div>
 <!-- Importar SweetAlert2 -->
