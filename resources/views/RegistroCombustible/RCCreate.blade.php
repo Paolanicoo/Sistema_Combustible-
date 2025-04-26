@@ -265,15 +265,25 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
+            
+            <div class="col-md-3 mb-3">
+            <label for="tipo_medida">Tipo de Medida</label>
+            <select name="tipo" id="tipo" class="form-control" required>
+            <option value="galones">Galones</option>
+             <option value="litros">Litros</option>
+            </select>
+            </div>
+
 
             <div class="col-md-3 mb-3">
-                <label class="form-label" for="entradas">Entrada (litros):</label>
+                <label class="form-label" for="entradas">Entrada:</label>
                 <input type="text" id="entradas" name="entradas" class="form-control">
             </div>
             @error('entradas')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
 
+            
             <div class="col-md-3 mb-3">
                 <label class="form-label" for="salidas">Salida (galones):</label>
                 <input type="text" id="salidas" name="salidas" class="form-control" oninput="validarNumeroDecimal(this)">

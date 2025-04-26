@@ -81,7 +81,7 @@ class RegistroCombustibleController extends Controller
             
             $data = $combustibles->map(function ($registro) {
                 // Convertir entradas de litros a galones
-                $entradasGalones = $registro->entradas * 3.785;
+                $entradasGalones = $registro->entradas;
             
                 return [
                     'id' => $registro->id,
@@ -133,11 +133,14 @@ class RegistroCombustibleController extends Controller
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
             'num_factura' => 'required|string|max:10',
+            'tipo' => 'required|in:galones,litros', 
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
             'observacion' => 'nullable|string|max:40',
         ], [
+            'tipo.required' => 'Debe seleccionar un tipo de medida.',
+            'tipo.in' => 'El tipo de medida debe ser galones o litros.',
             'entradas.numeric' => 'El campo entradas debe ser un número.',
             'salidas.numeric' => 'El campo salidas debe ser un número.',
             'precio.numeric' => 'El campo precio debe ser un número.',
@@ -149,19 +152,27 @@ class RegistroCombustibleController extends Controller
 
     
         try {
+
+            $entradas = $request->input('entradas');
+
+            // Si el tipo es litros, convertir a galones (correctamente)
+            if ($request->input('tipo') === 'litros' && $entradas !== null) {
+                $entradas = $entradas * 3.785;
+            }
+            
             // Crear un nuevo registro de combustible
             $registrocombustible = new RegistroCombustible();
             $registrocombustible->id_registro_vehicular = $request->input('id_registro_vehicular');
             $registrocombustible->fecha = $request->input('fecha');
             $registrocombustible->num_factura = $request->input('num_factura');
-            $registrocombustible->entradas = $request->input('entradas') ? number_format($request->input('entradas'), 3, '.', '') : null;
+            $registrocombustible->tipo = $request->input('tipo');
+            $registrocombustible->entradas = $entradas !== null ? number_format($entradas, 3, '.', '') : null;
             $registrocombustible->salidas = $request->input('salidas') ?: null;
             $registrocombustible->precio = $request->input('precio');
             $registrocombustible->observacion = $request->input('observacion');
-
+            
             // Guardar el nuevo registro
             $registrocombustible->save();
-    
             // Mostrar mensaje de éxito con SweetAlert
             Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
     
@@ -200,6 +211,7 @@ class RegistroCombustibleController extends Controller
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required|exists:registro_vehiculars,id',
             'num_factura' => 'required|integer',
+            'tipo' => 'required|in:galones,litros',
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
@@ -216,11 +228,17 @@ class RegistroCombustibleController extends Controller
         $registro = RegistroCombustible::findOrFail($id);
 
         try {
+            $entradas = $request->input('entradas');
+
+            if ($request->input('tipo') === 'litros' && $entradas !== null) {
+            $entradas = $entradas * 3.785;
+        }
             // Actualizar los campos
             $registro->update([
                 'fecha' => $request->fecha,
                 'id_registro_vehicular' => $request->id_registro_vehicular,
                 'num_factura' => $request->num_factura,
+                'tipo' => $request->tipo,
                 'entradas' => $request->entradas,
                 'salidas' => $request->salidas,
                 'precio' => $request->precio,

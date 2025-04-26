@@ -14,6 +14,7 @@ class RegistroCombustible extends Model
     protected $fillable = [
         'fecha', 
         'precio',
+        'tipo',
         'entradas',
         'salidas',
         'num_factura', 

@@ -13,10 +13,11 @@ return new class extends Migration
             $table->date('fecha');
             $table->integer('num_factura');
             $table->unsignedBigInteger('id_registro_vehicular');
+            $table->string('tipo')->nullable(); 
             $table->decimal('entradas', 10, 2)->nullable();  
             $table->decimal('salidas', 10, 2)->nullable();  
             $table->decimal('precio', 10, 2); 
-            $table->string('observacion')->nullable();  // Agregar la columna de observación
+            $table->string('observacion')->nullable();  
             $table->timestamps();
 
              // Clave foránea

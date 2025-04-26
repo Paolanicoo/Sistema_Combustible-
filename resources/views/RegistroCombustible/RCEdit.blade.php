@@ -292,10 +292,19 @@
                 @error('num_factura')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
+           
+            </div>
+            <div class="col-md-3 mb-3">
+            <label for="tipo_medida">Tipo de Medida</label>
+            <select name="tipo" id="tipo" class="form-control" required>
+            <option value="galones">Galones</option>
+             <option value="litros">Litros</option>
+            </select>
             </div>
 
+
             <div class="col-md-3 mb-3">
-                <label class="form-label" for="entradas">Entrada (litros):</label>
+                <label class="form-label" for="entradas">Entrada :</label>
                 <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
             </div>
             @error('entradas')
