@@ -187,112 +187,106 @@
             <h3 class="m-0">Registro de combustible</h3>
         </div>
 
-       
-        <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label" for="fecha">Fecha:</label>
-                    <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror">
-                    @error('fecha') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
-
-                <div class="col-md-8">
-                    <label class="form-label" for="vehiculoSelect">Vehículo:</label>
-                    <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control @error('id_registro_vehicular') is-invalid @enderror">
-                        <option value="">Seleccione un vehículo</option>
-                        @foreach($vehiculos as $vehiculo)
-                            <option value="{{ $vehiculo->id }}"
-                                data-equipo="{{ $vehiculo->equipo }}"
-                                data-placa="{{ $vehiculo->placa }}"
-                                data-marca="{{ $vehiculo->marca }}"
-                                data-asignado="{{ $vehiculo->asignado }}">
-                                {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('id_registro_vehicular') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
+        <!-- Fila 1 (3 campos) -->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label class="form-label" for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror">
+                @error('fecha') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
-            {{-- Fila 2 (Datos del vehículo) --}}
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="form-label">Equipo:</label>
-                    <input type="text" id="equipo" class="form-control" readonly>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Placa:</label>
-                    <input type="text" id="placa" class="form-control" readonly>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Marca:</label>
-                    <input type="text" id="marca" class="form-control" readonly>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Asignado:</label>
-                    <input type="text" id="asignado" class="form-control" readonly>
-                </div>
+            <div class="col-md-4">
+                <label class="form-label" for="vehiculoSelect">Vehículo:</label>
+                <select id="vehiculoSelect" name="id_registro_vehicular" class="form-control @error('id_registro_vehicular') is-invalid @enderror">
+                    <option value="">Seleccione un vehículo</option>
+                    @foreach($vehiculos as $vehiculo)
+                        <option value="{{ $vehiculo->id }}"
+                            data-equipo="{{ $vehiculo->equipo }}"
+                            data-placa="{{ $vehiculo->placa }}"
+                            data-marca="{{ $vehiculo->marca }}"
+                            data-asignado="{{ $vehiculo->asignado }}">
+                            {{ $vehiculo->equipo }} - {{ $vehiculo->placa }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('id_registro_vehicular') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 
-            {{-- Fila 3 --}}
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label" for="num_factura">No. Factura:</label>
-                    <input type="text" id="num_factura" name="num_factura" class="form-control @error('num_factura') is-invalid @enderror" oninput="validarNumeroEntero(this)">
-                    @error('num_factura') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label" for="tipo">Tipo de Medida:</label>
-                    <select id="tipo" name="tipo" class="form-control @error('tipo') is-invalid @enderror">
-                        <option value="galones">Galones</option>
-                        <option value="litros">Litros</option>
-                    </select>
-                    @error('tipo') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
+            <div class="col-md-4">
+                <label class="form-label" for="num_factura">No. Factura:</label>
+                <input type="text" id="num_factura" name="num_factura" class="form-control @error('num_factura') is-invalid @enderror" oninput="validarNumeroEntero(this)">
+                @error('num_factura') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
+        </div>
 
-            {{-- Fila 4 --}}
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label" for="entradas">Entrada:</label>
-                    <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
-                    @error('entradas') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label" for="salidas">Salida:</label>
-                    <input type="text" id="salidas" name="salidas" class="form-control" oninput="validarNumeroDecimal(this)">
-                    @error('salidas') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label" for="precio">Precio por Galón:</label>
-                    <input type="text" id="precio" name="precio" class="form-control" oninput="validarNumeroDecimal(this)">
-                    @error('precio') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
+        <!-- Fila 2 (Datos del vehículo - 4 campos) -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label">Equipo:</label>
+                <input type="text" id="equipo" class="form-control" readonly>
             </div>
-
-            {{-- Fila 5 --}}
-            <div class="row">
-                <div class="col-12">
-                    <label class="form-label" for="observacion">Observaciones:</label>
-                    <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="60"></textarea>
-                    @error('observacion') <small class="text-danger">{{ $message }}</small> @enderror
-                </div>
+            <div class="col-md-3">
+                <label class="form-label">Placa:</label>
+                <input type="text" id="placa" class="form-control" readonly>
             </div>
-
-            {{-- Botones --}}
-            <div class="d-flex justify-content-end gap-3 mt-4">
-                <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Regresar
-                </a>
-                <button type="submit" class="btn btn-custom">
-                    <i class="fas fa-save"></i> Guardar
-                </button>
+            <div class="col-md-3">
+                <label class="form-label">Marca:</label>
+                <input type="text" id="marca" class="form-control" readonly>
             </div>
+            <div class="col-md-3">
+                <label class="form-label">Asignado:</label>
+                <input type="text" id="asignado" class="form-control" readonly>
+            </div>
+        </div>
 
-        </form>
-    </div>
+        <!-- Fila 3 (4 campos) -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label" for="tipo">Tipo de medida:</label>
+                <select id="tipo" name="tipo" class="form-control @error('tipo') is-invalid @enderror">
+                    <option value="">Seleccione medida</option>
+                    <option value="galones">Galones</option>
+                    <option value="litros">Litros</option>
+                </select>
+                @error('tipo') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="entradas">Entrada:</label>
+                <input type="text" id="entradas" name="entradas" class="form-control" oninput="validarNumeroDecimal(this)">
+                @error('entradas') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="salidas">Salida:</label>
+                <input type="text" id="salidas" name="salidas" class="form-control" oninput="validarNumeroDecimal(this)">
+                @error('salidas') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="precio">Precio por Galón:</label>
+                <input type="text" id="precio" name="precio" class="form-control" oninput="validarNumeroDecimal(this)">
+                @error('precio') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+        </div>
+
+        <!-- Fila 4 (Solo observación) -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <label class="form-label" for="observacion">Observaciones:</label>
+                <textarea id="observacion" name="observacion" class="form-control" rows="3" maxlength="60"></textarea>
+                @error('observacion') <small class="text-danger">{{ $message }}</small> @enderror
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-end gap-3 mt-4">
+            <a href="{{ route('registrocombustible.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Regresar
+            </a>
+            <button type="submit" class="btn btn-custom">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+        </div>
+    </form>
+</div>
 
 
 
