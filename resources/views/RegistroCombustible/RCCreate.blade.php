@@ -365,14 +365,15 @@
         } else {
             calcularTotal();
         }
-    }
-
-    entradasInput.addEventListener('keydown', function (e) {
+        entradasInput.addEventListener('keydown', function (e) {
         // Bloquea las teclas que podrían generar letras como la "e", "E", "-", "+"
         if (['e', 'E', '+', '-'].includes(e.key)) {
             e.preventDefault();
         }
     });
+    }
+
+    
 
 </script>
 @endsection
