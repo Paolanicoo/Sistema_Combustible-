@@ -10,7 +10,6 @@ use App\Http\Controllers\RegistroRolController;
 use App\Http\Controllers\InventarioCombustibleController;
 use App\Http\Controllers\UserController;
 
-
 Route::middleware(['auth'])->group(function () {
     // RUTAS DE VEHÍCULO
     Route::get('registrovehicular/table', [RegistroVehicularController::class, 'getTableData'])->name('registrovehicular.table');
@@ -22,7 +21,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/registrovehicular/{id}', [RegistroVehicularController::class, 'destroy'])->name('registrovehicular.destroy');
     // Mostrar detalles de un vehículo
     Route::get('registrovehicular/{id}', [RegistroVehicularController::class, 'show'])->name('registrovehicular.show');
-
 
     Route::get('/registrovehicular/historial/{id}', [RegistroVehicularController::class, 'getHistorialAsignaciones'])->name('historialasignaciones.data');
 
@@ -65,7 +63,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
-
     // Rutas de Inventario de Combustible
     Route::get('/combustible/data', [InventarioCombustibleController::class, 'getData'])->name('combus.data');
     Route::get('/InventarioCombustible/index', [InventarioCombustibleController::class, 'index'])->name('combus.index');
@@ -76,31 +73,36 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/InventarioCombustible/{inventario}', [InventarioCombustibleController::class, 'show'])->name('combus.show');
     Route::delete('/InventarioCombustible/{id}', [InventarioCombustibleController::class, 'destroy'])->name('combus.destroy');
 
-
-
     // MENÚ
     Route::get('/menu', function () {
         return view('menu');
     })->name('menu');
+    
+    // Rutas de reportes (protegidas ahora)
+    Route::get('/reportes', function () {
+        return view('reportes.RIndex');
+    })->name('RIndex');
+    
+    Route::get('/reportes/consumo', [ReporteConsumoController::class, 'reportesConsumo'])->name('reportes.consumo');
 });
 
 //INICIO DE SESION Y REGISTRO
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-// Muestra el formulario de registro
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+// Rutas de registro (solo para administradores)
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
 // Cerrar sesión
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/reportes', function () {
-    return view('reportes.RIndex');
-})->name('RIndex');
-
-Route::get('/reportes/consumo', [ReporteConsumoController::class, 'reportesConsumo'])->name('reportes.consumo');
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register']);
+// Redirección para cualquier ruta no definida
+Route::fallback(function () {
+    if (auth()->check()) {
+        return redirect()->route('menu');  // Redirecciona a menú si está autenticado
+    }
+    return redirect()->route('login');  // Redirecciona a login si no está autenticado
 });
