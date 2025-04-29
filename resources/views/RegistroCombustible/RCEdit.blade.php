@@ -274,14 +274,16 @@
             <div class="col-md-3">
                 <label class="form-label" for="tipo">Tipo de Medida:</label>
                 <select id="tipo" name="tipo" class="form-control @error('tipo') is-invalid @enderror" required>
-                    <option value="galones" {{ $registro->tipo == 'galones' ? 'selected' : '' }}>Galones</option>
-                    <option value="litros" {{ $registro->tipo == 'litros' ? 'selected' : '' }}>Litros</option>
+                <option value="galones" {{ old('tipo', $registro->tipo) === 'galones' ? 'selected' : '' }}>Galones</option>
+                <option value="litros" {{ old('tipo', $registro->tipo) === 'litros' ? 'selected' : '' }}>Litros</option>
                 </select>
+                
                 @error('tipo') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             <div class="col-md-3">
                 <label class="form-label" for="entradas">Entrada:</label>
-                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ number_format($registro->entradas, 3) }}" oninput="validarNumeroDecimal(this)">
+                <input type="text" id="entradas" name="entradas" class="form-control" value="{{ old('entradas', $registro->entradas) }}" oninput="validarNumeroDecimal(this)">
+
                 @error('entradas') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
             <div class="col-md-3">
@@ -318,18 +320,41 @@
 </div>
 
 <script>
-    function validarNumeroDecimal(input) {
-        // Eliminar caracteres no numéricos
-        let value = input.value.replace(/[^0-9.]/g, '');
-        
-        // Evitar múltiples puntos decimales
-        if ((value.match(/\./g) || []).length > 1) {
-            value = value.replace(/\.+$/, "");
-        }
-        
-        // Permitir escritura sin forzar inmediatamente 3 decimales
-        input.value = value;
+   function validarNumeroDecimal(input) {
+    let value = input.value.replace(/[^0-9.]/g, '');
+    let parts = value.split('.');
+    if (parts.length > 2) {
+        value = parts[0] + '.' + parts[1].slice(0, 2);
     }
+    input.value = value;
+}
+
+let valorOriginalEntradas = null;
+
+function convertirEntradas() {
+    const tipo = document.getElementById('tipo').value;
+    const entradasInput = document.getElementById('entradas');
+
+    if (valorOriginalEntradas === null) {
+        valorOriginalEntradas = parseFloat(entradasInput.value) || 0;
+    }
+
+    let convertido;
+    if (tipo === 'litros') {
+        convertido = valorOriginalEntradas * 3.78541;
+    } else {
+        convertido = valorOriginalEntradas;
+    }
+
+    entradasInput.value = convertido.toFixed(2);
+}
+
+document.getElementById('tipo').addEventListener('change', () => {
+    // Reset para permitir reconversión desde el valor original
+    valorOriginalEntradas = parseFloat(document.getElementById('entradas').value) || 0;
+    convertirEntradas();
+});
+
 
     document.addEventListener("DOMContentLoaded", function() {
         let vehiculoSelect = document.getElementById('vehiculoSelect');
@@ -384,6 +409,7 @@
         calcularTotal();
     });
 
+   
     // Deshabilitar de actualizar
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("vehicle-form");
@@ -412,4 +438,5 @@
         });
     });
 </script>
+
 @endsection

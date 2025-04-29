@@ -201,6 +201,10 @@ class RegistroCombustibleController extends Controller
         $registro = RegistroCombustible::findOrFail($id);
         $vehiculos = RegistroVehicular::all(); // Obtiene todos los vehículos para el select
 
+        if ($registro->tipo === 'litros' && $registro->entradas !== null) {
+            $registro->entradas = number_format($registro->entradas / 3.785, 3, '.', '');
+        }
+
         return view('registrocombustible.RCEdit', compact('registro', 'vehiculos'));
     }
 
@@ -229,21 +233,25 @@ class RegistroCombustibleController extends Controller
 
         try {
             $entradas = $request->input('entradas');
+            $tipo = $request->input('tipo');
 
-            if ($request->input('tipo') === 'litros' && $entradas !== null) {
-            $entradas = $entradas * 3.785;
-        }
+            if ($tipo === 'litros' && $entradas !== null) {
+                $entradas = $entradas * 3.785; // Litros a galones 
+            }
+        
+
             // Actualizar los campos
             $registro->update([
                 'fecha' => $request->fecha,
                 'id_registro_vehicular' => $request->id_registro_vehicular,
                 'num_factura' => $request->num_factura,
                 'tipo' => $request->tipo,
-                'entradas' => $request->entradas,
+                'entradas' => $entradas !== null ? number_format($entradas, 3, '.', '') : null,
                 'salidas' => $request->salidas,
                 'precio' => $request->precio,
-                'observacion' => $request->observacion, // Se agregó este campo
+                'observacion' => $request->observacion,
             ]);
+            
 
             // Mostrar mensaje de éxito con SweetAlert
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
