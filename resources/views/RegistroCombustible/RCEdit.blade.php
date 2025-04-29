@@ -321,10 +321,11 @@
 
 <script>
    function validarNumeroDecimal(input) {
-    let value = input.value.replace(/[^0-9.]/g, '');
-    let parts = value.split('.');
-    if (parts.length > 2) {
-        value = parts[0] + '.' + parts[1].slice(0, 2);
+    let value = input.value.replace(/[^0-9.]/g, ''); // Elimina caracteres no válidos
+    let parts = value.split('.');// Divide el número por el punto decimal
+     // Si hay más de un punto, conserva la parte antes del primer punto y los primeros 3 dígitos después del punto
+    if (parts.length > 1) {
+        value = parts[0] + '.' + parts[1].slice(0, 2); // Limita a 3 dígitos después del punto
     }
     input.value = value;
 }

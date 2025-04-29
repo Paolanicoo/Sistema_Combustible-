@@ -14,8 +14,8 @@ return new class extends Migration
             $table->integer('num_factura');
             $table->unsignedBigInteger('id_registro_vehicular');
             $table->string('tipo')->nullable(); 
-            $table->decimal('entradas', 10, 2)->nullable();  
-            $table->decimal('salidas', 10, 2)->nullable();  
+            $table->decimal('entradas', 10, 4)->nullable();  
+            $table->decimal('salidas', 10, 4)->nullable();  
             $table->decimal('precio', 10, 2); 
             $table->string('observacion')->nullable();  
             $table->timestamps();

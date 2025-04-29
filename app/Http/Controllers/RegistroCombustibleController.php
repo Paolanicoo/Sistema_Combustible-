@@ -91,9 +91,8 @@ class RegistroCombustibleController extends Controller
                     'vehiculo_placa' => $registro->vehiculos->placa ?? null,
                     'vehiculo_asignado' => $registro->vehiculos->asignado ?? 'N/A',
                     'num_factura' => $registro->num_factura,
-                    // Formatear galones a 3 decimales
-                    'entradas' => number_format($entradasGalones, 3, '.', ''),
-                    'salidas' => number_format($registro->salidas, 3, '.', ''),
+                    'entradas' => $entradasGalones,
+                    'salidas' => number_format($registro->salidas, 2, '.', ''),
                     'observacion' => $registro->observacion,
                     'acciones' => view('RegistroCombustible.actions', compact('registro'))->render()
                 ];
@@ -166,7 +165,7 @@ class RegistroCombustibleController extends Controller
             $registrocombustible->fecha = $request->input('fecha');
             $registrocombustible->num_factura = $request->input('num_factura');
             $registrocombustible->tipo = $request->input('tipo');
-            $registrocombustible->entradas = $entradas !== null ? number_format($entradas, 3, '.', '') : null;
+            $registrocombustible->entradas = $entradas !== null ? $entradas : null;
             $registrocombustible->salidas = $request->input('salidas') ?: null;
             $registrocombustible->precio = $request->input('precio');
             $registrocombustible->observacion = $request->input('observacion');
@@ -202,7 +201,7 @@ class RegistroCombustibleController extends Controller
         $vehiculos = RegistroVehicular::all(); // Obtiene todos los vehículos para el select
 
         if ($registro->tipo === 'litros' && $registro->entradas !== null) {
-            $registro->entradas = number_format($registro->entradas / 3.785, 3, '.', '');
+            $registro->entradas = number_format($registro->entradas / 3.785, 2, '.', '');
         }
 
         return view('registrocombustible.RCEdit', compact('registro', 'vehiculos'));
@@ -246,7 +245,7 @@ class RegistroCombustibleController extends Controller
                 'id_registro_vehicular' => $request->id_registro_vehicular,
                 'num_factura' => $request->num_factura,
                 'tipo' => $request->tipo,
-                'entradas' => $entradas !== null ? number_format($entradas, 3, '.', '') : null,
+               'entradas'  => $entradas !== null ? floor($entradas * 1000) / 1000 : null,
                 'salidas' => $request->salidas,
                 'precio' => $request->precio,
                 'observacion' => $request->observacion,

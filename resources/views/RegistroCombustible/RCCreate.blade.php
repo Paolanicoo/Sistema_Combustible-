@@ -296,7 +296,7 @@
     entradaInput.addEventListener('blur', function () {
         // Al salir del input (blur), formateamos a 3 decimales si es válido
         if (!isNaN(this.value) && this.value.trim() !== '') {
-            this.value = parseFloat(this.value).toFixed(3);
+            this.value = parseFloat(this.value).toFixed(2);
         }
     });
 
