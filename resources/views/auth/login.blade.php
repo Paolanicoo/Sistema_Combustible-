@@ -255,6 +255,17 @@
             color: #64748b;
         }
 
+        /* Estilos para el icono de toggle de contraseña */
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            cursor: pointer;
+            color: #64748b;
+        }
+
         .input-group, .input-group-text {
             border-radius: 8px;
             border: none;
@@ -264,6 +275,12 @@
         .input-group .form-control {
             width: 100%;
             border-radius: 8px !important;
+        }
+        
+        /* Asegurarse que el campo password no tenga el ícono predeterminado del navegador */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear {
+            display: none;
         }
     </style>
     </head>
@@ -318,7 +335,7 @@
                             <i class="fas fa-lock"></i>
                         </span>
                         <input type="password" id="password" name="password" class="form-control input-with-icon" required placeholder="Ingrese su contraseña">
-                        <span class="input-icon" style="right: 10px; left: auto; cursor: pointer;" onclick="togglePassword()">
+                        <span class="toggle-password" onclick="togglePassword()">
                             <i id="togglePasswordIcon" class="fas fa-eye"></i>
                         </span>
                     </div>
@@ -329,7 +346,6 @@
         <script>
             // Este script debe ejecutarse después de un inicio de sesión exitoso
             sessionStorage.setItem('isPostLogin', 'true');
-
             
             function togglePassword() {
                 const passwordInput = document.getElementById("password");
