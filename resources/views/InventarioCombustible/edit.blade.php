@@ -145,7 +145,7 @@
             <h4 class="m-0">Registro de salida de combustible</h4>
         </div>
 
-        <!-- Primera fila -->
+        <!-- Primera fila cantidad actual-->
         <div class="row mb-5">
             <div class="col-md-6 mb-4">
                 <label for="cantidad_actual" class="form-label">Cantidad actual (galones):</label>
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <!-- Segunda fila -->
+        <!-- Segunda fila persona que retira -->
         <div class="row mb-5">
             <div class="col-md-6 mb-4">
                 <label for="persona" class="form-label">Persona que retira:</label>
@@ -170,7 +170,7 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-
+         <!-- Tercera fila fecha -->
             <div class="col-md-6 mb-4">
                 <label for="fecha" class="form-label">Fecha:</label>
                 <input type="date" name="fecha" id="fecha" class="form-control" required>

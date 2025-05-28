@@ -17,10 +17,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-   
+   <!-- Fuente Poppins para el texto general -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+     <!-- Fuente Cinzel con pesos 400 y 700 para títulos y subtítulos -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome versión 6 para íconos adicionales -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+     <!-- Bootstrap 5.2, está repetido, por compatibilidad -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
@@ -100,7 +103,7 @@
             padding: 15px;
             text-align: center;
         }
-        
+         /* Estilo para el título h3 */
         h3 {
             color: #344767;
             font-weight: 600;
@@ -112,7 +115,7 @@
             color: #334155;
             font-weight: 600;
         }
-        
+          /* Estilo para los campos de formulario */
         .form-control {
             border: 1px solid #e2e8f0;
             border-radius: 8px;
@@ -120,7 +123,7 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
         }
-        
+         /* Estilo cuando el campo está enfocado */
         .form-control:focus {
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
@@ -138,7 +141,7 @@
             border-radius: 8px;
             margin-top: 10px;
         }
-        
+        /* Efecto hover en el botón principal */
         .btn-primary:hover {
             background-color: #0284c7;
             border-color: #0284c7;
@@ -158,7 +161,7 @@
             border-radius: 8px;
             margin-top: 10px;
         }
-
+        /* Efecto hover en el botón secundario */
         .btn-secondary:hover {
             background-color: #475569;
             border-color: #475569;
@@ -171,19 +174,19 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        
+        /* Estilos para alertas de éxito */
         .alert-success {
             background-color: #dcfce7;
             border-color: #86efac;
             color: #166534;
         }
-        
+         /* Estilos para alertas de error */
         .alert-danger {
             background-color: #fee2e2;
             border-color: #fca5a5;
             color: #991b1b;
         }
-
+          /* Contenedor para la información de la empresa */
         .company-branding {
             display: flex;
             flex-direction: column;
@@ -191,31 +194,31 @@
             text-align: center;
             margin-bottom: 25px;
         }
-
+        /* Ícono grande para la marca */
         .brand-icon {
             font-size: 42px;
             color: #0ea5e9;
             margin-bottom: 15px;
         }
-
+         /* Contenedor del título de la empresa */
         .company-title {
             width: 100%;
         }
-
+         /* Título principal de la empresa */
         .main-title {
             font-size: 24px;
             font-weight: 700;
             color: #344767;
             margin-bottom: 8px;
         }
-
+         /* Nombre de la empresa */
         .company-name {
             font-size: 18px;
             font-weight: 600;
             color: #475569;
             margin-bottom: 6px;
         }
-
+         /* Grupo o filial de la empresa */
         .company-group {
             font-size: 16px;
             font-weight: 500;
@@ -245,7 +248,7 @@
         .input-group {
             position: relative;
         }
-
+        /* Ícono dentro del input posicionado a la izquierda */
         .input-icon {
             position: absolute;
             left: 10px;
@@ -290,21 +293,21 @@
             <div class="login-header">
                 <!-- Logo y título mejorado -->
                 <div class="company-branding">
-                    <i class="fas fa-gas-pump brand-icon"></i>
+                    <i class="fas fa-gas-pump brand-icon"></i> <!-- Ícono bomba de gasolina -->
                     <div class="company-title">
-                        <h2 class="main-title">Gestión de Combustible</h2>
-                        <h3 class="company-name">Clasificadora y Exportadora de Tabaco S.A</h3>
+                        <h2 class="main-title">Gestión de Combustible</h2> <!-- Título principal -->
+                        <h3 class="company-name">Clasificadora y Exportadora de Tabaco S.A</h3> <!-- Nombre empresa -->
                         <h4 class="company-group">Grupo Plasencia</h4>
                     </div>
                 </div>
             </div>
-
+            <!-- Mensaje de éxito después de una acción (como registro) -->
             @if (session('success'))
                 <div class="alert alert-success text-center">
                     {{ session('success') }}
                 </div>
             @endif
-
+               <!-- Mostrar errores de validación del formulario -->
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -314,10 +317,9 @@
                     </ul>
                 </div>
             @endif
-
+             <!-- Formulario de login que envía datos al route 'login' -->
             <form method="POST" action="{{ route('login') }}">
-                @csrf
-
+                @csrf <!-- Token para seguridad CSRF -->
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre de usuario</label>
                     <div class="input-group">
@@ -336,11 +338,11 @@
                         </span>
                         <input type="password" id="password" name="password" class="form-control input-with-icon" required placeholder="Ingrese su contraseña">
                         <span class="toggle-password" onclick="togglePassword()">
-                            <i id="togglePasswordIcon" class="fas fa-eye"></i>
+                            <i id="togglePasswordIcon" class="fas fa-eye"></i> <!-- Ícono para mostrar/ocultar contraseña -->
                         </span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button> <!-- Botón de envío -->
             </form>
         </div>
         <script>
@@ -352,11 +354,11 @@
                 const toggleIcon = document.getElementById("togglePasswordIcon");
 
                 if (passwordInput.type === "password") {
-                    passwordInput.type = "text";
+                    passwordInput.type = "text"; // Mostrar texto
                     toggleIcon.classList.remove("fa-eye");
                     toggleIcon.classList.add("fa-eye-slash");
                 } else {
-                    passwordInput.type = "password";
+                    passwordInput.type = "password"; // Ocultar texto
                     toggleIcon.classList.remove("fa-eye-slash");
                     toggleIcon.classList.add("fa-eye");
                 }
