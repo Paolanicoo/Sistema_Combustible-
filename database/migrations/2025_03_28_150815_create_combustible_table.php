@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Crea la tabla 'combustible' para registrar entradas y cantidades de combustible con fecha y descripción.
+     */
     public function up(): void
     {
         Schema::create('combustible', function (Blueprint $table) {
@@ -18,6 +21,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Elimina la tabla 'combustible' si existe.
+     */
     public function down(): void
     {
         Schema::dropIfExists('combustible');

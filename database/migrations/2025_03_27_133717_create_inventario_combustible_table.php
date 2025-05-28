@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     *  Crea la tabla 'inventario_combustible' para almacenar datos relacionados con el inventario de combustible.
      */
     public function up(): void
     {
@@ -19,7 +19,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Elimina la tabla 'inventario_combustible' si existe.
      */
     public function down(): void
     {

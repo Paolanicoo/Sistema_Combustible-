@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Crea la tabla 'registro_combustibles' para almacenar los registros de combustible asociados a vehículos.
+     */
     public function up(): void
     {
         Schema::create('registro_combustibles', function (Blueprint $table) {
@@ -20,12 +23,15 @@ return new class extends Migration
             $table->string('observacion')->nullable();  
             $table->timestamps();
 
-             // Clave foránea
+             // Define clave foránea que relaciona 'id_registro_vehicular' con la tabla 'registro_vehiculars' y elimina en cascada.
              $table->foreign('id_registro_vehicular')->references('id')->on('registro_vehiculars')->onDelete('cascade');
              
         });
     }
 
+    /**
+     * Elimina la tabla 'registro_combustibles' si existe.
+     */
     public function down(): void
     {
         Schema::dropIfExists('registro_combustibles');

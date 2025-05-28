@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    /**
+     * Crea la tabla 'registro_vehiculars' para almacenar información de vehículos registrados.
+     */
     public function up(): void
     {
         Schema::create('registro_vehiculars', function (Blueprint $table) {
@@ -23,6 +25,9 @@ return new class extends Migration
         });
     }
 
+    /**
+    * Elimina la tabla 'registro_vehiculars' si existe.
+    */
     public function down(): void
     {
         Schema::dropIfExists('registro_vehiculars');

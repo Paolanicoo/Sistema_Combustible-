@@ -7,15 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
-     */
+    * Modifica la tabla 'historial_asignaciones' para actualizar la clave foránea 'registro_vehicular_id'.
+    */
     public function up(): void
     {
         Schema::table('historial_asignaciones', function (Blueprint $table) {
-            // Primero eliminar la restricción de clave foránea existente
+            // Elimina la restricción de clave foránea existente sobre 'registro_vehicular_id'.
             $table->dropForeign(['registro_vehicular_id']);
             
-            // Luego crear la misma clave foránea pero con onDelete('cascade')
+            // Crea una nueva restricción con eliminación en cascada.
             $table->foreign('registro_vehicular_id')
                 ->references('id')
                 ->on('registro_vehiculars')
@@ -24,15 +24,16 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+    * Revierte los cambios realizados en la migración 'up'.
+    * Elimina la clave foránea con cascada y la vuelve a crear sin esa opción.
      */
     public function down(): void
     {
         Schema::table('historial_asignaciones', function (Blueprint $table) {
-            // Revertir los cambios
+            // Elimina la restricción de clave foránea con cascada.
             $table->dropForeign(['registro_vehicular_id']);
             
-            // Volver a crear la restricción sin cascade
+            // Vuelve a crear la restricción sin la eliminación en cascada.
             $table->foreign('registro_vehicular_id')
                 ->references('id')
                 ->on('registro_vehiculars');

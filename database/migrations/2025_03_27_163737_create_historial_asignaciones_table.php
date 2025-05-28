@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateHistorialAsignacionesTable extends Migration
 {
+    /**
+     * Crea la tabla 'historial_asignaciones' para registrar el historial de asignaciones de vehículos.
+     */
     public function up()
     {
         Schema::create('historial_asignaciones', function (Blueprint $table) {
@@ -20,6 +23,9 @@ class CreateHistorialAsignacionesTable extends Migration
         });
     }
 
+    /**
+     * Elimina la tabla 'historial_asignaciones' si existe.
+     */
     public function down()
     {
         Schema::dropIfExists('historial_asignaciones');

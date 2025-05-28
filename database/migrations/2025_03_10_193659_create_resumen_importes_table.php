@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Crea la tabla 'resumen_importes' para almacenar los totales de importes asociados a vehículos y combustibles.
+     */
     public function up(): void
     {
         Schema::create('resumen_importes', function (Blueprint $table) {
@@ -25,8 +28,12 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Elimina la clave foránea y luego la tabla 'resumen_importes' si existe.
+     */
     public function down(): void
     {
+        // Elimina la clave foránea antes de eliminar la tabla para evitar errores.
         Schema::table('resumen_importes', function (Blueprint $table) {
             $table->dropForeign(['id_registro_combustible']);
         });
