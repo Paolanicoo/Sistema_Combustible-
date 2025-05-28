@@ -43,8 +43,8 @@ class RegistroVehicularController extends Controller
     {
         // Validación de los campos
         $request->validate([
-            'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
-            'marca'     => ['nullable', 'string', 'max:25', 'regex:/^[a-zA-Z\s]+$/'],
+            'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z.\s]+$/'],
+            'marca'     => ['nullable', 'string', 'max:25', 'regex:/^[a-zA-Z.\s]+$/'],
             'placa'     => ['nullable', 'string', 'regex:/^[A-Z]{3} \d{4}$/', 'max:8', 'unique:registro_vehiculars,placa'],
             'motor'     => ['nullable', 'string', 'max:35'],
             'modelo'    => ['nullable', 'string', 'max:30'],
