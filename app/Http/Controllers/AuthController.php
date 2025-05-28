@@ -20,21 +20,19 @@ class AuthController extends Controller
         'password' => 'required'
     ]);
 
-    //  Buscar al usuario en la tabla users
+    //  Busca al usuario en la tabla users.
     $user = User::where('name', $request->nombre)->first();
-
     if (!$user) {
         return back()->withErrors(['error' => 'Usuario no encontrado']);
     }
 
-    //  Buscar el estado del usuario en la tabla registro_rols
+    //  Busca el estado del usuario en la tabla registro_rols.
     $rol = \App\Models\RegistroRol::where('rol', $user->role)->first();
-
     if (!$rol) {
         return back()->withErrors(['error' => 'Rol no encontrado. Contacta al administrador.']);
     }
 
-    //  Si el rol no es Administrador y está inactivo, bloquear login
+    //  Si el rol no es Administrador y está inactivo, bloquea login
     if ($user->role !== 'Administrador' && $rol->estado == 0) {
         return back()->withErrors(['error' => 'Tu cuenta está inactiva. Contacta al administrador.']);
     }
@@ -44,14 +42,12 @@ class AuthController extends Controller
         return back()->withErrors(['error' => 'Credenciales incorrectas']);
     }
 
-    return redirect()->intended('/menu'); 
-}
+        return redirect()->intended('/menu'); 
+    }
 
     
-
-
     public function showRegister()
-    {
+    {   
         return view('auth.register'); 
     }
 

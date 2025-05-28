@@ -216,7 +216,7 @@
         <div class="row mb-3">
             <div class="col-md-4">
                 <label class="form-label" for="fecha">Fecha:</label>
-                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ $registro->fecha }}" required readonly>
+                <input type="date" id="fecha" name="fecha" class="form-control @error('fecha') is-invalid @enderror" value="{{ $registro->fecha }}" required >
                 @error('fecha') <small class="text-danger">{{ $message }}</small> @enderror
             </div>
 

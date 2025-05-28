@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\DB; // Añadir al inicio del controlador
+use Illuminate\Support\Facades\DB; 
 
 use App\Models\Combustible;
 use App\Models\HistorialCombustible;
@@ -68,7 +68,7 @@ class InventarioCombustibleController extends Controller
             Combustible::create([
                 'fecha' => $request->fecha,
                 'cantidad_entrada' => $request->cantidad_entrada,
-                'cantidad_actual' => $request->cantidad_entrada, // Mismo valor al crear
+                'cantidad_actual' => $request->cantidad_entrada, 
                 'descripcion' => $request->descripcion
             ]);
 

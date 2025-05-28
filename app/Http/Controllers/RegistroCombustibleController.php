@@ -58,6 +58,7 @@ class RegistroCombustibleController extends Controller
             // Obtener total de registros después del filtrado
             $recordsFiltered = $query->count();
             
+            
             // Ordenar resultados - manejo simplificado para evitar errores
             if ($request->has('order') && $request->input('order.0.column') !== null) {
                 $columnIndex = $request->input('order.0.column');
@@ -68,7 +69,7 @@ class RegistroCombustibleController extends Controller
                 if (in_array($columnName, ['fecha', 'num_factura', 'entradas', 'salidas'])) {
                     $query->orderBy($columnName, $columnDirection);
                 }
-                // No intentamos ordenar por columnas relacionadas por ahora
+                
             } else {
                 // Ordenamiento por defecto si no se especifica
                 $query->orderBy('fecha', 'desc');
@@ -154,7 +155,7 @@ class RegistroCombustibleController extends Controller
 
             $entradas = $request->input('entradas');
 
-            // Si el tipo es litros, convertir a galones (correctamente)
+            // Si el tipo es litros, convertir a galones
             if ($request->input('tipo') === 'litros' && $entradas !== null) {
                 $entradas = $entradas * 3.785;
             }
@@ -189,12 +190,6 @@ class RegistroCombustibleController extends Controller
     }
     
 
-    public function show(string $id) // SOLO QUE MUESTRA UN DATO INDIVIDUAL
-    {
-        
-    }
-
-  
     public function edit($id)
     {
         $registro = RegistroCombustible::findOrFail($id);
@@ -218,13 +213,13 @@ class RegistroCombustibleController extends Controller
             'entradas' => 'nullable|numeric|min:0',
             'salidas' => 'nullable|numeric|min:0',
             'precio' => 'required|numeric|min:0',
-            'observacion' => 'nullable|string|max:60', // Nueva validación
+            'observacion' => 'nullable|string|max:60', 
         ], [
             'fecha.required' => 'El campo "Fecha" es obligatorio.',
             'id_registro_vehicular.required' => 'El campo "vehículo" es obligatorio.',
             'num_factura.required' => 'El campo "Número de factura" es obligatorio.',
             'precio.required' => 'El campo "Precio" es obligatorio.',
-            'observacion.max' => 'La observación no puede tener más de 60 caracteres.', // Nuevo mensaje de error
+            'observacion.max' => 'La observación no puede tener más de 60 caracteres.',
         ]);
 
         // Buscar el registro en la base de datos

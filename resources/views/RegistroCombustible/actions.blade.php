@@ -21,7 +21,7 @@
             text: "¡Este registro será eliminado permanentemente!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Sí, eliminar',
+            confir-mButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {

@@ -28,7 +28,7 @@ class RegistroRolController extends Controller
 
             return datatables()->of($roles)
                 ->addColumn('acciones', function ($role) {
-                    // Cambiamos el ícono a pleca y X
+                    
                     $btnClass = $role->estado ? 'btn-danger' : 'btn-success';
                     $iconClass = $role->estado ? 'fa-times text-white' : 'fa-check text-white';
 
