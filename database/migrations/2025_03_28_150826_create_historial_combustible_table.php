@@ -7,14 +7,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
-     */
+     * Crea la tabla 'historial_combustible' para registrar el historial de movimientos de combustible.
+    */
     public function up(): void
     {
         // En tu archivo de migración de historial_combustible
         Schema::create('historial_combustible', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('combustible_id')->constrained('combustible'); // Referencia explícita
+            $table->foreignId('combustible_id')->constrained('combustible');
             $table->decimal('cantidad_retirada', 8, 2);
             $table->string('persona');
             $table->date('fecha');
@@ -25,7 +25,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Elimina la tabla 'historial_combustible' si existe.
      */
     public function down(): void
     {

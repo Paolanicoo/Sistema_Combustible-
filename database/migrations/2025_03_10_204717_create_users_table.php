@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Crea la tabla 'users' para almacenar la información de los usuarios del sistema.
+     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -19,6 +22,9 @@ return new class extends Migration
         });
     }
 
+    /**
+     * Elimina la tabla 'users' si existe.
+     */
     public function down(): void
     {
         Schema::dropIfExists('users');

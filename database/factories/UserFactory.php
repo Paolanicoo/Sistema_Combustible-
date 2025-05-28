@@ -6,28 +6,23 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
+    // Declaración de una propiedad estática protegida para reutilizar la contraseña en múltiples usuarios generados.
     protected static ?string $password;
 
     /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
+     * Define los valores por defecto para un nuevo usuario generado con la factory.
+     * 
+     * @return array Arreglo con los atributos simulados para crear un usuario de prueba.
      */
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'password' => static::$password ??= Hash::make('password'),
-            'role' => $this->faker->randomElement(['Usuario', 'Visualizador']),
-            'remember_token' => Str::random(10),
+            'name' => fake()->name(), // Genera un nombre falso aleatorio.
+            'password' => static::$password ??= Hash::make('password'), // Asigna una contraseña hasheada. Si ya fue definida previamente, la reutiliza para mantener consistencia.
+            'role' => $this->faker->randomElement(['Usuario', 'Visualizador']), // Asigna aleatoriamente un rol entre 'Usuario' y 'Visualizador'.
+            'remember_token' => Str::random(10), 
         ];
     }
 
