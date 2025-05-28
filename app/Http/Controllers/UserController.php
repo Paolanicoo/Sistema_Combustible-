@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // Constructor del controlador.
     public function __construct(){
-        $this->middleware('auth'); 
+        $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan.
     }
 
     // Método para obtener los registros en formato JSON
@@ -24,19 +25,21 @@ class UserController extends Controller
             })
             ->make(true);
     }
-
+    //Función para ver todos los registros.
     public function index(){
+        // Obtener registros paginados por defecto (10 por página).
         $registros = User::paginate(10);
-        return view('User.RUIndex', compact('registros'));
+        return view('User.RUIndex', compact('registros'));// Retorna la vista con los registros paginados.
     }
-
+     // Función que muestra el formulario de creación de un nuevo registro de usuario.
     public function create()
     {
         return view('User.RUCreate'); // Vista para formulario de nuevo usuario
     }
-
+     // Guarda un nuevo registro de usuario en la base de datos.
     public function store(Request $request){
         try {
+            // Validación de campos del formulario.
             $validator = Validator::make($request->all(), [
                 'nombre' => 'required|string|max:15|unique:users,name', 
                 'rol' => 'required|string|in:Administrador,Usuario,Visualizador',
@@ -50,30 +53,31 @@ class UserController extends Controller
                 'password.min' => 'La contraseña debe tener al menos 6 caracteres',
                 'password.confirmed' => 'Las contraseñas no coinciden'
             ]);
-    
+            // Si la validación falla, retorna errores.
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
-                    'errors' => $validator->errors() // Retorna errores correctamente
+                    'errors' => $validator->errors() // Retorna errores correctamente.
                 ], 422);
             }
     
-            // Guardar usuario correctamente
+           // Crear nuevo usuario.
             $user = new User();
             $user->name = $request->nombre;
             $user->role = $request->rol;
-            $user->password = bcrypt($request->password);
+            $user->password = bcrypt($request->password);// Hashea la contraseña.
             $user->is_protected = $request->has('is_protected') ? $request->is_protected : false;
-            $user->save();
-    
+            $user->save();// Guarda en la base de datos.
+             //Mensaje de éxito.
             return response()->json(['success' => true, 'message' => 'Usuario creado correctamente']);
         } catch (\Exception $e) {
+             // Manejo de errores
             \Log::error('Error al crear usuario: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => 'Error al crear el usuario'], 500);
         }
     }
     
-
+    // Muestra el formulario para editar un registro existente.
     public function edit($id)
     {
         try {
@@ -91,7 +95,7 @@ class UserController extends Controller
             return redirect()->route('user.index')->with('error', 'Usuario no encontrado');
         }
     }
-
+    // Actualiza un registro deusuario existente.
     public function update(Request $request, $id) {
         try {
             $usuario = User::findOrFail($id);
@@ -104,7 +108,7 @@ class UserController extends Controller
                 ], 403);
             }
     
-            // Validación de datos
+             // Validar campos del formulario.
             $validator = Validator::make($request->all(), [
                 'nombre' => 'required|string|max:255|unique:users,name,' . $id,
                 'rol' => 'required|string|in:Administrador,Usuario,Visualizador',
@@ -121,7 +125,7 @@ class UserController extends Controller
                 return response()->json([
                     'success' => false,
                     'errors' => $validator->errors()
-                ], 422);
+                ], 422); // Si la validación falla, devuelve los errores en formato JSON.
             }
     
             // Verificar cambios específicos
@@ -160,28 +164,28 @@ class UserController extends Controller
                     'message' => 'No se detectaron modificaciones'
                 ]);
             }
-    
-            // Guardar cambios
+            // Guardar cambios.
             $usuario->save();
-    
+            // Retorna una respuesta JSON exitosa.
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario actualizado correctamente'
             ]);
     
         } catch (\Exception $e) {
+             // Registra el error
             \Log::error('Error al actualizar usuario: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error al actualizar el usuario'
-            ], 500);
+            ], 500); // Devuelve error 500 con mensaje genérico
         }
     }
-    
+     // Elimina un registro de usuario de la base de datos.
     public function destroy($id)
     {
         try {
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($id); // Busca el usuario.
             
             // Verificar si el usuario está protegido
             if ($user->is_protected) {

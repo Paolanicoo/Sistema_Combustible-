@@ -11,14 +11,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class RegistroVehicularController extends Controller
 {
+     // Constructor del controlador.
     public function __construct()
     {
         $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
     }
-    
+    //Función para ver todos los registros
     public function index()
     {
-        
+        // Muestra la vista principal con una paginación de 10 registros.
         $registros = RegistroVehicular::paginate(10); // Obtener registros con paginación
         return view('RegistroVehicular.RVIndex', compact('registros'));
     }
@@ -32,16 +33,16 @@ class RegistroVehicularController extends Controller
                 return view('RegistroVehicular.actions', compact('registro')); // Esta línea devuelve la vista de las acciones
             })
             ->make(true);
-    }
-
+    } 
+    // Función que muestra el formulario de creación de un nuevo registro vehicular.
     public function create()
     {
-        return view('RegistroVehicular.RVCreate');
+        return view('RegistroVehicular.RVCreate');// Retorna la vista de creación.
     }
-
+    // Guarda un nuevo registro vehicular en la base de datos.
     public function store(Request $request)
     {
-        // Validación de los campos
+        // Validación de campos del formulario.
         $request->validate([
             'equipo'    => ['required', 'string', 'max:20', 'regex:/^[a-zA-Z.\s]+$/'],
             'marca'     => ['nullable', 'string', 'max:25', 'regex:/^[a-zA-Z.\s]+$/'],
@@ -76,17 +77,20 @@ class RegistroVehicularController extends Controller
                 'registro_vehicular_id' => $registrovehicular->id,
                 'asignado' => $request->asignado
             ]);
-
+            //Alerta de éxito.
             Alert::success('Éxito', '¡Nuevo registro creado con éxito!');
-            return redirect()->route('registrovehicular.index');
+            return redirect()->route('registrovehicular.index');//Redirige a la vista principal
 
         } catch (\Exception $e) {
+            // Manejo de errores y SweetAlert para fallos.
             \Log::error('Error al crear registro: ' . $e->getMessage());
+             // Mostrar una notificación de error con el mensaje capturado.
             Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
+             // Volver atrás a la vista anterior conservando los datos ingresados.
             return back();
         }
     }
-
+    // Muestra la información de un registro específico.
     public function show($id)
     {
         // Obtener el vehículo por su ID
@@ -101,18 +105,18 @@ class RegistroVehicularController extends Controller
         return view('RegistroVehicular.RVShow', compact('registro', 'historialAsignaciones'));
     }
 
-
+    // Muestra el formulario para editar un registro existente.
     public function edit($id)
     {
         $registro = RegistroVehicular::findOrFail($id);
         return view('registrovehicular.RVEdit', compact('registro')); // Envía la variable a la vista
     }
     
-
+    // Actualiza un registro vehicular existente.
     public function update(Request $request, $id)
     {
-        $registro = RegistroVehicular::findOrFail($id);
-        
+        $registro = RegistroVehicular::findOrFail($id);// Buscar registro
+         // Validar campos del formulario.
         $request->validate([
             'equipo'    => ['required', 'max:20', 'regex:/^[a-zA-Z\s]+$/'],
             'placa'     => 'nullable|max:10|unique:registro_vehiculars,placa,' . $id,
@@ -161,7 +165,7 @@ class RegistroVehicularController extends Controller
             
             // Verificar si el asignado cambió
             if ($asignadoOriginal !== $registro->asignado) {
-                // 1. Cerrar el historial anterior
+                // Cerrar el historial anterior
                 $historialAnterior = HistorialAsignacion::where('registro_vehicular_id', $registro->id)
                     ->whereNull('fecha_cambio')
                     ->latest()
@@ -173,27 +177,29 @@ class RegistroVehicularController extends Controller
                     ]);
                 }
                 
-                // 2. Crear nuevo registro en el historial
+                // Crear nuevo registro en el historial
                 HistorialAsignacion::create([
                     'registro_vehicular_id' => $registro->id,
                     'asignado' => $registro->asignado // Nuevo valor
                 ]);
             }
-            
+            // AlertA para éxito.
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
-            return redirect()->route('registrovehicular.index');
+            return redirect()->route('registrovehicular.index'); // Redirigir al usuario a la vista principal del módulo.
         } catch (\Exception $e) {
+            // Manejo de errores y SweetAlert para fallos.
             \Log::error('Error en update: ' . $e->getMessage());
+            // Mostrar una notificación de error con el mensaje capturado.
             Alert::error('Error', 'Hubo un problema: ' . $e->getMessage());
-            return back();
+            return back();// Volver atrás a la vista anterior conservando los datos ingresados.
         }
     }
 
-
+    // Elimina un registro vehicular de la base de datos.
     public function destroy($id)
     {
         try {
-            // Iniciar una transacción de base de datos
+            // Iniciar una transacción de base de datos.
             \DB::beginTransaction();
             
             $registro = RegistroVehicular::find($id);

@@ -12,21 +12,23 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ResumenImporteController extends Controller
 {
+    // Constructor del controlador.
     public function __construct()
     {
-        $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan
+        $this->middleware('auth'); // Asegura que solo usuarios autenticados accedan.
     }
-    
+    //Función para ver todos los registros.
     public function index(Request $request)
     {
-        
+         // Obtener registros paginados por defecto (10 por página).
         $registroimporte = ResumenImporte::paginate(10);
+        // Obtener todos los vehículos y combustibles.
         $vehiculos = RegistroVehicular::all();
         $combustibles = RegistroCombustible::all();
-
+        // Iniciar la consulta base.
         $query = ResumenImporte::query();
 
-        // Obtener los filtros de búsqueda
+        // Obtener los filtros de búsqueda.
         $equipo = $request->input('equipo');
         $asignado = $request->input('asignado');
         $mes = $request->input('mes');
@@ -34,26 +36,24 @@ class ResumenImporteController extends Controller
         
         $query = ResumenImporte::with(['vehiculo', 'combustible']);
 
-        // Aplicar filtros si existen
+        // Filtro por nombre del equipo.
         if ($equipo) {
             $query->whereHas('vehiculo', function ($q) use ($equipo) {
                 $q->where('equipo', 'LIKE', "%$equipo%");
             });
         }
-
+         // Filtro por responsable asignado.
         if ($asignado) {
             $query->whereHas('vehiculo', function ($q) use ($asignado) {
                 $q->where('asignado', 'LIKE', "%$asignado%");
             });
         }
-
+         // Filtro por mes de la fecha.
         if ($mes) {
             $query->whereMonth('fecha', $mes);
         }
-        // Obtener resultados paginados
+       // Ejecutar consulta con paginación.
         $registroimporte = $query->paginate(10);
-
-
 
         // Agregar los datos del vehículo a cada registro de combustible
         $registroimporte->transform(function ($registro) use ($vehiculos, $combustibles) {
@@ -73,13 +73,13 @@ class ResumenImporteController extends Controller
 
             return $registro;
         });
-
+        // Retornar vista con los datos.
         return view('RegistroImporte.RIIndex', compact('registroimporte', 'combustibles', 'vehiculos'));
     }
-    
+    //Obtiene los datos para ser mostrados en una tabla dinámica (como DataTables).
     public function getTableData(Request $request)
     {
-        // Recoger todos los parámetros que DataTables envía
+        // Recoger todos los parámetros que DataTables envía.
         $draw = $request->input('draw');
         $start = $request->input('start', 0);
         $length = $request->input('length', 10);
@@ -91,7 +91,7 @@ class ResumenImporteController extends Controller
         $columns = $request->input('columns');
         $columnName = $columns[$orderColumn]['name'] ?? 'id';
         
-        // Consulta base
+         // Consulta base con relaciones.
         $query = ResumenImporte::with(['vehiculo', 'combustible']);
         
         // Filtrado global
@@ -161,19 +161,20 @@ class ResumenImporteController extends Controller
         ]);
     }
 
-
+    // Función que muestra el formulario de creación de un nuevo registro.
     public function create()
     {
-        $vehiculos = RegistroVehicular::all(); // Obtener todos los vehículos
-    $combustibles = RegistroCombustible::all(); // Obtener todos los registros de combustible
+         
+        $vehiculos = RegistroVehicular::all(); // Obtener todos los vehículos.
+        $combustibles = RegistroCombustible::all(); // Obtener todos los registros de combustible.
     
-    return view('RegistroImporte.RICreate', compact('vehiculos', 'combustibles'));
+    return view('RegistroImporte.RICreate', compact('vehiculos', 'combustibles'));  // Retornar formulario de creación.
     
     }
 
     public function store(Request $request)
     {
-        // Validación de los campos requeridos
+        // Validar campos del formulario.
         $request->validate([
             'fecha' => 'required',
             'precio' => 'required',
@@ -189,7 +190,7 @@ class ResumenImporteController extends Controller
             // Calcular el consumo y el total
             $consumo = $request->input('entradas') > 0 ? $request->input('entradas') : $request->input('salidas');
             $precio = $request->input('precio');
-            $total = $consumo * $precio; // Calcular el total correctamente
+            $total = $consumo * $precio; // Calcular el total 
 
             // Crear el nuevo registro
             $registroimporte = new ResumenImporte();
@@ -215,23 +216,20 @@ class ResumenImporteController extends Controller
             return back()->withInput(); // 'back()' mantiene al usuario en la misma vista
         }
     }
-
-    public function show(string $id)
-    {
-        //
-    }
-    
+    // Muestra el formulario para editar un registro existente.
     public function edit($id)
     {
+        // Obtener registro a editar.
         $registro = ResumenImporte::findOrFail($id);
         $vehiculos = RegistroVehicular::all();
         $combustibles = RegistroCombustible::all();
 
         return view('registroimporte.RIEdit', compact('registro', 'vehiculos', 'combustibles'));
     }
-
+    // Actualiza un registro existente.
     public function update(Request $request, $id)
     {
+        // Validar campos del formulario.
         $request->validate([
             'fecha' => 'required|date',
             'id_registro_vehicular' => 'required',
@@ -279,9 +277,9 @@ class ResumenImporteController extends Controller
         try {
             // Actualizar el registro
             $registro->update($datosNuevos);
-            
+             // AlertA para éxito.
             Alert::success('Éxito', '¡Registro actualizado correctamente!');
-            return redirect()->route('registroimporte.index');
+            return redirect()->route('registroimporte.index'); // Redirigir al usuario a la vista principal del módulo.
 
         } catch (\Exception $e) {
             // Registrar el error para depuración
@@ -290,11 +288,11 @@ class ResumenImporteController extends Controller
             // Mostrar mensaje de error con SweetAlert
             Alert::error('Error', 'Hubo un problema al actualizar el registro: ' . $e->getMessage());
 
-            // Volver a la vista del formulario con los errores
+            // Volver a la vista del formulario con los errores.
             return back()->withInput();
         }
     }
-
+    // Elimina un registro vehicular de la base de datos.
     public function destroy(string $id)
     {
         try {
