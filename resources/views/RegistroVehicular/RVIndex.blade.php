@@ -1,197 +1,196 @@
-@extends('Layouts.app') {{-- Hereda la plantilla principal del sistema --}}
+@extends('Layouts.app')
 
-@section('titulo', 'Gestión de Registros Vehiculares') {{-- Título de la página --}}
+@section('titulo', 'Gestión de Registros Vehiculares')
 
-@section('contenido') {{-- Contenido de la página --}}
+@section('contenido')
 
 <!--asegura que los mensajes de SweetAlert se muestren -->
-@include('sweetalert::alert') {{-- Incluye el paquete de alertas --}}
+@include('sweetalert::alert')
 
 <style>
-    /* Estilo base */
+    /* Estilos base */
     body {
         font-family: 'Poppins', sans-serif; /* Tipo de fuente. */
         background-color: #f8f9fa; /* Color de fondo. */
     }
     
-    /* Estilo del contenedor */
+    /* Estilos para el contenedor */
     .container {
         max-width: 1240px; /* Ancho máximo del contenedor. */
     }
     
-    /* Estilo del filtro */
+    /* Estilos para el filtro de búsqueda */
     .dataTables_filter {
         margin-bottom: 20px; /* Margen inferior del filtro. */
     }
     
-    /* Estilo del input del filtro */
+    /* Estilos para el campo de búsqueda */
     .dataTables_filter input {
-        border: 1px solid #e2e8f0; /* Borde del filtro. */
-        border-radius: 6px; /* Radio del borde del filtro. */
-        padding: 0.5rem 1rem; /* Padding interno del filtro. */
-        width: 250px; /* Ancho del filtro. */
+        border: 1px solid #e2e8f0; /* Borde del campo de búsqueda */
+        border-radius: 6px; /* Radio de los bordes. */
+        padding: 0.5rem 1rem; /* Relleno interno. */
+        width: 250px; /* Ancho del campo de búsqueda */
     }
     
-    /* Estilo del input del filtro al enfocarse */
+    /* Estilos para el campo de búsqueda cuando tiene el foco */
     .dataTables_filter input:focus {
-        border-color: #3b82f6; /* Borde del filtro al enfocarse. */
-        outline: none; /* Elimina el borde de enfocarse. */
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Sombra del filtro al enfocarse. */
+        border-color: #3b82f6; /* Color del borde al enfocar. */
+        outline: none; /* Sin contorno. */
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Sombra azul al enfocar. */
     }
     
     /* Estilos para la tarjeta principal */
     .card {
-        border-radius: 12px; /* Radio del borde de la tarjeta. */
-        border: none; /* Elimina el borde de la tarjeta. */
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08); /* Sombra de la tarjeta. */
-        overflow: hidden; /* Oculta el contenido que excede el tamaño de la tarjeta. */
+        border-radius: 12px; /* Radio de los bordes. */
+        border: none; /* Sin borde. */
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08); /* Sombra suave. */
+        overflow: hidden; /* Evita que el contenido se desborde. */
     }
     
-    /* Estilo del título de la tarjeta */
+    /* Estilos para el título de la tarjeta */
     .card-title {
-        color: #344767; /* Color del título de la tarjeta. */
-        font-weight: 600; /* Peso del título de la tarjeta. */
+        color: #344767; /* Color del texto. */
+        font-weight: 600; /* Peso del texto. */
     }
 
-    /* Estilo del encabezado de la tarjeta */
+    /* Estilos para el encabezado de la tarjeta */
     .card-header {
         background-color: rgb(226, 228, 230); /* Color gris claro */
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Borde inferior del encabezado de la tarjeta. */
-        padding: 1.5rem; /* Padding interno del encabezado de la tarjeta. */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Borde inferior. */
+        padding: 1.5rem; /* Relleno interno. */
     }
 
     /* Botones de acción */
     .btn-sm {
-        padding: 0.25rem 0.5rem; /* Padding interno del botón. */
-        border-radius: 6px; /* Radio del borde del botón. */
-        font-size: 0.75rem; /* Tamaño del texto del botón. */
+        padding: 0.25rem 0.5rem; /* Relleno interno. */
+        border-radius: 6px; /* Radio de los bordes. */
+        font-size: 0.75rem; /* Tamaño del texto. */
     }
     /* Estilos para los botones */
     .btn-info {
-        background-color: #0ea5e9; /* Color de fondo del botón. */
-        border-color: #0ea5e9; /* Color del borde del botón. */
-        color: white; /* Color del texto del botón. */
-        font-weight: 500; /* Peso del texto del botón. */
-        transition: all 0.3s ease; /* Transición suave al cambiar el estado del botón. */
+        background-color: #0ea5e9; /* Color de fondo. */
+        border-color: #0ea5e9; /* Color del borde. */
+        color: white; /* Color del texto. */
+        font-weight: 500; /* Peso del texto. */
+        transition: all 0.3s ease; /* Transición suave. */
         padding: 0.1rem 0.2rem; /* Ajuste moderado en el tamaño */
         font-size: 0.95rem; /* Ligera mejora en el tamaño del texto */
         border-radius: 8px; /* Mantiene bordes suaves */
     }
     
-    /* Efecto al pasar el cursor sobre los botones */
     .btn-info:hover {
-        background-color: #0284c7; /* Color de fondo del botón al pasar el cursor. */
-        border-color: #0284c7; /* Color del borde del botón al pasar el cursor. */
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Sombra del botón al pasar el cursor. */
-        transform: translateY(-2px); /* Movimiento del botón al pasar el cursor. */
+        background-color: #0284c7; /* Color de fondo al pasar el cursor */
+        border-color: #0284c7; /* Color del borde al pasar el cursor */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Sombra al pasar el cursor */
+        transform: translateY(-2px); /* Mueve el botón ligeramente hacia arriba al pasar el cursor */
     }
     
     /* Estilos para la tabla */
     .table {
-        width: 100%; /* Ancho de la tabla. */
-        border-collapse: separate; /* Fusiona las celdas de la tabla. */
-        border-spacing: 0; /* Espacio entre las celdas de la tabla. */
+        width: 100%; /* Ancho de la tabla */
+        border-collapse: separate; /* Separación de bordes */
+        border-spacing: 0; /* Sin espacio entre celdas */
     }
     
-    /* Estilo de los encabezados de la tabla */
+    /* Estilos para las celdas de la tabla */
     .table thead th {
-        color: #64748b; /* Color del texto del encabezado de la tabla. */
-        font-weight: 600; /* Peso del texto del encabezado de la tabla. */
-        font-size: 0.875rem; /* Tamaño del texto del encabezado de la tabla. */
-        padding: 12px; /* Padding interno del encabezado de la tabla. */
-        border-bottom: 1px solid #e2e8f0; /* Borde inferior del encabezado de la tabla. */
-        background-color: #f8fafc; /* Color de fondo del encabezado de la tabla. */
+        color: #64748b; /* Color del texto. */
+        font-weight: 600; /* Peso del texto. */
+        font-size: 0.875rem; /* Tamaño del texto. */
+        padding: 12px; /* Relleno interno. */
+        border-bottom: 1px solid #e2e8f0; /* Borde inferior. */
+        background-color: #f8fafc; /* Color de fondo. */
     }
     
-    /* Estilo de las celdas de la tabla */
+    /* Estilos para las celdas de la tabla */
     .table tbody td {
-        padding: 12px; /* Padding interno de las celdas de la tabla. */
-        vertical-align: middle; /* Alineación vertical al centro. */
-        border-bottom: 1px solid #f1f5f9; /* Borde inferior de las celdas de la tabla. */
-        font-size: 0.875rem; /* Tamaño del texto de las celdas de la tabla. */
-        color: #334155; /* Color del texto de las celdas de la tabla. */
+        padding: 12px; /* Relleno interno. */
+        vertical-align: middle; /* Alineación vertical. */
+        border-bottom: 1px solid #f1f5f9; /* Borde inferior. */
+        font-size: 0.875rem; /* Tamaño del texto. */
+        color: #334155; /* Color del texto. */
     }
     
-    /* Cambia el color de fondo al pasar el cursor sobre una fila */
+    /* Estilos para las filas de la tabla */
     .table tbody tr:hover {
-        background-color: #f1f5f9; /* Color de fondo al pasar el cursor sobre una fila. */
+        background-color: #f1f5f9; /* Color de fondo al pasar el cursor */
     }
     
     /* Reducir ancho de la columna "Acciones" */
     .acciones-columna {
-        width: 120px; /* Ancho de la columna de acciones. */
-        text-align: center; /* Alineación horizontal al centro. */
+        width: 120px; /* Ancho de la columna */
+        text-align: center; /* Alineación horizontal */
     }
 
     /* Centrar los botones en la columna de acciones */
     .acciones-columna div {
-        display: flex; /* Muestra los botones como bloques. */
-        justify-content: center; /* Alineación horizontal al centro. */
-        gap: 5px; /* Espacio entre los botones. */
+        display: flex; /* Mostrar los botones en una fila */
+        justify-content: center; /* Alinear los botones al centro */
+        gap: 5px; /* Espacio entre los botones */
     }
     
     /* Botones de acción */
     .btn-sm {
-        padding: 0.25rem 0.5rem; /* Padding interno del botón. */
-        border-radius: 6px; /* Radio del borde del botón. */
-        font-size: 0.75rem; /* Tamaño del texto del botón. */
+        padding: 0.25rem 0.5rem; /* Relleno interno */
+        border-radius: 6px; /* Radio de los bordes */
+        font-size: 0.75rem; /* Tamaño del texto */
     }
     
     /* Paginación */
     .dataTables_paginate .paginate_button {
-        border-radius: 6px !important; /* Radio del borde del botón. */
-        margin: 0 2px !important; /* Margen entre los botones. */
+        border-radius: 6px !important; /* Radio de los bordes */
+        margin: 0 2px !important; /* Margen entre los botones */
     }
     
-    /* Botones de paginación */
+    /* Botones de paginación actual */
     .dataTables_paginate .paginate_button.current {
-        background: #0ea5e9 !important; /* Color de fondo del botón actual. */
-        border-color: #0ea5e9 !important; /* Color del borde del botón actual. */
-        color: white !important; /* Color del texto del botón actual. */
+        background: #0ea5e9 !important; /* Color de fondo */
+        border-color: #0ea5e9 !important; /* Color del borde */
+        color: white !important; /* Color del texto */
     }
     
     /* Efecto al pasar el cursor sobre los botones de paginación */
     .dataTables_paginate .paginate_button:hover {
-        background: #e2e8f0 !important; /* Color de fondo al pasar el cursor sobre los botones de paginación. */
-        border-color: #e2e8f0 !important; /* Color del borde al pasar el cursor sobre los botones de paginación. */
-        color: #334155 !important; /* Color del texto al pasar el cursor sobre los botones de paginación. */
+        background: #e2e8f0 !important; /* Color de fondo */
+        border-color: #e2e8f0 !important; /* Color del borde */
+        color: #334155 !important; /* Color del texto */
     }
     
-    /* Información de la tabla */
+    /* Información sobre los registros visibles en DataTables */
     .dataTables_info {
-        color: #64748b; /* Color del texto de la información de la tabla. */
-        padding-top: 1rem; /* Padding superior de la información de la tabla. */
+        color: #64748b; /* Color del texto */
+        padding-top: 1rem; /* Margen superior */
     }
 
-    /* Botones de acción */
+    /* Botón personalizado para agregar nuevo registro */
     .btn-nuevo-registro {
-        background-color: #0ea5e9; /* Color de fondo del botón. */
-        border-color: #0ea5e9; /* Color del borde del botón. */
-        color: white; /* Color del texto del botón. */
-        font-weight: 600; /* Peso del texto del botón. */
-        transition: all 0.3s ease; /* Transición suave al cambiar el estado del botón. */
-        padding: 0.75rem 1rem; /* Padding interno del botón. */
-        font-size: 0.80rem; /* Tamaño del texto del botón. */
-        border-radius: 8px; /* Radio del borde del botón. */
-        min-width: 160px; /* Ancho mínimo del botón. */
-        text-align: center; /* Alineación horizontal al centro. */
+        background-color: #0ea5e9; /* Color de fondo */
+        border-color: #0ea5e9; /* Color del borde */
+        color: white; /* Color del texto */
+        font-weight: 600; /* Peso del texto */
+        transition: all 0.3s ease; /* Transición suave */
+        padding: 0.75rem 1rem; /* Relleno interno */
+        font-size: 0.80rem; /* Tamaño del texto */
+        border-radius: 8px; /* Radio de los bordes */
+        min-width: 160px; /* Ancho mínimo */
+        text-align: center; /* Alineación horizontal */
     }
 
     /* Efecto al pasar el cursor sobre el botón */
     .btn-nuevo-registro:hover {
-        background-color: #0284c7; /* Color de fondo al pasar el cursor. */
-        border-color: #0284c7; /* Color del borde al pasar el cursor. */
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Sombra al pasar el cursor. */
-        transform: translateY(-2px); /* Mueve el botón ligeramente hacia arriba al pasar el cursor. */
+        background-color: #0284c7; /* Color de fondo al pasar el cursor */
+        border-color: #0284c7; /* Color del borde al pasar el cursor */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Sombra al pasar el cursor */
+        transform: translateY(-2px); /* Mueve el botón ligeramente hacia arriba al pasar el cursor */
     }
 
     /* Estilos para los botones de ver, editar y eliminar */
     .btn-warning, .btn-danger {
-        border-radius: 8px; /* Radio del borde del botón. */
-        padding: 0.25rem 0.5rem; /* Padding interno del botón. */
-        font-size: 0.85rem; /* Tamaño del texto del botón. */
-        font-weight: 500; /* Peso del texto del botón. */
-        transition: all 0.3s ease; /* Transición suave al cambiar el estado del botón. */
+        border-radius: 8px; /* Radio de los bordes */
+        padding: 0.25rem 0.5rem; /* Relleno interno */
+        font-size: 0.85rem; /* Tamaño del texto */
+        font-weight: 500; /* Peso del texto */
+        transition: all 0.3s ease; /* Transición suave */
     }
 
     /* Efecto al pasar el cursor sobre los botones */
@@ -203,36 +202,34 @@
 
     /* Estilos para el botón de "editar" */
     .btn-warning {
-        background-color: #f59e0b; /* Color de fondo del botón. */
-        border-color: #f59e0b; /* Color del borde del botón. */
-        color: white; /* Color del texto del botón. */
+        background-color: #f59e0b; /* Color de fondo */
+        border-color: #f59e0b; /* Color del borde */
+        color: white; /* Color del texto */
     }
 
     /* Estilos para el botón de "eliminar" */
     .btn-danger {
-        background-color: #ef4444; /* Color de fondo del botón. */
-        border-color: #ef4444; /* Color del borde del botón. */
-        color: white; /* Color del texto del botón. */
+        background-color: #ef4444; /* Color de fondo */
+        border-color: #ef4444; /* Color del borde */
+        color: white; /* Color del texto */
     }
-
 </style>
 
-@section('contenido')
 <div class="container mt-5">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <!-- Título e ícono para agregar nuevo registro -->
+            <!-- Título centrado con fondo gris claro -->
             <h2 class="card-title mb-0">
-                <i class="fas fa-car"></i><b>Registro vehicular</b>
+                </i><b>Registro vehicular</b>
             </h2>
-            <!-- Botón para agregar nuevo registro -->
             @if(Auth::user()->role !== 'Visualizador')
+            <!-- Botón para agregar nuevo registro -->
                 <a href="{{ route('registrovehicular.create') }}" class="btn btn-info btn-sm btn-nuevo-registro">
                     <i class="fas fa-plus"></i> Nuevo registro
                 </a>
             @endif
         </div>
-        <!-- Cuerpo de la tarjeta -->
+        <!-- Cuerpo de la tarjeta con el contenido de la tabla -->
         <div class="card-body p-4">
             <div class="table-responsive mt-3">
                 <!-- Tabla de vehículos -->
@@ -257,7 +254,6 @@
         </div>
     </div>
 </div>
-<!-- Script para la tabla de vehículos -->
 <script type="text/javascript">
     $(document).ready(function () {
         $('#vehiculos-table').DataTable({
@@ -285,7 +281,7 @@
                         return data ? data.substring(0, 6) : ''; 
                     } 
                 },
-                // Columna de Acciones
+                // Columna de acciones
                 { data: 'acciones', name: 'acciones', orderable: false, searchable: false, className: 'acciones-columna' }
             ],
             // Configuración de idioma

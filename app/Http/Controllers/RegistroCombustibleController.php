@@ -164,7 +164,7 @@ class RegistroCombustibleController extends Controller
             'precio.numeric' => 'El campo precio debe ser un número.',
             'fecha.required' => 'El campo "Fecha" es obligatorio.',
             'id_registro_vehicular.required' => 'El campo "vehículo" es obligatorio.',
-            'num_factura.required' => 'El campo "Fecha" es obligatorio.',
+            'num_factura.required' => 'El campo "N° de factura" es obligatorio.',
             'precio.required' => 'El campo "Precio" es obligatorio.',
         ]);
 
@@ -237,7 +237,7 @@ class RegistroCombustibleController extends Controller
         ], [
             'fecha.required' => 'El campo "Fecha" es obligatorio.',
             'id_registro_vehicular.required' => 'El campo "vehículo" es obligatorio.',
-            'num_factura.required' => 'El campo "Número de factura" es obligatorio.',
+            'num_factura.required' => 'El campo "N° de factura" es obligatorio.',
             'precio.required' => 'El campo "Precio" es obligatorio.',
             'observacion.max' => 'La observación no puede tener más de 60 caracteres.',
         ]);
