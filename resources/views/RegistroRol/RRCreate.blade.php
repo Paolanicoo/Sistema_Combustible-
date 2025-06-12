@@ -4,160 +4,151 @@
 
 @section('contenido')
 
-<!--asegura que los mensajes de SweetAlert se muestren -->
+<!--asegura que los mensajes de SweetAlert se muestren. -->
 @include('sweetalert::alert')
 
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
+    body { /* Estilo para el cuerpo del documento. */
+        font-family: 'Poppins', sans-serif; /*Fuente personalizada.*/
+        background-color: #f8f9fa;/* Color de fondo.*/
     }
 
-    .container {
-        max-width: 1240px;
+    .container { /*Estilo para el contenedor principal.*/
+        max-width: 1240px;/* Ancho máximo.*/
     }
 
-    .dataTables_filter {
-        margin-bottom: 20px;
+    .dataTables_filter { /*Filtro de búsqueda de DataTables.*/
+        margin-bottom: 20px; /*Margen inferior.*/
     }
 
-    .dataTables_filter input {
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        padding: 0.5rem 1rem;
-        width: 250px;
+    .dataTables_filter input { /* Estilo para el campo de búsqueda. */
+        border: 1px solid #e2e8f0; /* Borde gris claro. */
+        border-radius: 6px; /* Bordes redondeados. */
+        padding: 0.5rem 1rem; /* Padding interno. */
+        width: 250px; /* Ancho del campo de búsqueda. */
     }
 
-    .dataTables_filter input:focus {
-        border-color: #3b82f6;
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    .dataTables_filter input:focus { /* Estilo al enfocar el campo de búsqueda. */
+        border-color: #3b82f6; /* Color del borde al enfocar. */
+        outline: none; /* Sin contorno. */
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25); /* Sombra azul al enfocar. */
     }
 
-    .card {
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-        overflow: hidden;
+    .card { /* Estilo para las tarjetas. */
+        border-radius: 12px; /* Bordes redondeados. */
+        border: none; /* Sin borde. */
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08); /* Sombra suave. */
+        overflow: hidden; /* Oculta el desbordamiento. */
+    }
+    .card-title { /* Estilo para el título de la tarjeta. */
+        color: #344767; /* Color del texto. */
+        font-weight: 600; /* Peso de la fuente. */
     }
 
-    .card-title {
-        color: #344767;
-        font-weight: 600;
+    .card-header { /* Estilo para la cabecera de la tarjeta. */
+        background-color: rgb(226, 228, 230); /* Color de fondo gris claro. */
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Borde inferior suave. */
+        padding: 1.5rem; /* Padding interno. */
+    }
+    .table { /* Estilo para las tablas. */
+        width: 100%; /* Ancho completo. */
+        border-collapse: separate; /* Colapsar bordes separados. */
+        border-spacing: 0; /* Sin espaciado entre celdas. */
     }
 
-    .card-header {
-        background-color: rgb(226, 228, 230);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        padding: 1.5rem;
+    .table thead th { /* Estilo para las celdas del encabezado de la tabla. */
+        color: #64748b; /* Color del texto. */
+        font-weight: 600; /* Peso de la fuente. */
+        font-size: 0.875rem; /* Tamaño de la fuente. */
+        padding: 12px; /* Padding interno. */
+        border-bottom: 1px solid #e2e8f0; /* Borde inferior. */
+        background-color: #f8fafc; /* Color de fondo. */
+    }
+    .table tbody td { /* Estilo para las celdas del cuerpo de la tabla. */
+        padding: 12px; /* Padding interno. */
+        vertical-align: middle; /* Alinear verticalmente al medio. */
+        border-bottom: 1px solid #f1f5f9; /* Borde inferior. */
+        font-size: 0.875rem; /* Tamaño de la fuente. */
+        color: #334155; /* Color del texto. */
     }
 
-    .table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
+     .table tbody tr:hover { /* Estilo al pasar el mouse sobre las filas de la tabla. */
+        background-color: #f1f5f9; /* Color de fondo al pasar el mouse. */
+    }
+    .acciones-columna { /* Estilo para la columna de acciones. */
+        width: 120px; /* Ancho de la columna. */
+        text-align: center; /* Alinear texto al centro. */
     }
 
-    .table thead th {
-        color: #64748b;
-        font-weight: 600;
-        font-size: 0.875rem;
-        padding: 12px;
-        border-bottom: 1px solid #e2e8f0;
-        background-color: #f8fafc;
+    .acciones-columna div { /* Estilo para el contenedor de botones en la columna de acciones. */
+        display: flex; /* Usar flexbox. */
+        justify-content: center; /* Centrar horizontalmente. */
+        gap: 5px; /* Espacio entre botones. */
+    }
+    #roles-table tr td:nth-child(2),  /* Estilo para la segunda columna de la tabla de roles. */
+    #roles-table tr th:nth-child(2),  /* Estilo para la segunda cabecera de la tabla de roles. */
+    #roles-table th.acciones-columna,  /* Estilo para la cabecera de acciones en la tabla de roles. */
+    #roles-table td.acciones-columna { /* Estilo para las celdas de acciones en la tabla de roles. */
+        text-align: center !important; /* Alinear texto al centro, forzado. */
     }
 
-    .table tbody td {
-        padding: 12px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 0.875rem;
-        color: #334155;
+    .dataTables_paginate .paginate_button { /* Estilo para los botones de paginación. */
+        border-radius: 6px !important; /* Bordes redondeados, forzado. */
+        margin: 0 2px !important; /* Margen entre botones, forzado. */
+    }
+    .dataTables_paginate .paginate_button.current { /* Estilo para el botón de paginación actual. */
+        background: #0ea5e9 !important; /* Color de fondo azul. */
+        border-color: #0ea5e9 !important; /* Color del borde azul. */
+        color: white !important; /* Color del texto blanco. */
     }
 
-    .table tbody tr:hover {
-        background-color: #f1f5f9;
+    .dataTables_paginate .paginate_button:hover { /* Estilo al pasar el mouse sobre los botones de paginación. */
+        background: #e2e8f0 !important; /* Color de fondo gris claro. */
+        border-color: #e2e8f0 !important; /* Color del borde gris claro. */
+        color: #334155 !important; /* Color del texto gris oscuro. */
+    }
+    .dataTables_info { /* Estilo para la información de paginación. */
+        color: #64748b; /* Color del texto. */
+        padding-top: 1rem; /* Padding superior. */
     }
 
-    .acciones-columna {
-        width: 120px;
-        text-align: center;
+    .rol-columna { /* Estilo para la columna de rol. */
+        text-align: left !important; /* Alinear texto a la izquierda, forzado. */
+    }
+    .toggleEstado { /* Estilo para el botón de alternar estado. */
+        transition: all 0.3s ease; /* Transición suave para todos los cambios. */
+        font-weight: 500; /* Peso de la fuente. */
+    }
+    .toggleEstado:hover { /* Estilo al pasar el mouse sobre el botón de alternar estado. */
+        color: #000000; /* Cambia el color del texto a negro. */
+        transform: translateY(-2px); /* Mueve el botón ligeramente hacia arriba. */
+        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3); /* Sombra al pasar el mouse. */
     }
 
-    .acciones-columna div {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    #roles-table tr td:nth-child(2), 
-    #roles-table tr th:nth-child(2),
-    #roles-table th.acciones-columna, 
-    #roles-table td.acciones-columna {
-        text-align: center !important;
-    }
-
-    .dataTables_paginate .paginate_button {
-        border-radius: 6px !important;
-        margin: 0 2px !important;
-    }
-
-    .dataTables_paginate .paginate_button.current {
-        background: #0ea5e9 !important;
-        border-color: #0ea5e9 !important;
-        color: white !important;
-    }
-
-    .dataTables_paginate .paginate_button:hover {
-        background: #e2e8f0 !important;
-        border-color: #e2e8f0 !important;
-        color: #334155 !important;
-    }
-
-    .dataTables_info {
-        color: #64748b;
-        padding-top: 1rem;
-    }
-
-    .rol-columna {
-        text-align: left !important;
-    }
-
-    .toggleEstado {
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-
-    .toggleEstado:hover {
-        color: #000000;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(14, 165, 233, 0.3);
-    }
-
-    /* Nueva clase para botones más pequeños */
-    .btn {
-        padding: 0.25rem 0.6rem;
-        font-size: 0.8rem;
-        border-radius: 6px;
-        font-weight: 500;
+    /* Nueva clase para botones más pequeños. */
+    .btn { /* Estilo para botones. */
+        padding: 0.25rem 0.6rem; /* Padding interno reducido. */
+        font-size: 0.8rem; /* Tamaño de la fuente reducido. */
+        border-radius: 6px; /* Bordes redondeados. */
+        font-weight: 500; /* Peso de la fuente. */
     }
 </style>
 
-<div class="container mt-5">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+<div class="container mt-5"> <!-- Contenedor con margen superior de Bootstrap. -->
+    <div class="card"> <!-- Tarjeta de Bootstrap para encapsular el contenido. -->
+        <div class="card-header d-flex justify-content-between align-items-center"> <!-- Encabezado de la tarjeta. -->
             <h2 class="card-title mb-0">
-                <b>Registro de roles</b>
+                <b>Registro de roles</b> <!-- Título del encabezado. -->
             </h2>
         </div>
-        <div class="card-body p-4">
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered table-striped w-100" id="roles-table">
+        <div class="card-body p-4"> <!-- Cuerpo de la tarjeta con padding. -->
+            <div class="table-responsive mt-3"> <!-- Contenedor responsivo para la tabla. -->
+                <table class="table table-bordered table-striped w-100" id="roles-table"> <!-- Tabla con bordes, rayas y ancho completo. -->
                     <thead>
                         <tr>
-                            <th class="rol-columna">Rol</th>  
-                            <th class="estado-columna">Estado</th>
-                            <th class="acciones-columna">Acciones</th>     
+                            <th class="rol-columna">Rol</th>   <!-- Encabezado columna Rol. -->
+                            <th class="estado-columna">Estado</th> <!-- Encabezado columna Estado. -->
+                            <th class="acciones-columna">Acciones</th> <!-- Encabezado columna Acciones. -->
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -168,19 +159,19 @@
 </div>
 
 <script>
-$(document).ready(function () {
-    let table = $('#roles-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: '{{ route('registrorol.table') }}',
-        columns: [
-            {data: 'rol', name: 'rol'},
-            {data: 'estado_texto', name: 'estado_texto', orderable: false, searchable: false},
-            {data: 'acciones', name: 'acciones', orderable: false, searchable: false}
+$(document).ready(function () {  //Ejecuta cuando el DOM está completamente cargado. 
+    let table = $('#roles-table').DataTable({ //Inicializa DataTables .
+        processing: true, //Activa el indicador de procesamiento.
+        serverSide: true, //Usa procesamiento del lado del servidor.
+        ajax: '{{ route('registrorol.table') }}', //Ruta que retorna los datos de la tabla .
+        columns: [ //Define las columnas de la tabla.
+            {data: 'rol', name: 'rol'}, // Columna rol.
+            {data: 'estado_texto', name: 'estado_texto', orderable: false, searchable: false}, //Columna estado (no ordenable ni buscable).
+            {data: 'acciones', name: 'acciones', orderable: false, searchable: false} //Columna acciones (no ordenable ni buscable).
         ],
-        searching: true,
-        paging: true,
-        language: {
+        searching: true, //Habilita el campo de búsqueda.
+        paging: true, //Habilita la paginación.
+        language: { // Traducción al español.
             "processing": "Procesando...",
             "zeroRecords": "No se encontraron resultados",
             "paginate": {
@@ -191,17 +182,17 @@ $(document).ready(function () {
             }
             
         },
-        lengthChange: true 
+        lengthChange: true //Permite cambiar la cantidad de filas por página.
     });
 
-   // Evento para cambiar el estado con AJAX
-    $('#roles-table').on('click', '.toggleEstado', function() {
-        let button = $(this);
-        let roleId = button.data('id');
-        let newEstado = button.data('estado') == 1 ? 0 : 1;
-        let accion = newEstado == 1 ? 'activar' : 'desactivar';
-        let mensaje = newEstado == 1 ? 'activado' : 'desactivado';
-        
+   // Evento para cambiar el estado con AJAX.
+    $('#roles-table').on('click', '.toggleEstado', function() { //Evento click para cambiar estado del rol.
+        let button = $(this); //Obtiene el botón.
+        let roleId = button.data('id'); //Obtiene el ID del rol.
+        let newEstado = button.data('estado') == 1 ? 0 : 1; //Cambia el estado.
+        let accion = newEstado == 1 ? 'activar' : 'desactivar'; //Acción en texto.
+        let mensaje = newEstado == 1 ? 'activado' : 'desactivado'; //Mensaje de confirmación.
+        //Alerta de confirmación usando SweetAlert.
         Swal.fire({
             title: '¿Estás seguro?',
             text: `¿Deseas ${accion} este rol?`,
@@ -211,24 +202,24 @@ $(document).ready(function () {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, confirmar',
             cancelButtonText: 'Cancelar'
-        }).then((result) => {
+        }).then((result) => { //Ejecuta si el usuario confirma.
             if (result.isConfirmed) {
-                $.ajax({
+                $.ajax({ //Petición AJAX para cambiar el estado.
                     url: "{{ route('roles.toggleEstado') }}",
                     method: "POST",
                     data: {
                         _token: "{{ csrf_token() }}",
                         id: roleId,
-                        estado: newEstado
+                        estado: newEstado // Nuevo estado.
                     },
-                    success: function(response) {
+                    success: function(response) { //Si la petición es exitosa.
                         if (response.success) {
                             Swal.fire(
                                 '¡Listo!',
                                 `El rol ha sido ${mensaje} correctamente.`,
                                 'success'
                             );
-                            table.ajax.reload(); // Recarga la tabla automáticamente
+                            table.ajax.reload(); // Recarga la tabla automáticamente.
                         } else {
                             Swal.fire(
                                 'Error',

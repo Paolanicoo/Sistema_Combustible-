@@ -1,10 +1,10 @@
 <div class="d-flex gap-2">
-@if(Auth::user()->role !== 'Visualizador') <!--Solo muestra los botones si el usuario no es Visualizador -->
+@if(Auth::user()->role !== 'Visualizador') <!--Solo muestra los botones si el usuario no es Visualizador. -->
     <a href="{{ route('registrocombustible.edit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar"><!--Botón para editar el registro.  -->
         <i class="fas fa-edit"></i>
     </a>
     <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $registro->id }}" title="Eliminar"><!-- Botón de eliminar con data-id para usarlo en JS.  -->
-        <i class="fas fa-trash"></i><!--Ícono de basurero -->
+        <i class="fas fa-trash"></i><!--Ícono de basurero. -->
     </button>
     @endif
 </div>
@@ -15,7 +15,7 @@
         var registroId = $(this).data('id'); // Obtiene el ID del registro.
         console.log('ID del registro:', registroId);  // Depuración.
 
-        // Confirma la eliminación con SweetAlert
+        // Confirma la eliminación con SweetAlert.
         Swal.fire({
             title: '¿Estás seguro?',  // Título de la alerta.
             text: "¡Este registro será eliminado permanentemente!", // Mensaje descriptivo.

@@ -10,11 +10,11 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h2 class="card-title mb-0">
-                <b>Reportes de consumo de combustible</b>
+                <b>Reportes de consumo de combustible</b>  <!-- Texto en negrita.-->
             </h2>
         </div>
         <div class="card-body p-4">
-            <!-- Filtro para seleccionar reporte -->
+            <!-- Filtro para seleccionar reporte. -->
             <div class="row mb-4">
                 <div class="col-md-6">
                     <label for="tipoReporte" class="form-label fw-bold" style="color: #344767;">Seleccionar reporte:</label>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 
-                <!-- Botones de exportación -->
+                <!-- Botones de exportación. -->
                 <div class="col-md-6 d-flex justify-content-end align-items-end">
                     <div class="btn-group">
                         <button id="btnExportarPDF" class="btn btn-outline-danger d-none me-2">
@@ -43,12 +43,12 @@
                 </div>
             </div>
 
-            <!-- Divisor decorativo -->
+            <!-- Divisor decorativo. -->
             <div class="text-center mb-4">
                 <hr class="divider" style="width: 80%; margin: 0 auto; border-top: 1px solid #f1f5f9;">
             </div>
 
-            <!-- Contenedor de gráfica y tabla para reporte anual -->
+            <!-- Contenedor de gráfica y tabla para reporte anual. -->
             <div class="card shadow-sm mb-4" id="seccionReporteAnual" style="display: none; border-radius: 12px; border: none; box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);">
                 <div class="card-header py-3" style="background-color: #f8fafc; border-radius: 12px 12px 0 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
                     <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-chart-bar me-2"></i>Comparativo anual</h5>
@@ -70,7 +70,7 @@
                 </div>
             </div>
             
-            <!-- Contenedor para reportes de mes, equipo y asignado -->
+            <!-- Contenedor para reportes de mes, equipo y asignado. -->
             <div class="card shadow-sm" id="seccionOtrosReportes" style="display: none; border-radius: 12px; border: none; box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);">
                 <div class="card-header py-3" id="otrosReportesTitulo" style="background-color: #f8fafc; border-radius: 12px 12px 0 0; border-bottom: 1px solid rgba(0, 0, 0, 0.05);">
                     <h5 class="mb-0" style="color: #344767; font-weight: 600;"><i class="fas fa-table me-2"></i><span id="tituloReporte">Detalle de consumo</span></h5>
@@ -91,7 +91,7 @@
                 </div>
             </div>
             
-            <!-- Mensaje cuando no hay datos -->
+            <!-- Mensaje cuando no hay datos. -->
             <div id="sinDatos" class="alert alert-info text-center d-none" style="background-color: #f1f5f9; color: #334155; border-color: #e2e8f0; border-radius: 8px;">
                 <i class="fas fa-info-circle me-2"></i> No hay datos disponibles para el reporte seleccionado.
             </div>
@@ -100,16 +100,16 @@
 </div>
 
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
+    body { /*Estilos para el cuerpo.*/
+        font-family: 'Poppins', sans-serif; /*Fuente utilizada.*/
+        background-color: #f8f9fa; /*Color de fondo.*/
     }
     
-    .container {
-        max-width: 1240px;
+    .container { /* Estilos para el contenedor principal.*/
+        max-width: 1240px; /*Ancho máximo del contenedor.*/
     }
     
-    /* Estilos para la tarjeta principal */
+    /* Estilos para la tarjeta principal. */
     .card {
         border-radius: 12px;
         border: none;
@@ -117,64 +117,64 @@
         overflow: hidden;
     }
     
-    .card-title {
-        color: #344767;
-        font-weight: 600;
+    .card-title { /*Estilos para el título de la tarjeta.*/
+        color: #344767; /*Color del texto.*/
+        font-weight: 600; /**/
     }
 
-    .card-header {
-        background-color: rgb(226, 228, 230); /* Color gris claro */
+    .card-header { /*Estilos para la cabecera de la tarjeta.*/
+        background-color: rgb(226, 228, 230); /* Color gris claro .*/
         border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         padding: 1.5rem;
     }
     
-    /* Estilos para la tabla */
+    /* Estilos para la tabla. */
     .table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin-bottom: 0;
-        color: #334155;
+        width: 100%; /*Ancho completo.*/
+        border-collapse: separate; /*Colapsar borde.*/
+        border-spacing: 0; /*Espaciado entre celdas.*/
+        margin-bottom: 0; /*Sin margen inferior.*/
+        color: #334155; /*Color del texto.*/
     }
     
-    .table thead th {
-        color: #64748b;
-        font-weight: 600;
-        font-size: 0.875rem;
-        padding: 12px;
-        border-bottom: 1px solid #e2e8f0;
-        background-color: #f8fafc;
-        text-align: center;
+    .table thead th {  /* Estilos para las celdas del encabezado de la tabla .*/
+        color: #64748b; /*Color del texto.*/
+        font-weight: 600; 
+        font-size: 0.875rem; /*Tamaño de la fuente.*/
+        padding: 12px; 
+        border-bottom: 1px solid #e2e8f0; /*Borde inferior.*/
+        background-color: #f8fafc; /*Color de fondo.*/
+        text-align: center; /*Alinear texto al centro.*/
     }
     
-    .table tbody td {
-        padding: 12px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 0.875rem;
-        color: #334155;
-        text-align: center;
+    .table tbody td { /*Estilos para las celdas del cuerpo de la tabla.*/
+        padding: 12px; 
+        vertical-align: middle; /*Alinear verticalmente al medio.*/
+        border-bottom: 1px solid #f1f5f9; /*Borde inferior.*/
+        font-size: 0.875rem; /*Tamaño de la fuente.*/
+        color: #334155; /*Color del texto.*/
+        text-align: center; /*Alinear texto al centro.*/
     }
     
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: rgba(0, 0, 0, 0.02);
+    .table-striped tbody tr:nth-of-type(odd) { /*Estilos para filas impares de la tabla.*/
+        background-color: rgba(0, 0, 0, 0.02); /*Color de fondo.*/
     }
     
-    .table tbody tr:hover {
-        background-color: #f1f5f9;
+    .table tbody tr:hover { /*Estilos para filas al pasar el mouse.*/
+        background-color: #f1f5f9; /*Color de fondo al pasar el mouse.*/
     }
     
-    /* Animaciones para la carga de secciones */
+    /* Animaciones para la carga de secciones. */
     .fade-in {
-        animation: fadeIn 0.5s;
+        animation: fadeIn 0.5s; /* Duración de la animación .*/
     }
     
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+    @keyframes fadeIn { /*Definición de la animación fadeIn.*/
+        from { opacity: 0; } /*Comienza invisible.*/
+        to { opacity: 1; }/*Termina visible.*/
     }
     
-    /* Mejoras en los botones */
+    /* Mejoras en los botones. */
     .btn-outline-danger, .btn-outline-success {
         border-radius: 8px;
         font-weight: 500;
@@ -218,20 +218,20 @@
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    let urlReporte = "{{ route('reportes.consumo') }}";
-    let chart = null;
-    const seccionReporteAnual = document.getElementById('seccionReporteAnual');
-    const seccionOtrosReportes = document.getElementById('seccionOtrosReportes');
-    const sinDatos = document.getElementById('sinDatos');
-    const tituloReporte = document.getElementById('tituloReporte');
+document.addEventListener("DOMContentLoaded", function () {  // Espera a que el DOM esté completamente cargado.
+    let urlReporte = "{{ route('reportes.consumo') }}";// URL para obtener los datos del reporte.
+    let chart = null; // Variable para almacenar la gráfica.
+    const seccionReporteAnual = document.getElementById('seccionReporteAnual'); // Sección para el reporte anual.
+    const seccionOtrosReportes = document.getElementById('seccionOtrosReportes'); // Sección para otros reportes.
+    const sinDatos = document.getElementById('sinDatos'); // Mensaje cuando no hay datos.
+    const tituloReporte = document.getElementById('tituloReporte'); // Título de la sección de otros reportes.
 
-    // Cargar las bibliotecas necesarias para exportación
+    // Cargar las bibliotecas necesarias para exportación.
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js');
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js');
 
-    // Función para cargar scripts externos
+    // Función para cargar scripts externos.
     function loadScript(url) {
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
@@ -241,12 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.head.appendChild(script);
         });
     }
-
-    function crearGrafico(id, tipo, etiquetas, datos, titulo) {
-        var ctx = document.getElementById(id).getContext('2d');
-        if (chart) chart.destroy();
+     // Crea gráfica con Chart..
+    function crearGrafico(id, tipo, etiquetas, datos, titulo) { // Función para crear una gráfica.
+        var ctx = document.getElementById(id).getContext('2d'); // Obtiene el contexto del canvas.
+        if (chart) chart.destroy(); // Destruye la gráfica anterior si existe.
         
-        // Generar colores aleatorios para las barras
+        // Generar colores aleatorios para las barras.
         const colores = etiquetas.map(() => {
             const r = Math.floor(Math.random() * 100) + 100;
             const g = Math.floor(Math.random() * 100) + 100;
@@ -254,12 +254,12 @@ document.addEventListener("DOMContentLoaded", function () {
             return `rgba(${r}, ${g}, ${b}, 0.7)`;
         });
         
-        // Verifica si Chart está definido
+        // Verifica si Chart está definido.
         if (typeof Chart === 'undefined') {
             console.error('La biblioteca Chart.js no está cargada correctamente');
             return;
         }
-        
+        // Crea una nueva gráfica.
         chart = new Chart(ctx, {
             type: tipo,
             data: {
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
+     // Crea tabla con los datos recibidos.
     function crearTabla(id, data, columnas) {
         let contenedor = document.getElementById(id);
         
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(row => {
             tabla += `<tr>`;
             columnas.forEach(col => {
-                // Formatear el valor si es numérico
+                // Formatear el valor si es numérico.
                 let valor = row[col];
                 if (col === 'total' && !isNaN(valor)) {
                     valor = Number(valor).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -329,28 +329,28 @@ document.addEventListener("DOMContentLoaded", function () {
         tabla += `</tbody></table>`;
         contenedor.innerHTML = tabla;
     }
-
+     // Manejador de evento para el cambio en el select.
     document.getElementById('tipoReporte').addEventListener('change', function () {
         const tipo = this.value;
         
-        // Ocultar todas las secciones
+        // Ocultar todas las secciones.
         seccionReporteAnual.style.display = 'none';
         seccionOtrosReportes.style.display = 'none';
         sinDatos.classList.add('d-none');
         
-        // Ocultar botones de exportación
+        // Ocultar botones de exportación.
         document.querySelectorAll('#btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.add('d-none'));
         
         if (!tipo) return;
         
-        // Mostrar indicador de carga
+        // Mostrar indicador de carga.
         const cargando = document.createElement('div');
         cargando.id = 'indicadorCarga';
         cargando.className = 'text-center my-4';
         cargando.innerHTML = '<i class="fas fa-spinner fa-spin fa-2x"></i><p class="mt-2">Cargando datos...</p>';
         document.querySelector('.card-body').appendChild(cargando);
 
-        // Agregar un timestamp para evitar caché
+        // Agregar un timestamp para evitar caché.
         const timestamp = new Date().getTime();
         const url = `${urlReporte}?tipo=${tipo}&_=${timestamp}`;
         console.log("Solicitando datos a:", url);
@@ -363,20 +363,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                // Depuración - verificar los datos recibidos
+                // Depuración - verificar los datos recibidos.
                 console.log("Datos recibidos:", data);
                 
-                // Eliminar indicador de carga
+                // Eliminar indicador de carga.
                 const indicadorCarga = document.getElementById('indicadorCarga');
                 if (indicadorCarga) indicadorCarga.remove();
                 
                 let tablaId = `tablaConsumo${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`; 
                 let tablaContainer = document.getElementById(tablaId);
                 
-                // Limpiar contenedores
+                // Limpiar contenedores.
                 document.querySelectorAll('div[id^=tablaConsumo]').forEach(el => el.innerHTML = '');
 
-                // Verificar si hay datos para mostrar
+                // Verificar si hay datos para mostrar.
                 let hayDatos = false;
                 let datosParaMostrar = [];
                 let columnas = [];
@@ -427,10 +427,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (hayDatos) {
                     crearTabla(tablaId, datosParaMostrar, columnas);
                     
-                    // Mostrar botones de exportación
+                    // Mostrar botones de exportación.
                     document.querySelectorAll('#btnExportarPDF, #btnExportarExcel').forEach(btn => btn.classList.remove('d-none'));
                 } else {
-                    // Mostrar mensaje si no hay datos
+                    // Mostrar mensaje si no hay datos.
                     sinDatos.classList.remove('d-none');
                 }
             })
@@ -444,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('btnExportarPDF').addEventListener('click', function () {
         try {
-            // Verificar si jsPDF está cargado
+            // Verificar si jsPDF está cargado.
             if (typeof window.jspdf === 'undefined') {
                 alert("La biblioteca jsPDF no está cargada. Por favor, espere unos segundos y vuelva a intentarlo.");
                 return;
@@ -480,18 +480,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     break;
             }
 
-            // Añadir encabezado
+            // Añadir encabezado.
             doc.setFontSize(16);
             doc.text(titulo, 105, 15, { align: 'center' });
             doc.setFontSize(12);
             doc.text(subtitulo, 105, 22, { align: 'center' });
             
-            // Añadir fecha
+            // Añadir fecha.
             const hoy = new Date().toLocaleDateString('es-MX');
             doc.setFontSize(10);
             doc.text(`Fecha de generación: ${hoy}`, 105, 30, { align: 'center' });
             
-            // Agregar tabla
+            // Agregar tabla.
             doc.autoTable({ 
                 html: tabla,
                 startY: 35,
@@ -515,7 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('btnExportarExcel').addEventListener('click', function () {
         try {
-            // Verificar si XLSX está cargado
+            // Verificar si XLSX está cargado.
             if (typeof XLSX === 'undefined') {
                 alert("La biblioteca XLSX no está cargada. Por favor, espere unos segundos y vuelva a intentarlo.");
                 return;
