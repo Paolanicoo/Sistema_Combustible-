@@ -1,24 +1,26 @@
+<!-- Botones de acciones. -->
 <div class="d-flex gap-2">
-@if(Auth::user()->role !== 'Visualizador')
-    <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
-        <i class="fas fa-edit"></i>
-    </a>
-        @method('DELETE')
+    @if(Auth::user()->role !== 'Visualizador')
+        <!-- Botón de editar -->
+        <a href="{{ route('registroimporte.edit', $registro->id) }}" class="btn btn-warning btn-sm" title="Editar">
+            <i class="fas fa-edit"></i>
+        </a>
+        <!-- Botón de eliminación -->
         <button type="button" class="btn btn-danger btn-sm delete-btn" data-id="{{ $registro->id }}" title="Eliminar">
-        <i class="fas fa-trash"></i>
-    </button>
-    </form>
-@endif
+            <i class="fas fa-trash"></i>
+        </button>
+    @endif
 </div>
-<!-- Importar SweetAlert2 -->
+<!-- Importa el paquete de alertas. -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<!-- Elimina un registro desde una tabla HTML mediante una petición AJAX. -->
 <script>
     $(document).on('click', '.delete-btn', function () {
-        var registroId = $(this).data('id'); // Obtiene el ID del registro
+        var registroId = $(this).data('id'); // Obtiene el ID del registro.
 
-        // Muestra la alerta de confirmación con SweetAlert
+        // Muestra la alerta de confirmación.
         Swal.fire({
             title: '¿Estás seguro?',
             text: "¡Este registro será eliminado permanentemente!",
@@ -28,31 +30,32 @@
             cancelButtonText: 'Cancelar',
         }).then((result) => {
             if (result.isConfirmed) {
-                // Si se confirma, realiza la petición AJAX
+                // Si se confirma, realiza la petición AJAX.
                 $.ajax({
                     url: '{{ route("registroimporte.destroy", ":id") }}'.replace(':id', registroId),  // Usar ruta definida
-                    type: 'DELETE',  // Método DELETE
+                    type: 'DELETE',  // Método DELETE.
                     data: {
-                        _token: '{{ csrf_token() }}',  // Token CSRF
+                        _token: '{{ csrf_token() }}',  // Token CSRF.
                     },
                     success: function(response) {
                         if (response.success) {
                             // Muestra mensaje de éxito
                             Swal.fire('Eliminado!', response.message, 'success');
 
-                            // Elimina la fila correspondiente de la tabla de inmediato
-                            $('#registro-' + registroId).remove();  // Elimina la fila con el ID 'registro-{id}'
+                            // Elimina la fila correspondiente de la tabla de inmediato.
+                            $('#registro-' + registroId).remove();  // Elimina la fila con el ID 'registro-{id}'.
 
-                            // Recargar la página para reflejar los cambios
+                            // Recargar la página para reflejar los cambios.
                             setTimeout(function() {
                                 location.reload();
-                            }, 1000); // Esperar 1 segundo antes de recargar la página
+                            }, 1000); // Esperar 1 segundo antes de recargar la página.
 
                         } else {
-                            // Si hubo un error
+                            // Si hubo un error muestra un mensaje de error.
                             Swal.fire('Error!', response.message, 'error');
                         }
                     },
+                    // Si hubo un error muestra un mensaje de error.
                     error: function(xhr, status, error) {
                         console.error(error);
                         Swal.fire('Error!', 'Hubo un problema al eliminar el registro.', 'error');

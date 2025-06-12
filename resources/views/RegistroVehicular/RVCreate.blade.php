@@ -9,8 +9,8 @@
 <style>  
     /* Estilos base */
     body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
+        font-family: 'Poppins', sans-serif; 
+        background-color: #f8f9fa; 
         color: #000;
         font-size: 15px;
     }

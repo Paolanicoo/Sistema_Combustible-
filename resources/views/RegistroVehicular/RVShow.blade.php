@@ -1,33 +1,38 @@
-@extends('Layouts.app')
+@extends('Layouts.app') {{-- Hereda la plantilla principal del sistema --}}
 
-@section('titulo', 'Detalles del Vehículo')
+@section('titulo', 'Detalles del Vehículo') {{-- Título de la página --}}
 
-@section('contenido')
+@section('contenido') {{-- Contenido de la página --}}
 
 <style>
+    /* Estilo base */
     .btn-secondary {
-        background-color: #f1f5f9;
-        color: #000; /* Cambiado a negro */
-        border: none;
+        background-color: #f1f5f9; /*Color blanco. */
+        color: #000; /*Color negro. */
+        border: none; /*Sin borde. */
     }
     
+    /* Botón secundario al pasar el mouse */
     .btn-secondary:hover {
-        background-color: #e2e8f0;
+        background-color: #e2e8f0; /*Color gris. */
     }
-
 </style>
 
     <!-- Mostrar los detalles del vehículo -->
     <div class="container mt-5">        
         <div class="card shadow">
+            <!-- Encabezado de la tarjeta -->
             <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e2e8f0; color: #344767;">
+                <!-- Título de la tarjeta -->
                 <h3 class="card-title mb-0">
                     <i class="fas fa-car me-2"></i><b>Detalles del vehículo</b>
                 </h3>
+                <!-- Botón de regresar -->
                 <a href="javascript:window.history.back();" class="btn btn-secondary btn-icon">
                     <i class="fas fa-arrow-left"></i> 
                 </a>
             </div>
+            <!-- Cuerpo de la tarjeta -->
             <div class="card-body bg-light">
                 <div class="row">
                     <div class="col-md-6">
@@ -48,18 +53,22 @@
 
         <!-- Historial de Asignaciones -->
         <div class="card shadow mt-4">
+            <!-- Encabezado de la tarjeta -->
             <div class="card-header" style="background-color: #e2e8f0; color: #344767;">
                 <h4 class="mb-0"><i class="fas fa-history me-2"></i>Historial de asignaciones</h4>
             </div>
+            <!-- Cuerpo de la tarjeta -->
             <div class="card-body">
                 <table id="historial-asignaciones-table" class="table table-striped table-hover">
                     <thead>
+                        <!-- Encabezado de la tabla -->
                         <tr style="background-color: #f8f9fa; color: #344767;">
                             <th style="color: #344767;">Asignado</th>
                             <th style="color: #344767;">Fecha de asignación</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Recorrer el historial de asignaciones -->
                         @foreach($historialAsignaciones as $asignacion)
                             <tr>
                                 <td style="color: #334155;">{{ $asignacion->asignado }}</td>
@@ -72,7 +81,6 @@
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <!-- Agregar DataTable script -->
     <script type="text/javascript">
@@ -86,6 +94,7 @@
                     { data: 'fecha_asignacion', name: 'fecha_asignacion' },
                     { data: 'fecha_cambio', name: 'fecha_cambio' }
                 ],
+                // Configuración de idioma
                 language: {
                     "processing": "Procesando...",
                     "lengthMenu": "Mostrar _MENU_ registros",
